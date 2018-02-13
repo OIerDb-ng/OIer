@@ -8,7 +8,7 @@ body {
     padding: 0;
     background: #000;
     font-weight: 500;
-    font-family: "Microsoft YaHei","宋体","Segoe UI", "Lucida Grande", Helvetica, Arial,sans-serif, FreeSans, Arimo;
+    font-family: STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
 }
 
 #container {
