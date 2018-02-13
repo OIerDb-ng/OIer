@@ -92,8 +92,8 @@
                                 award_detail+='<tr><th scope = "row">'+current_Award["identity"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td>'+current_Award["school"]+'</td><td>'+getGrade(1+parseInt(current_Award["grade"]))+'</td></tr>';
                             }
                             award_detail+='</table>'
-                            ra.innerHTML+='<tr  id = "'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td><td>'+award_badges+'</td></tr>'
-                            ra.innerHTML+='<tr><td colspan="4">'+award_detail+'</td></tr>'
+                            ra.innerHTML+='<tr type="button" data-toggle="collapse" data-target="'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td><td>'+award_badges+'</td></tr>'
+                            ra.innerHTML+='<tr id = "'+datas[i]["id"]+'"><td colspan="4">'+award_detail+'</td></tr>'
                         }
                     }
                 }
