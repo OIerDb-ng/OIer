@@ -48,7 +48,7 @@
                 return a["grade"]<b["grade"];
             }
             function getGrade(s){
-                var yea = year[2018-s];
+                var yea = year[s];
                 if(yea == undefined) yea = "----";
                 return yea;
             }
@@ -64,8 +64,10 @@
                         ra.innerHTML = "";
                         var datas = eval("(" + XMLHttp.responseText + ")")["result"];
                         cacheData = datas;
+                        
                         for(var i in datas){
                             var sf = [],sfc = "";
+          
                             awards = eval("(" + datas[i]["awards"] + ")");
                             for(var j in awards){
                                 var cur_p = awards[j]["province"];
@@ -74,19 +76,20 @@
                                 if(sf.length>1)sfc+="/";
                                 sfc+=cur_p;
                             }
-                            var yea = getGrade(parseInt(datas[i]["year"]));
+                            var yea = getGrade(2018-parseInt(datas[i]["year"]));
                             var sex  = ["女","--","男"];
                             var award_badges,award_detail;
-                            console.log(awards)
+                            console.log(datas[i]["name"]);
                             awards.sort(sortby);
-                            for(var i in awards){
+                            for(var each_award in awards){
                                 //TODO:Add Badges
                             }
                             awards.sort(sortby);
+                            console.log(datas[i]["name"]);
                             award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])]+',现在'+yea+'</font><table class="table table-bordered" style = "color:white;background:#000;"><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
-                            for(var i in awards){
-                                var current_Award = awards[i];
-                                award_detail+='<tr><th scope = "row">'+current_Award["identity"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td>'+current_Award["school"]+'</td><td>'+getGrade(parseInt(current_Award["grade"]))+'</td></tr>';
+                            for(var each_award in awards){
+                                var current_Award = awards[each_award];
+                                award_detail+='<tr><th scope = "row">'+current_Award["identity"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td>'+current_Award["school"]+'</td><td>'+getGrade(1+parseInt(current_Award["grade"]))+'</td></tr>';
                             }
                             award_detail+='</table>'
                             ra.innerHTML+='<tr  id = "'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td><td>'+award_badges+'</td></tr>'
