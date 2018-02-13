@@ -44,8 +44,8 @@
         <script>
             var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业"];
             var cacheData;
-            function sortby(a,b,s){
-                return a[s]<b[s];
+            function sortby(a,b){
+                return a["grade"]<b["grade"];
             }
         function search(){
             var XMLHttp=new XMLHttpRequest()
@@ -70,16 +70,16 @@
                                 sfc+=cur_p;
                             }
                             var yea = year[2018-parseInt(datas[i]["year"])];
-                            if(yea == undefined) yea = "--";
+                            if(yea == undefined) yea = "----";
                             var award_badges,award_detail;
-                            awards.sort(sortby("ctype"));
+                            awards.sort(sortby());
                             for(var i in awards){
                                 //TODO:Add Badges
                             }
-                            awards.sort(sortby("year"));
+                            awards.sort(sortby());
                             award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex+',现在'+yea+'</font><table class="table table-bordered" style = "color:white;background:#000;"><thead><tr><th>年份</th><th>获奖类型</th><th>分数</th><th>全国排名</th><th>就读学校</th></tr></thead>'
                             for(var i in awards){
-                                //TODO:Add Badges
+                                
                             }
                             award_detail+='</table>'
                             ra.innerHTML+='<tr  id = "'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</th><td>'+yea+'</th><td>'+award_badges+'</td></tr>'
