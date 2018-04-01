@@ -42,6 +42,7 @@
         
         <script>
             var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业"];
+<<<<<<< HEAD
             var contests = {"NOIP提高":11,"NOIP普及":11,"APIO":5.3,"CTSC":5.6,"NOI":7,"WC":1}
             var cacheData;
             var awards;
@@ -50,6 +51,12 @@
             }
             function datacmp(a,b){
                 return a['awards'].length<b['awards'].length;
+=======
+            var cacheData;
+            var awards;
+            function sortby(a,b){
+                return parseInt(a["identity"].search("[0-9]{4}"))<parseInt(b["identity"].search("[0-9]{4}"));
+>>>>>>> dev
             }
             function getGrade(s){
                 var yea = year[s];
@@ -58,7 +65,10 @@
             }
         function search(){
             var XMLHttp=new XMLHttpRequest()
+<<<<<<< HEAD
             XMLHttp.open("GET","http://bytew.net/OIer/search.php?q="+document.getElementById("infoinput").value,true);
+=======
+>>>>>>> dev
             XMLHttp.send();
             XMLHttp.onreadystatechange=function(){
                 if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -69,6 +79,9 @@
                         var datas = eval("(" + XMLHttp.responseText + ")")["result"];
                         cacheData = datas;
                         datas.sort(datacmp);
+=======
+                        
+>>>>>>> dev
                         for(var i in datas){
                             var sf = [],sfc = "";
           
