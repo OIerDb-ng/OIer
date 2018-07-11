@@ -27,7 +27,7 @@
                         <tr>
                             <th>姓名</th>
                             <th>省份</th>
-                            <th>学校</th>
+                            <th>年级</th>
                             <th>获奖记录</th>
                         </tr>
                     </thead>
@@ -58,7 +58,7 @@
             }
         function search(){
             var XMLHttp=new XMLHttpRequest()
-            XMLHttp.open("GET","search.php?q="+document.getElementById("infoinput").value,true);
+            XMLHttp.open("GET","http://bytew.net/OIer/search.php?q="+document.getElementById("infoinput").value,true);
             XMLHttp.send();
             XMLHttp.onreadystatechange=function(){
                 if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -89,14 +89,13 @@
                                 //TODO:Add Badges
                             }
                             awards.sort(sortby);
-                            console.log(datas[i]["name"]);
-                            award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])]+',现在'+yea+'</font><table class="table table-bordered" style = "color:white;background:#000;"><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+                            award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" style = "color:white;background:#000;"><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
                             for(var each_award in awards){
                                 var current_Award = awards[each_award];
                                 award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td>'+current_Award["school"]+'</td><td>'+getGrade(1+parseInt(current_Award["grade"]))+'</td></tr>';
                             }
                             award_detail+='</table>'
-                            award_badges = "这个功能我会做的好吧"
+                            award_badges = "尚未完成的功能"
                             ra.innerHTML+='<tr role="button" data-toggle="collapse" data-target="#'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td><td>'+award_badges+'</td></tr>'
                             ra.innerHTML+='<tr><td colspan="4"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
                         }
