@@ -72,9 +72,57 @@ button {
     border-left: 1px solid #ffffff;
     background:transparent;
 }
+
 .bar8 button:before {
     content: "\f002";
     font-family: FontAwesome;
     font-size: 16px;
     color: #fff;
+}
+
+.win{
+	width: 80%;
+	height: 80%;
+	position: absolute;
+	left: 10%;
+	top: 10%;
+	z-index: 2000;
+	padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+	border: 1px solid #888888;
+	border-top: 2px solid #FFFFFF;
+	color :#FFF;
+	transition: .2s linear;
+}
+
+.win:hover {
+    padding-left: 39px;
+    padding-right: 39px;
+    padding-top: 38px;
+	border: 2px solid #FFFFFF;
+	border-top: 4px solid #FFFFFF;
+}
+.win button {
+	top: -1px;
+	right: -1px;
+	border: 1px solid #888888;
+	border-top: 1px solid #ffffff;
+	background:transparent;
+    transition: .2s linear;
+}
+
+.win:hover button {
+	top: -4px;
+	right: -2px;
+	border: 1px solid #ffffff;
+	border-top: 1px solid #ffffff;
+	background:transparent;
+}
+
+.win button:before{
+	content: "\f112";
+	font-family: FontAwesome;
+	font-size: 16px;
+	color: #fff;
 }
