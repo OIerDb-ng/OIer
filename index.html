@@ -9,31 +9,31 @@
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="style.css"/>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="chart.js"></script><script src="mychart.js"></script>
+		
 	</head>
 	<body>
 		<title>OierDb</title>
-		<div id = "school" class = "win">
+		<div id = "school" class = "win" style = "flex-flow: column;display:flex;">
+			<div>
 			<h2>江苏省苏州中学园区校</h2>
-			<button onclick = "document.getElementById('school').style = 'display:none'"></button>
+			<button onclick = "document.getElementById('school').style = 'display:none'" class = "sqrbtn extbtn fa fa-mail-reply"></button>
 			<p>又名 苏州中学园区校 / 苏州高级中学园区校 。评级：AAAAA级</p>
 			<hr/>
-			<div style = "text-align:center" >
-				<h4>学校成绩</h4>
-				<table class="table" style = "color:white">
-					<thead>
-						<tr>
-							<th>比赛</th>
-							<th>1= / Au</th>
-							<th>2= / Ag</th>
-							<th>3= / Cu</th>
-						</tr>
-					</thead>
-					<tbody id = "schoolresultArea">
-						<tr><td colspan="4">
-							
-						</td></tr>
-					</tbody>
-				</table>
+			</div>
+			<div style = "text-align:center;" >
+				<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn minebtn minebtn-ac">NOIP普及</button>
+					<button type="button" class="btn minebtn">NOIP提高</button>
+					<button type="button" class="btn minebtn">APIO</button>
+					<button type="button" class="btn minebtn">CTSC</button>
+					<button type="button" class="btn minebtn minebtn-ac">NOI</button>
+					<button type="button" class="btn minebtn">WC</button>
+				</div>
+			</div>
+			<br/>
+			<div style = "flex: 1">
+				<canvas id="canvas" style = "background:#ffffff"></canvas>
 			</div>
 		</div>
 		<div id="container" style = "text-align:center;">
@@ -41,7 +41,7 @@
 			<div class="search bar8">
 				<div class = "cof">
 					<input type="text" id = "infoinput" placeholder="请输入以空格分割的信息..."/>
-					<button onclick = "search()"></button>
+					<button onclick = "search()" class = "sqrbtn"></button>
 				</div>
 			</div>
 			<br/><br/>
