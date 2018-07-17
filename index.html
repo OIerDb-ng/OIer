@@ -67,7 +67,8 @@
 		
 		<script>
 			var contest_names = ["NOIP普及","NOIP提高","APIO","CTSC","NOI","NOID类","WC"];
-			var contest_years = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018'];
+			var contest_years = {"NOIP普及":2013,"NOIP提高":2013,"APIO":2010,"CTSC":2010,"NOI":2010,"NOID类":2014,"WC":2015};
+			var contest_years2 = {"NOIP普及":2017,"NOIP提高":2017,"APIO":2018,"CTSC":2018,"NOI":2017,"NOID类":2017,"WC":2018};
 			var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业"];
 			var contests = {"NOIP提高":11,"NOIP普及":11,"APIO":5.3,"CTSC":5.6,"NOI":7,"NOID类":7,"WC":1}
 			var cacheData;
@@ -91,21 +92,28 @@
 		}
 		function showSchoolAwards(s){
 			config["data"]["datasets"] = [];
-			for(var i in document.getElementById("con-group").children){
-				document.getElementById("con-group").children[i].className = "btn minebtn";
+			var cur_year = [];
+			for(var i=contest_years[s];i<=contest_years2[s];i++)cur_year.push(i.toString);
+			for(var i  = 0;i<document.getElementById("con-group").childElementCount;i++){
+				if(document.getElementById("con-group").children[i].className.includes("minebtn-ac"))
+					document.getElementById("con-group").children[i].className = "btn minebtn";
 			}
 			if( document.getElementById(s).className.includes("minebtn-ac")){
 
 			}else{
+				config["data"]["labels"] = deepClone(cur_year);
 				document.getElementById(s).className = "btn minebtn-ac";
 				config["data"]["datasets"] = deepClone(model);
 				var cl = config["data"]["datasets"].length;
 				for(var i=1;i<=3;i++){
+					config["data"]["datasets"][cl-i]["data"] = []
 					config["data"]["datasets"][cl-i]["label"]+="("+s+")"
-					for(var j in contest_years){
-						cy = contest_years[j];
+					for(var j in cur_year){
+						cy = cur_year[j];
 						if(cy in cacheSchoolData["awards"][s])
-							config["data"]["datasets"][cl-i]["data"][parseInt(cy)-2010] = cacheSchoolData["awards"][s][cy][i-1];
+							config["data"]["datasets"][cl-i]["data"].push(cacheSchoolData["awards"][s][cy][i-1]);
+						else
+							config["data"]["datasets"][cl-i]["data"].push(0);
 					}
 				}
 				
