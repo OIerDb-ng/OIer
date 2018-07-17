@@ -11,14 +11,20 @@ body {
     font-family: STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
 }
 
-#container {
-    position:absolute;
-    top:5%;
-    left:20%;
-    width: 60%;
-    height: 20%;
-    margin: 0 auto;
+@media screen and (min-width:750px){
+	#container {
+		width: 60%;
+		min-width:600px;
+		margin:0 auto;
+	}
 }
+@media screen and (max-width:750px){
+	#container {
+		width: 80%;
+		margin:0 auto;
+	}
+}
+
 div.search {padding: 30px 0;}
 
 .cof {
@@ -83,7 +89,7 @@ input {
 .win{
 	width: 80%;
 	height: 80%;
-	position: absolute;
+	position: fixed;
 	left: 10%;
 	top: 10%;
 	z-index: 2000;
