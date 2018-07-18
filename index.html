@@ -66,6 +66,7 @@
 		
 		<script>
 			var contest_names = ["NOIP普及","NOIP提高","APIO","CTSC","NOI","NOID类","WC"];
+			var award_desc = {"NOIP普及":["一等奖","二等奖","三等奖"],"NOIP提高":["一等奖","二等奖","三等奖"],"APIO":["金牌","银牌","铜牌"],"CTSC":["金牌","银牌","铜牌"],"NOI":["金牌","银牌","铜牌"],"NOID类":["金牌","银牌","铜牌"],"WC":["金牌","银牌","铜牌"]};
 			var contest_years = {"NOIP普及":2013,"NOIP提高":2013,"APIO":2010,"CTSC":2010,"NOI":2010,"NOID类":2014,"WC":2015};
 			var contest_years2 = {"NOIP普及":2017,"NOIP提高":2017,"APIO":2018,"CTSC":2018,"NOI":2017,"NOID类":2017,"WC":2018};
 			var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业"];
@@ -103,16 +104,15 @@
 				config["data"]["labels"] = deepClone(cur_year);
 				document.getElementById(s).className = "btn minebtn-ac";
 				config["data"]["datasets"] = deepClone(model);
-				var cl = config["data"]["datasets"].length;
-				for(var i=1;i<=3;i++){
-					config["data"]["datasets"][cl-i]["data"] = []
-					config["data"]["datasets"][cl-i]["label"]+="("+s+")"
+				for(var i=0;i<=2;i++){
+					config["data"]["datasets"][i]["data"] = []
+					config["data"]["datasets"][i]["label"]=s+award_desc[s][i];
 					for(var j in cur_year){
 						cy = cur_year[j];
 						if(cy in cacheSchoolData["awards"][s])
-							config["data"]["datasets"][cl-i]["data"].push(cacheSchoolData["awards"][s][cy][i-1]);
+							config["data"]["datasets"][i]["data"].push(cacheSchoolData["awards"][s][cy][i]);
 						else
-							config["data"]["datasets"][cl-i]["data"].push(0);
+							config["data"]["datasets"][i]["data"].push(0);
 					}
 				}
 				
