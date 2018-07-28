@@ -56,9 +56,29 @@
 						</tr>
 					</thead>
 					<tbody id = "resultArea">
-						<tr><td colspan="3">
-							
-						</td></tr>
+						<tr role="button" data-toggle="collapse" data-target="#info" aria-expanded="true" aria-controls="16898" class="">
+							<td colspan="3" style = "text-align:center">
+								关于OIerDb
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<div class="collapse" id="info" aria-expanded="true" style="padding:20px;">
+									<h3>Q: 这是什么网站？</h3>
+									<p>这是一个信息学竞赛选手获奖记录的数据库。这个Db没有名字，可以姑且称为黑皮数据库。数据库诞生在2018年2月，有时也会咕咕咕的更新。</p>
+									<h3>Q: 我能够做什么？</h3>
+									<p>
+										你能够在这个网站上查询选手的获奖记录，可以通过姓名、姓名首字母缩写、省份、学校等限定，点击学校名称可以获得学校的数据。
+									</p>
+									<p>
+										同时，这个项目也在<a href = "https://github.com/WZKSDN/OIer">GitHub</a>上开源，有任何问题可以直接issue，也强烈欢迎你帮助改进算法。
+									</p>
+									<p>
+										<b>非常欢迎</b>加入用户群 : 813305282(OIerDb用户群).
+									</p>
+								</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -68,12 +88,13 @@
 			var contest_names = ["NOIP普及","NOIP提高","APIO","CTSC","NOI","NOID类","WC"];
 			var award_desc = {"NOIP普及":["一等奖","二等奖","三等奖"],"NOIP提高":["一等奖","二等奖","三等奖"],"APIO":["金牌","银牌","铜牌"],"CTSC":["金牌","银牌","铜牌"],"NOI":["金牌","银牌","铜牌"],"NOID类":["金牌","银牌","铜牌"],"WC":["金牌","银牌","铜牌"]};
 			var contest_years = {"NOIP普及":2013,"NOIP提高":2013,"APIO":2010,"CTSC":2010,"NOI":2010,"NOID类":2014,"WC":2015};
-			var contest_years2 = {"NOIP普及":2017,"NOIP提高":2017,"APIO":2018,"CTSC":2018,"NOI":2017,"NOID类":2017,"WC":2018};
+			var contest_years2 = {"NOIP普及":2017,"NOIP提高":2017,"APIO":2018,"CTSC":2018,"NOI":2018,"NOID类":2018,"WC":2018};
 			var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业","高中毕业"];
 			var contests = {"NOIP提高":11,"NOIP普及":11,"APIO":5.3,"CTSC":5.6,"NOI":7,"NOID类":7,"WC":1}
 			var cacheData;
 			var awards;
 			var cacheSchoolData;
+			var cv = document.getElementById("resultArea").innerHTML;
 			function sortby(a,b){
 				return parseInt(a["identity"].match(/[0-9]{4}/))+contests[a["ctype"]]/12.0<parseInt(b["identity"].match(/[0-9]{4}/))+contests[b["ctype"]]/12.0;
 			}
@@ -195,8 +216,9 @@
 							}
 							award_detail+='</table>'
 							ra.innerHTML+='<tr role="button" data-toggle="collapse" data-target="#'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td></tr>'
-							ra.innerHTML+='<tr><td colspan="4"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
+							ra.innerHTML+='<tr><td colspan="3"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
 						}
+						ra.innerHTML+=cv;
 					}
 				}
 			}
