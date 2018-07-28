@@ -104,7 +104,17 @@
 			return objClone
 		}
 		function datacmp(a,b){
-			return a['awards'].length<b['awards'].length;
+			var mina = 99999,minb = 99999;
+			var aaw = awards = eval("(" + a["awards"] + ")"),baw = awards = eval("(" + b["awards"] + ")");
+			for(var each_award in aaw){
+				var current_Award = aaw[each_award];
+				mina = Math.min(parseInt(current_Award["rank"]),mina);
+			}
+			for(var each_award in baw){
+				var current_Award = baw[each_award];
+				minb = Math.min(parseInt(current_Award["rank"]),minb);
+			}
+			return mina>minb;
 		}
 		function getGrade(s){
 			var yea = year[s];
