@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/WZKSDN/OIer/raw/master/on_server/logo.jpg" />
+<img src="https://github.com/WZKSDN/OIer/raw/master/on_server/logo-white.jpg" />
 </p>
 
 <h1 align="center">OIerDb</h1>
