@@ -1,6 +1,8 @@
 * {
     box-sizing: border-box;
     background: #000;
+    color:white;
+    background:#000;
 }
 
 body {
@@ -52,6 +54,7 @@ input {
     position: absolute;
 }
 .bar8 {background: #000000;}
+.bar9 {background: #000000;}
 .bar8 input {
     font-size:20px;
     color:white;
@@ -59,13 +62,25 @@ input {
     border: 2px solid #000000;
     width: 100%;
     padding: 0 60px 0 15px;
-    position: absolute;
+    position: relative;
     top: 0;
     transition: .2s linear;
     right: 0;
     background: transparent;
 }
-
+.bar9 * {
+	margin: 5px 10px 5px 10px;
+    height: 40px;
+    width: 16%;
+	min-width:100px;
+    border: 1px solid #444444;
+}
+.bar9 *:hover {
+    border: 1px solid #888888;
+}
+.bar9 *:focus {
+    border: 2px solid #ffffff;
+}
 .bar8 input:hover {
     border: 2px solid #444444;
     border-bottom: 4px solid #444444;
@@ -135,4 +150,7 @@ input {
 .minebtn-ac{
 	z-index: 2000;
 	border: 1px solid #ffffff;
+}
+.minebtn-ac:hover{
+    color:#ffffff;
 }
