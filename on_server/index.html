@@ -37,17 +37,31 @@
 		<div id="container">
 			<br/>
 			<div  style = "text-align:center;">
-				<object data="logo.svg" type="image/svg+xml" display:"inline-block" style = "width:80%"></object>
+				<a href = "index.html"><img src="logo.jpg" style = "width:60%;"/></a>
 			</div>
-			<div class="search bar8">
-				<div class = "cof">
+			<div class="search">
+				<div class = "cof  bar8">
 					<input type="text" id = "infoinput" placeholder="请输入以空格分割的信息..."/>
-					<button onclick = "search()" class = "sqrbtn"></button>
+					<button onclick = "search(0)" class = "sqrbtn"></button>
 				</div>
+				<div style = "text-align: center;">
+					<button data-toggle="collapse" data-target="#adv-search" aria-expanded="true" aria-controls="info">高级搜索……</button>
+					<div class="collapse" id="adv-search" aria-expanded="true">
+						<div class="form-inline bar9" role="form">
+							<input id = "adv_name" type="text" placeholder="姓名"/>
+							<input id = "adv_pinyin" type="text" placeholder="姓名拼音"/>
+							<input id = "adv_school" type="text" placeholder="学校"/>
+							<input id = "adv_prov" type="text" placeholder="省份"/>
+							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
+						</div>
+					</div>
+				</div>
+				
 			</div>
+			
 			<br/><br/>
 			<div id = "dataArea" style = "display:">
-				<table class="table" style = "color:white">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>姓名</th>
@@ -56,7 +70,12 @@
 						</tr>
 					</thead>
 					<tbody id = "resultArea">
-						<tr role="button" data-toggle="collapse" data-target="#info" aria-expanded="true" aria-controls="16898" class="">
+						<tr role="button" onclick = "window.location.href = 'rank.html'">
+							<td colspan="3" style = "text-align:center">
+								全国信息学竞赛学校排名2018
+							</td>
+						</tr>
+						<tr role="button" data-toggle="collapse" data-target="#info" aria-expanded="true" aria-controls="info">
 							<td colspan="3" style = "text-align:center">
 								关于OIerDb
 							</td>
@@ -65,7 +84,7 @@
 							<td colspan="3">
 								<div class="collapse" id="info" aria-expanded="true" style="padding:20px;">
 									<h3>Q: 这是什么网站？</h3>
-									<p>这是一个信息学竞赛选手获奖记录的数据库。这个Db没有名字，可以姑且称为黑皮数据库。数据库诞生在2018年2月，有时也会咕咕咕的更新。</p>
+									<p>这是一个信息学竞赛选手获奖记录的数据库。本网站名为"OIerDb"。数据库诞生在2018年2月，有时也会咕咕咕的更新。</p>
 									<h3>Q: 我能够做什么？</h3>
 									<p>
 										你能够在这个网站上查询选手的获奖记录，可以通过姓名、姓名首字母缩写、省份、学校等限定，点击学校名称可以获得学校的数据。
@@ -79,6 +98,7 @@
 								</div>
 							</td>
 						</tr>
+						
 					</tbody>
 				</table>
 			</div>
@@ -192,9 +212,13 @@
 			}
 		}
 		
-		function search(){
+		function search(type){
 			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","http://bytew.net/OIer/search.php?q="+document.getElementById("infoinput").value,true);
+			if(type == 0){
+				XMLHttp.open("GET","http://bytew.net/OIer/search.php?method=normal&q="+document.getElementById("infoinput").value,true);
+			}else{
+				XMLHttp.open("GET","http://bytew.net/OIer/search.php?method=specific&name="+$("#adv_name").val()+"&pinyin="+$("#adv_pinyin").val()+"&school="+$("#adv_school").val()+"&province="+$("#adv_prov").val(),true);
+			}
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -219,7 +243,7 @@
 							var sex  = ["女","--","男"];
 							var award_badges,award_detail;
 							awards.sort(sortby);
-							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" style = "color:white;background:#000;"><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
 							for(var each_award in awards){
 								var current_Award = awards[each_award];
 								award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+getGrade(1+parseInt(current_Award["grade"]))+'</td></tr>';
