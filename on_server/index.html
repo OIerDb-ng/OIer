@@ -37,23 +37,23 @@
 		<div id="container">
 			<br/>
 			<div  style = "text-align:center;">
-				<a href = "index.html"><img src="logo.jpg" style = "width:80%;"/></a>
+				<a href = "index.html"><img src="logo.jpg" style = "width:60%;"/></a>
 			</div>
 			<div class="search">
 				<div class = "cof  bar8">
 					<input type="text" id = "infoinput" placeholder="请输入以空格分割的信息..."/>
-					<button onclick = "search()" class = "sqrbtn"></button>
+					<button onclick = "search(0)" class = "sqrbtn"></button>
 				</div>
 				<div style = "text-align: center;">
 					<button data-toggle="collapse" data-target="#adv-search" aria-expanded="true" aria-controls="info">高级搜索……</button>
 					<div class="collapse" id="adv-search" aria-expanded="true">
-						<form class="form-inline bar9" role="form" action="none">
-							<input type="text" placeholder="姓名"/>
-							<input type="text" placeholder="姓名拼音"/>
-							<input type="text" placeholder="学校"/>
-							<input type="text" placeholder="省份"/>
-							<button>搜索</button>
-						</form>
+						<div class="form-inline bar9" role="form">
+							<input id = "adv_name" type="text" placeholder="姓名"/>
+							<input id = "adv_pinyin" type="text" placeholder="姓名拼音"/>
+							<input id = "adv_school" type="text" placeholder="学校"/>
+							<input id = "adv_prov" type="text" placeholder="省份"/>
+							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
+						</div>
 					</div>
 				</div>
 				
@@ -212,9 +212,13 @@
 			}
 		}
 		
-		function search(){
+		function search(type){
 			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","http://bytew.net/OIer/search.php?q="+document.getElementById("infoinput").value,true);
+			if(type == 0){
+				XMLHttp.open("GET","http://bytew.net/OIer/search.php?method=normal&q="+document.getElementById("infoinput").value,true);
+			}else{
+				XMLHttp.open("GET","http://bytew.net/OIer/search.php?method=specific&name="+$("#adv_name").val()+"&pinyin="+$("#adv_pinyin").val()+"&school="+$("#adv_school").val()+"&province="+$("#adv_prov").val(),true);
+			}
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				if (XMLHttp.readyState==4 && XMLHttp.status==200){
