@@ -13,7 +13,20 @@ body {
     color: white;
     font-family: STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
 }
-
+select {
+    margin-right: 20px;
+    margin-left: 20px;
+    border: none;
+    outline: none;
+    width:100px;
+    height:25px;
+    border: solid 0px #ffffff;
+    box-shadow: 0 0 5px #ccc;
+    padding-left: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
 @media screen and (min-width:750px){
 	#container {
 		width: 60%;
@@ -74,6 +87,7 @@ input {
     width: 16%;
 	min-width:100px;
     border: 1px solid #444444;
+    box-shadow: 0 0 10px #444;
 }
 .bar9 *:hover {
     border: 1px solid #888888;
@@ -82,11 +96,12 @@ input {
     border: 2px solid #ffffff;
 }
 .bar8 input:hover {
-    border: 2px solid #444444;
     border-bottom: 4px solid #444444;
+    box-shadow: 0 0 10px #666;
 }
 .bar8 input:focus {
     border-bottom: 4px solid #ffffff;
+    box-shadow: 0 0 10px #666;
 }
 .bar8 button {
     top: 0;
