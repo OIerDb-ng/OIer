@@ -14,11 +14,13 @@ body {
     font-family: STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
 }
 select {
-    margin-right: 20px;
-    margin-left: 20px;
+    margin-right: 3%;
+    margin-left: 3%;
     border: none;
     outline: none;
-    width:100px;
+    width:20%;
+    min-width: 60px;
+    max-width: 100px;
     height:25px;
     border: solid 0px #ffffff;
     box-shadow: 0 0 5px #ccc;
@@ -117,12 +119,25 @@ input {
     color: #fff;
 }
 
+@media screen and (min-width:750px){
+    .win {
+        width: 80%;
+        height: 90%;
+        left: 10%;
+        top: 5%;
+    }
+}
+@media screen and (max-width:750px){
+    .win {
+        width: 100%;
+        height: 100%;
+        left: 0%;
+        top: 0%;
+    }
+}
+
 .win{
-	width: 80%;
-	height: 80%;
 	position: fixed;
-	left: 10%;
-	top: 10%;
 	z-index: 2000;
 	padding: 40px;;
 	border: 1px solid #888888;

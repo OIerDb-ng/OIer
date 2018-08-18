@@ -95,6 +95,9 @@
 									<p>
 										<b>非常欢迎</b>加入用户群 : 813305282(OIerDb用户群).
 									</p>
+									<p>
+										本网站2017年及以前的元数据来源于由fjzzq2002神犇爬取并整理，发布在<a href = "https://github.com/fjzzq2002/fjzzq2002.github.io">开源项目</a>中的数据，在此向他表示真挚的感谢！
+									</p>
 								</div>
 							</td>
 						</tr>
@@ -172,6 +175,7 @@
 			window.myLine.update();
 		}
 		function showSchoolInfo(s,p){
+			document.getElementById('sch_desc').innerHTML = '<img src = "loading.svg" width = 45px/>';
 			document.getElementById('con-group').innerHTML = '';
 			document.getElementById('school_view').style = 'flex-flow: column;display:flex';
 			document.getElementById('sch_name').innerHTML = p;

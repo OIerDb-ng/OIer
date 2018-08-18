@@ -19,6 +19,7 @@
 				<h2 id = "sch_name">
 				</h2>
 				<button onclick = "document.getElementById('school_view').style = 'display:none'" class = "sqrbtn extbtn fa fa-mail-reply"></button>
+				
 				<div id = "sch_desc">
 					
 				</div>
@@ -38,7 +39,7 @@
 			<br/>
 			<div  style = "text-align:center;">
 				<a href = "index.html"><img src="logo.jpg" style = "width:40%;"/></a>
-				<h2>全国信息学竞赛学校排名2018</h2>
+				<h3>全国信息学竞赛学校排名2018</h3>
 				<hr/>
 				<p>
 				省份:
@@ -57,7 +58,7 @@
 						<tr>
 							<th width = "10%">#</th>
 							<th width = "60%">学校</th>
-							<th width = "15%">排名</th>
+							<th width = "15%">评级</th>
 							<th width = "15%">评分</th>
 						</tr>
 					</thead>
@@ -122,6 +123,7 @@
 			window.myLine.update();
 		}
 		function showSchoolInfo(s,p){
+			document.getElementById('sch_desc').innerHTML = '<img src = "loading.svg" width = 45px/>';
 			document.getElementById('con-group').innerHTML = '';
 			document.getElementById('school_view').style = 'flex-flow: column;display:flex';
 			document.getElementById('sch_name').innerHTML = p;
@@ -178,7 +180,7 @@
 							for(var i in cc.result){
 								var datas = cc.result[i];
 								datas["name"] = eval(datas["name"]);
-								document.getElementById('resultArea').innerHTML+='<tr  role="button" onclick="showSchoolInfo('+datas['id']+',\''+datas['name'][0]+'\')" style="height:42px"><th>'+datas['id']+'</th><td>'+datas['name'][0]+'</td><td>'+datas['rank']+'</td><td>'+datas['rating']+'</td><tr>';
+								document.getElementById('resultArea').innerHTML+='<tr  role="button" onclick="showSchoolInfo('+datas['id']+',\''+datas['name'][0]+'\')" style="height:42px"><th>'+datas['rank']+'</th><td>'+datas['name'][0]+'</td><td>'+datas['division']+'</td><td>'+datas['rating']+'</td><tr>';
 							}
 							if(chc){
 								document.getElementById('city_select').innerHTML = '<option value ="">任意</option>';
