@@ -182,6 +182,9 @@
 								datas["name"] = eval(datas["name"]);
 								document.getElementById('resultArea').innerHTML+='<tr  role="button" onclick="showSchoolInfo('+datas['id']+',\''+datas['name'][0]+'\')" style="height:42px"><th>'+datas['rank']+'</th><td>'+datas['name'][0]+'</td><td>'+datas['division']+'</td><td>'+datas['rating']+'</td><tr>';
 							}
+							if(cc.result.length<10){
+								document.getElementById('resultArea').innerHTML+='<tr  style="height:42px"><tr>'.repeat(10-cc.result.length);
+							}
 							if(chc){
 								document.getElementById('city_select').innerHTML = '<option value ="">任意</option>';
 								for(var i in cc.cities){
