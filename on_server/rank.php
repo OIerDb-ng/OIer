@@ -24,7 +24,7 @@
         $result = mysqli_query($conn,"SELECT COUNT(*) ".$qr);
         while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($cnum,$row);
         if(isset($_GET["province"]) && $_GET["province"]!=""){
-            $result = mysqli_query($conn,"SELECT DISTINCT city FROM `OI_school` where province = '".$_GET["province"]."'");
+            $result = mysqli_query($conn,"SELECT  city FROM OI_school where province = '".$_GET["province"]."' GROUP BY city order by sum(rating) desc");
             while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($ccities,$row["city"]);
         }
     }
