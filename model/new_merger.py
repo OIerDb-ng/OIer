@@ -55,8 +55,8 @@ with open("data.txt") as source:
 				grade = contests[cname]["year"]-int(re.findall(r"[0-9]{4}", cur[3], re.MULTILINE)[0])+1+3*("高" in cur[3])
 			except:
 				print(cur)
-		cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":grade,"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
-		cur["cal_y"] = cur["year"]-cur["grade"]-("NOIP" not in cur["ctype"])
+		cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
+		cur["cal_y"] = cur["year"]-grade-("NOIP" not in cur["ctype"])
 		if grade == 10000:
 			cur["cal_y"] = cur["year"]-general[cur["ctype"]]-("NOIP" not in cur["ctype"])
 		if contests[cname]["participants"]!=[]:
