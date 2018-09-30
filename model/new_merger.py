@@ -9,13 +9,22 @@ sex = {"男":1,"女":-1,"@":0}
 st = time.time()
 school_id = {}
 school_pos = {}
-general = {'APIO': 4.57907113462669, 'NOI': 4.708687440982058, 'WC': 4.662847790507365, 'CTSC': 4.61405197305101, 'NOID类': 4.66785079928952, 'NOIP提高': 4.676187822209837, 'NOIP普及': 2.213472384803661}
+general = {'APIO': 4.5790, 'NOI': 4.7086, 'WC': 4.6628, 'CTSC': 4.6140, 'NOID类': 4.6678, 'NOIP提高': 4.6761, 'NOIP普及': 2.2134}
 
 def output():
+    py_sp = {}
+    for i in open("special_pinyin.txt").readlines():
+        py_sp[i.split('\t')[0]] = i.split('\t')[1].strip()
 	result = open("result.txt","w")
 	id = 0
 	for i in awd_by_name:
-		piny = "".join( [ io[0] for io in lapi(i) ])
+        piny = ""
+        for ecp in py_sp:
+            if ecp[0] in i and i.find(ecp[0]) == 0:
+                piny = ecp[1] + "".join( [ io[0] for io in lapi(i[len(ecp[0]):]) ])
+                break
+        if piny == "":
+            piny = "".join( [ io[0] for io in lapi(i) ])
 		for j in awd_by_name[i]:
 			csex = 0
 			cyear = 0
@@ -101,9 +110,6 @@ def diff_ana(a,b):
 		cc = oi_year(i)
 		minyb = min(minyb,cc)
 		maxyb = max(maxyb,cc)
-#print(a)
-#print(b)
-#print (minya,maxya,minyb,maxyb)
 	cdst += (minyb-maxya-1)*80
 	cy = 0
 	if sid1 != sid2:
@@ -118,29 +124,25 @@ def diff_ana(a,b):
 	for i in a+b:
 		myear = min(myear,i["cal_y"])
 		gyear = max(gyear,i["cal_y"])
-
 	cdst+=(gyear-myear)*100
 	return cdst
+
 for each_n in awd_by_name:
+    globeid = 0
 	while 1:
 		awd_by_name[each_n] = sorted(awd_by_name[each_n],key = lambda i:oi_year(i[0]))
-		minn,cs = 10**20,len(awd_by_name[each_n])
+		minn,cs = 10000,len(awd_by_name[each_n])
 		ml,mr = 0,0
 		clen = len(awd_by_name[each_n])
 		for i in range(clen):
 			for j in range(i+1,clen):
 				cg = diff_ana(awd_by_name[each_n][i],awd_by_name[each_n][j])
-				#print (awd_by_name[each_n][i])
-				#print (awd_by_name[each_n][j])
-				#print(cg)
 				if cg<minn:
 					minn,ml,mr = cg,i,j
 		if minn<200:
-			#print(awd_by_name[each_n][ml])
-			#print(awd_by_name[each_n][mr])
-			#print(minn)
 			awd_by_name[each_n][ml].extend(awd_by_name[each_n][mr])
 			del awd_by_name[each_n][mr]
 		else:
 			break
 output()
+
