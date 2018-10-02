@@ -8,7 +8,8 @@ tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"金牌":0,"银牌":1,"�
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,0,-5))]
 sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06}
 rk = {}
-
+recy = {}
+recd = {}
 with open("school_oped.txt") as src:
 	cnt = -1
 	for i in src:
@@ -52,6 +53,11 @@ with open("data.txt") as source:
 		#print(cur[1])
 		#print(cur[0])
 		award_type = tp_to_int[cur[1]]
+		csn = cur[4].strip()
+		if csn not in recy or year>recy[csn]:
+			recy[csn] = year
+			recd[csn] = 0
+		recd[csn] += 1
 		schid = school_id[cur[4].strip()]
 		caw = school_info[schid]["awards"]
 		if not ctype in caw:
@@ -74,5 +80,5 @@ for i in school_info:
 		if i["rating"]>rkreq[kk]:
 			cr = rk[kk]
 			break
-	f.write('"'+str(i["id"])+'","'+dmp(i["name"])+'","'+dmp(i["awards"])+'","'+str(int(i["rating"]*10))+'","'+cr+'","'+i["prov"]+'","'+i["city"]+'","'+str(count)+'"\n')
+	f.write('"'+str(i["id"])+'","'+dmp(sorted(i["name"],key = lambda x:recy[x]*10000+recd[x],reverse = True))+'","'+dmp(i["awards"])+'","'+str(int(i["rating"]*10))+'","'+cr+'","'+i["prov"]+'","'+i["city"]+'","'+str(count)+'"\n')
 	count+=1;
