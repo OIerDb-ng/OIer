@@ -12,19 +12,16 @@ school_pos = {}
 general = {'APIO': 4.5790, 'NOI': 4.7086, 'WC': 4.6628, 'CTSC': 4.6140, 'NOID类': 4.6678, 'NOIP提高': 4.6761, 'NOIP普及': 2.2134}
 
 def output():
-    py_sp = {}
-    for i in open("special_pinyin.txt").readlines():
-        py_sp[i.split('\t')[0]] = i.split('\t')[1].strip()
+	py_sp = {'逢': 'p', '区': 'o', '蕃': 'p', '折': 's', '句': 'g', '仇': 'q', '种': 'c', '查': 'z', '繁': 'p', '祭': 'z', '曾': 'z', '佴': 'n', '单': 's', '郇': 'x', '翟': 'z', '覃': 'q', '郗': 'c', '乐': 'y', '召': 's', '阚': 'k', '乜': 'n', '秘': 'b', '解': 'x'}
 	result = open("result.txt","w")
 	id = 0
 	for i in awd_by_name:
-        piny = ""
-        for ecp in py_sp:
-            if ecp[0] in i and i.find(ecp[0]) == 0:
-                piny = ecp[1] + "".join( [ io[0] for io in lapi(i[len(ecp[0]):]) ])
-                break
-        if piny == "":
-            piny = "".join( [ io[0] for io in lapi(i) ])
+		piny = ""
+		if i[0] in py_sp:
+			piny = py_sp[i[0]]+"".join( [ io[0] for io in lapi(i[1:]) ])
+		else:
+			piny = "".join( [ io[0] for io in lapi(i) ])
+				
 		for j in awd_by_name[i]:
 			csex = 0
 			cyear = 0
@@ -91,44 +88,40 @@ def diff_ana(a,b):
 			if i["rule"] and j["rule"]:
 				return 10000*(i["rule"]!=j["rule"])
 	cdst = 0
-	sid1 = 0
-	sid2 = 0
+	ccst = 80
+	l = []
+	poses = []
 	minya,maxya,minyb,maxyb = 10000,0,10000,0
 	for i in a:
-		if sid1 == 0:
-			sid1 = i["school_id"]
-		if sid1 != 0 and sid1 != i["school_id"]:
-			return 10000
+		if i["school_id"] not in l:
+			l.append(i["school_id"])
+		if school_pos[i["school_id"]] not in poses:
+			poses.append(school_pos[i["school_id"]])
 		cc = oi_year(i)
 		minya = min(minya,cc)
 		maxya = max(maxya,cc)
 	for i in b:
-		if sid2 == 0:
-			sid2 = i["school_id"]
-			if sid2 != 0 and sid2 != i["school_id"]:
-				return 10000
+		if i["school_id"] not in l:
+			l.append(i["school_id"])
+		if school_pos[i["school_id"]] not in poses:
+			poses.append(school_pos[i["school_id"]])
 		cc = oi_year(i)
 		minyb = min(minyb,cc)
 		maxyb = max(maxyb,cc)
-	cdst += (minyb-maxya-1)*80
-	cy = 0
-	if sid1 != sid2:
-		cy+=1
-		cdst+=60
-	if school_pos[sid1]!=school_pos[sid2]:
-		cy+=1
-		cdst+=60
-	cdst+=max((maxya+1-minyb)*cy*100,0)
+	ccst+=len(l)*60
+	ccst+=len(poses)*80-80
+	cdst+=max((minyb-maxya-1)*ccst*0.5,0)
+	cdst+= ccst-80
 	myear = 10000
 	gyear = -1
 	for i in a+b:
 		myear = min(myear,i["cal_y"])
 		gyear = max(gyear,i["cal_y"])
-	cdst+=(gyear-myear)*100
+	cdst+=(gyear-myear)*75
 	return cdst
 
 for each_n in awd_by_name:
-    globeid = 0
+	globeid = 0
 	while 1:
 		awd_by_name[each_n] = sorted(awd_by_name[each_n],key = lambda i:oi_year(i[0]))
 		minn,cs = 10000,len(awd_by_name[each_n])
@@ -139,7 +132,7 @@ for each_n in awd_by_name:
 				cg = diff_ana(awd_by_name[each_n][i],awd_by_name[each_n][j])
 				if cg<minn:
 					minn,ml,mr = cg,i,j
-		if minn<200:
+		if minn<=240:
 			awd_by_name[each_n][ml].extend(awd_by_name[each_n][mr])
 			del awd_by_name[each_n][mr]
 		else:
