@@ -94,12 +94,15 @@ def diff_ana(a,b):
 	ccst = 80
 	l = []
 	poses = []
+	provs = []
 	minya,maxya,minyb,maxyb = 10000,0,10000,0
 	for i in a:
 		if i["school_id"] not in l:
 			l.append(i["school_id"])
 		if school_pos[i["school_id"]] not in poses:
 			poses.append(school_pos[i["school_id"]])
+		if i["province"] not in provs:
+			provs.append(i["province"])
 		cc = oi_year(i)
 		minya = min(minya,cc)
 		maxya = max(maxya,cc)
@@ -108,11 +111,14 @@ def diff_ana(a,b):
 			l.append(i["school_id"])
 		if school_pos[i["school_id"]] not in poses:
 			poses.append(school_pos[i["school_id"]])
+		if i["province"] not in provs:
+			provs.append(i["province"])
 		cc = oi_year(i)
 		minyb = min(minyb,cc)
 		maxyb = max(maxyb,cc)
-	ccst+=[0,-40,30,80,150,300,600,600,600][len(l)]
+	ccst+=[0,-40,60,120,180,300,600,600,600][len(l)]
 	ccst+=len(poses)*80-80
+	ccst+=len(provs)*80-80
 	cdst+=max((minyb-maxya-1)*ccst*0.5,0)
 	cdst+= ccst-80
 	myear = 10000
@@ -120,7 +126,7 @@ def diff_ana(a,b):
 	for i in a+b:
 		myear = min(myear,i["cal_y"])
 		gyear = max(gyear,i["cal_y"])
-	cdst+=(gyear-myear)*75
+	cdst+=(gyear-myear)*100
 	return cdst
 
 for each_n in awd_by_name:
