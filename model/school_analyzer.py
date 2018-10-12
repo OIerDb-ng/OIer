@@ -36,7 +36,7 @@ with open("data.txt") as source:
 		if not "D" in cname:
 			if not cname in rk:
 				rk[cname] = []
-			if cur[5]!="@":
+			if cur[5]!="":
 				rk[cname].append(int(cur[5]))
 				crk = rk[cname].index(int(cur[5]))
 			else:

@@ -5,7 +5,7 @@ contests = {}
 awd_by_name = {}
 grades = {"高二":5,"初三":3,"高三":6,"高一":4,"初二":2,"中六":6,
 	"中五":5,"初一":1,"初四":4,"中四":4,"高二年级":5,"中一":1,"中二":2,"中三":3,"六年级":0,"五年级":-1,"小六":0,"六":0,"小学":0,"初中":2.213472384803661,"预初":0}
-sex = {"男":1,"女":-1,"@":0}
+sex = {"男":1,"女":-1,"":0}
 st = time.time()
 school_id = {}
 school_pos = {}
@@ -56,18 +56,21 @@ with open("data.txt") as source:
 		grade = 10000
 		if cur[3] in grades.keys():
 			grade = grades[cur[3]]
-		elif cur[3]!='@':
+		elif cur[3]!='':
 			try:
 				grade = contests[cname]["year"]-int(re.findall(r"[0-9]{4}", cur[3], re.MULTILINE)[0])+1+3*("高" in cur[3])
 			except:
 				print(cur)
-		cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
+		try:
+			cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
+		except:
+			print(i)
 		cur["cal_y"] = cur["year"]-grade-("NOIP" not in cur["ctype"])
 		if grade == 10000:
 			cur["cal_y"] = cur["year"]-general[cur["ctype"]]-("NOIP" not in cur["ctype"])
 		if contests[cname]["participants"]!=[]:
 			lp = contests[cname]["participants"][-1]
-			if lp["score"]!=cur["score"] or cur["score"] == "@":
+			if lp["score"]!=cur["score"] or cur["score"] == "":
 				cur["rank"] = len(contests[cname]["participants"])+1
 			else:
 				cur["rank"] = lp["rank"]
@@ -108,7 +111,7 @@ def diff_ana(a,b):
 		cc = oi_year(i)
 		minyb = min(minyb,cc)
 		maxyb = max(maxyb,cc)
-	ccst+=len(l)*60
+	ccst+=[0,-40,30,80,150,300,600,600,600][len(l)]
 	ccst+=len(poses)*80-80
 	cdst+=max((minyb-maxya-1)*ccst*0.5,0)
 	cdst+= ccst-80
