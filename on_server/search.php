@@ -1,4 +1,5 @@
 <?php
+	header("Access-Control-Allow-Origin: http://www.bytew.net");
 	$conn = mysqli_connect('localhost', 'THE_USERNAME', 'THE_PASSWORD',"THE_DATABASE");
 	if(! $conn ) die('Could not connect: ' . mysqli_error());
 	$conn->set_charset("utf8");
