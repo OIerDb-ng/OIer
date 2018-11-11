@@ -3,17 +3,17 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="keywords" content="OIerDb,OIer数据库,信息学竞赛学校排名" />
-	<meta name="description" content="OIerDb是一个方便信息学竞赛选手查询获奖记录并对学校进行排名的数据库。网站诞生在2018年2月，有时也会咕咕咕的更新。作为工具网站受到竞赛选手的欢迎。" />
+		<meta name="description" content="OIerDb是一个方便信息学竞赛选手查询获奖记录并对学校进行排名的数据库。网站诞生在2018年2月，有时也会咕咕咕的更新。作为工具网站受到竞赛选手的欢迎。" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-		<link rel="stylesheet" href="style.css"/>
-		<script src="chart.js"></script><script src="mychart.js"></script>
-		
-	</head>
+			<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+			<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+			<link rel="stylesheet" href="style.css"/>
+			<script src="chart.js"></script><script src="mychart.js"></script>
+			
+			</head>
 	<body>
 		<title>OIerDb</title>
 		<div id = "school_view" class = "win" style = "flex-flow: column;display:none;">
@@ -35,8 +35,9 @@
 				<canvas id="canvas" style = "background:#ffffff"></canvas>
 			</div>
 		</div>
-		
+
 		<div id="container">
+			
 			<br/>
 			<div  style = "text-align:center;">
 				<a href = "index.html"><img src="logo.jpg" style = "width:60%;"/></a>
@@ -48,16 +49,27 @@
 				</div>
 				<div style = "text-align: center;">
 					<button data-toggle="collapse" data-target="#adv-search" aria-expanded="true" aria-controls="info">高级搜索……</button>
-					<div class="collapse" id="adv-search" aria-expanded="true">
+					<div class="collapse" id="adv-search" aria-expanded="false">
 						<div class="form-inline bar9" role="form">
 							<input id = "adv_name" type="text" placeholder="姓名"/>
 							<input id = "adv_pinyin" type="text" placeholder="姓名拼音"/>
 							<input id = "adv_school" type="text" placeholder="学校"/>
 							<input id = "adv_prov" type="text" placeholder="省份"/>
+							<select id = "year_select">
+								<option value ="">年级</option>
+								<option value ="2012">高三</option>
+								<option value ="2013">高二</option>
+								<option value ="2014">高一</option>
+								<option value ="2015">初三</option>
+								<option value ="2016">初二</option>
+								<option value ="2017">初一</option>
+								<option value ="2018">六年级</option>
+								<option value ="2019">五年级</option>
+							</select>
 							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
 						</div>
 					</div>
-					<p style = "font-size:12px;color:#888">最新更新:10月31日 在全部浏览器上保证数据排序正确</p>
+					<p style = "font-size:12px;color:#888">最新更新：11月11日 新增了通过年龄筛选的功能(仅高级搜索)</p>
 				</div>
 				
 			</div>
@@ -92,20 +104,20 @@
 						<tr>
 							<td colspan="3">
 								<div class="collapse in" id="info" aria-expanded="true" style="padding:20px;">
-									<h3>Q: 这是什么网站？</h3>
+									<h3>Q: 这是什么网站？<a href="https://github.com/WZKSDN/OIer"><img alt="GitHub watchers" src="https://img.shields.io/github/watchers/WZKSDN/OIer.svg?style=social&amp;label=Watch"></a> <a href="https://github.com/WZKSDN/OIer"><img alt="GitHub stars" src="https://img.shields.io/github/stars/WZKSDN/OIer.svg?style=social&amp;label=Stars"></a></h3>
 									<p>这是一个信息学竞赛选手获奖记录并对学校进行排名的数据库。本网站名为"OIerDb"。数据库诞生在2018年2月，有时也会咕咕咕的更新。</p>
 									<h3>Q: 我能够做什么？</h3>
 									<p>
-										你能够在这个网站上查询选手的获奖记录，可以通过姓名、姓名首字母缩写、省份、学校等限定，点击学校名称可以获得学校的数据。
+									你能够在这个网站上查询选手的获奖记录，可以通过姓名、姓名首字母缩写、省份、学校等限定，点击学校名称可以获得学校的数据。
 									</p>
 									<p>
-										同时，这个项目也在<a href = "https://github.com/WZKSDN/OIer">GitHub</a>上开源，有任何问题可以直接issue，也强烈欢迎你帮助改进算法。
+									同时，这个项目也在<a href = "https://github.com/WZKSDN/OIer">GitHub</a>上开源，有任何问题可以直接issue，也强烈欢迎你帮助改进算法。
 									</p>
 									<p>
-										<b>非常欢迎</b>加入用户群 : 813305282(OIerDb用户群).
+									<b>非常欢迎</b>加入用户群 : 813305282(OIerDb用户群).
 									</p>
 									<p>
-										本网站部分元数据(详见GitHub)来源于由fjzzq2002神犇爬取并整理，发布在开源项目中的数据，在此向他表示真挚的感谢！
+									本网站部分元数据(详见GitHub)来源于由fjzzq2002神犇爬取并整理，发布在开源项目中的数据，在此向他表示真挚的感谢！
 									</p>
 								</div>
 							</td>
@@ -126,11 +138,11 @@
 			var awards;
 			var cacheSchoolData;
 			var cv = document.getElementById("resultArea").innerHTML;
-		function deepClone(obj){
-			let _obj = JSON.stringify(obj),
-			objClone = JSON.parse(_obj);
-			return objClone
-		}
+			function deepClone(obj){
+				let _obj = JSON.stringify(obj),
+				objClone = JSON.parse(_obj);
+				return objClone
+			}
 		function getGrade(s){
 			var yea = year[s];
 			if(yea == undefined) yea = "----";
@@ -142,10 +154,10 @@
 			for(var i=contest_years[s];i<=contest_years2[s];i++)cur_year.push(i.toString());
 			for(var i  = 0;i<document.getElementById("con-group").childElementCount;i++){
 				if(document.getElementById("con-group").children[i].className.includes("minebtn-ac"))
-					document.getElementById("con-group").children[i].className = "btn minebtn";
+				document.getElementById("con-group").children[i].className = "btn minebtn";
 			}
 			if( document.getElementById(s).className.includes("minebtn-ac")){
-
+				
 			}else{
 				config["data"]["labels"] = deepClone(cur_year);
 				document.getElementById(s).className = "btn minebtn-ac";
@@ -156,9 +168,9 @@
 					for(var j in cur_year){
 						cy = cur_year[j];
 						if(cy in cacheSchoolData["awards"][s])
-							config["data"]["datasets"][i]["data"].push(cacheSchoolData["awards"][s][cy][i]);
+						config["data"]["datasets"][i]["data"].push(cacheSchoolData["awards"][s][cy][i]);
 						else
-							config["data"]["datasets"][i]["data"].push(0);
+						config["data"]["datasets"][i]["data"].push(0);
 					}
 				}
 				
@@ -174,7 +186,7 @@
 			config["data"]["datasets"] = [];
 			window.myLine.update();
 			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","http://bytew.net/OIer/school.php?id="+s.toString());
+			XMLHttp.open("GET","school.php?id="+s.toString());
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -213,9 +225,9 @@
 			document.getElementById("load_svg").style = "display:";
 			var XMLHttp=new XMLHttpRequest()
 			if(type == 0){
-				XMLHttp.open("GET","http://bytew.net/OIer/search.php?method=normal&q="+document.getElementById("infoinput").value,true);
+				XMLHttp.open("GET","search.php?method=normal&q="+document.getElementById("infoinput").value,true);
 			}else{
-				XMLHttp.open("GET","http://bytew.net/OIer/search.php?method=specific&name="+$("#adv_name").val()+"&pinyin="+$("#adv_pinyin").val()+"&school="+$("#adv_school").val()+"&province="+$("#adv_prov").val(),true);
+				XMLHttp.open("GET","search.php?method=specific&name="+$("#adv_name").val()+"&pinyin="+$("#adv_pinyin").val()+"&school="+$("#adv_school").val()+"&province="+$("#adv_prov").val()+"&year="+$("#year_select").val(),true);
 			}
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
@@ -226,8 +238,6 @@
 						document.getElementById("dataArea").style.display = "";
 						ra.innerHTML = "";
 						var datas = eval("(" + XMLHttp.responseText + ")")["result"];
-						console.log(datas.length);
-						
 						cacheData = datas;
 						for(var i in datas){
 							var sf = [],sfc = "";

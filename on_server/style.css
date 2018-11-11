@@ -56,11 +56,7 @@ input, button {
     outline: none;
 }
 
-input {
-    width: 100%;
-    height: 60px;
-    padding-left: 13px;
-}
+
 
 .sqrbtn {
     height: 60px;
@@ -71,6 +67,8 @@ input {
 .bar8 {background: #000000;}
 .bar9 {background: #000000;}
 .bar8 input {
+    width: 100%;
+    height: 60px;
     font-size:20px;
     color:white;
     border-bottom: 4px solid #000000;
@@ -85,11 +83,15 @@ input {
 }
 .bar9 * {
 	margin: 5px 10px 5px 10px;
-    height: 40px;
-    width: 16%;
-	min-width:100px;
+    height: 30px;
+    width: 12%;
+	min-width:80px;
+	
     border: 1px solid #444444;
     box-shadow: 0 0 10px #444;
+}
+.bar9 input{
+	padding-left:13px;
 }
 .bar9 *:hover {
     border: 1px solid #888888;
