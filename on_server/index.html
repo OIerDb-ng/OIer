@@ -44,7 +44,7 @@
 			</div>
 			<div class="search">
 				<div class = "cof  bar8">
-					<input type="text" id = "infoinput" placeholder="请输入以空格分割的信息..."/>
+					<input type="text" id = "infoinput" onkeydown="var e=window.event || arguments[0];if(e.keyCode==13){search(0)}" placeholder="请输入以空格分割的信息..."/>
 					<button onclick = "search(0)" class = "sqrbtn"></button>
 				</div>
 				<div style = "text-align: center;">
@@ -69,7 +69,7 @@
 							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
 						</div>
 					</div>
-					<p style = "font-size:12px;color:#888">最新更新：11月11日 新增了通过年龄筛选的功能(仅高级搜索)</p>
+					<p style = "font-size:12px;color:#888">最新更新：11月19日 日常修复数据，修小bug，修排序</p>
 				</div>
 				
 			</div>
@@ -84,8 +84,9 @@
 							<th>年级</th>
 						</tr>
 					</thead>
+					<tr id = "load_svg" style = "display:none"><td colspan="4" style = "text-align:center"><img  src = "loading.svg" width = 45px/></td></tr>
 					<tbody id = "resultArea">
-						<tr id = "load_svg" style = "display:none"><td colspan="4" style = "text-align:center"><img  src = "loading.svg" width = 45px/></td></tr>
+						
 						<tr id = "noresult" style = "display:none">
 							<td colspan="3" style = "text-align:center">
 								已完成搜索：<b>无结果</b>
