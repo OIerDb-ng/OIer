@@ -69,7 +69,7 @@
 							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
 						</div>
 					</div>
-					<p style = "font-size:12px;color:#888">最新更新：11月19日 日常修复数据，修小bug，修排序</p>
+					<p style = "font-size:12px;color:#888">最新更新：11月23日 日常修复数据，外观调整</p>
 				</div>
 				
 			</div>
@@ -260,7 +260,7 @@
 							}
 							award_detail+='</table>'
 							ra.innerHTML+='<tr role="button" data-toggle="collapse" data-target="#'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td></tr>'
-							ra.innerHTML+='<tr><td colspan="3"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
+							ra.innerHTML+='<tr><td colspan="3" style = "padding:3px"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
 						}
 						ra.innerHTML+=cv;
 						if(datas.length == 0){
