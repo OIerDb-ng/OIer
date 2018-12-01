@@ -46,10 +46,20 @@
 			$qustr = "SELECT * FROM OIers Where 1 = 1 ";
 			if(isset($_GET["pinyin"]) && $_GET["pinyin"]!="")$qustr = $qustr." and pinyin = '".$_GET["pinyin"]."'";
 			if(isset($_GET["province"]) && $_GET["province"]!="")$qustr = $qustr." and awards like '%".$_GET["province"]."%'";
-			if(isset($_GET["school"]) && $_GET["school"]!="")$qustr = $qustr." and awards like '%".$_GET["school"]."%'";
+			if(isset($_GET["school"]) && $_GET["school"]!=""){
+				$cresult = mysqli_query($conn,"SELECT * FROM OI_school where name like \"%'".$_GET["school"]."'%\"");
+				$ccresult = Array();
+				while($row=mysqli_fetch_array($cresult,MYSQL_ASSOC)){
+					array_push($ccresult,$row);
+				}
+				if(count($ccresult)==1){
+					$qustr = $qustr." and awards like \"%'school_id': ".$ccresult[0]["id"].",%\"";
+				}else{
+					$qustr = $qustr." and awards like '%".$_GET["school"]."%'";
+				}
+			}
 			if(isset($_GET["name"]) && $_GET["name"]!="")$qustr = $qustr." and name = '".$_GET["name"]."'";
 			if(isset($_GET["year"]) && $_GET["year"]!="")$qustr = $qustr." and year = ".$_GET["year"];
-			//echo $qustr."  LIMIT 0 , 60";
 			$result = mysqli_query($conn,$qustr."  LIMIT 0 , 60");
 			while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
 				array_push($curesult,$row);
