@@ -13,6 +13,9 @@ school_id = {}
 school_pos = {}
 general = {'APIO': 4.5790, 'NOI': 4.7086, 'WC': 4.6628, 'CTSC': 4.6140, 'NOID类': 4.6678, 'NOIP提高': 4.6761, 'NOIP普及': 2.2134}
 
+sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,150,-3))]
+sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.2,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06}
+cnts = {}
 def output():
 	result = open("result.txt","w")
 	id = 0
@@ -52,6 +55,8 @@ with open("data.txt") as source:
 		if not cname in contests.keys():
 			year = re.findall(r"[0-9]{4}", cname, re.MULTILINE)[0]
 			contests[cname] = {"identity":cname,"participants":[],"year":int(year),"ctype":cname.replace(year,""),"sure":[]}
+			cnts[cname] = 0
+		cnts[cname]+=1
 		grade = 10000
 		if cur[3] in grades.keys():
 			grade = grades[cur[3]]
@@ -159,6 +164,7 @@ for i in awd_by_name:
 		j.append(piny)
 		j.append(i)
 		final_output_data.append(j)
-final_output_data = sorted(final_output_data,key = lambda i:min([j['rank'] for j in i[:-2]]))
+final_output_data = sorted(final_output_data,key = lambda i:sum([sc[int(j['rank']*400/cnts[j['identity']])]*sc_rt[j['ctype']]*(0.8**(2018-j['year'])) for j in i[:-2]]),reverse = True)
 output()
+
 
