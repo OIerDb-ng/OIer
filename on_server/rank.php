@@ -16,16 +16,18 @@
         else{
             $pg = 1;
         }
-		mysql_real_escape_string($_GET["province"]);
-		mysql_real_escape_string($_GET["city"]);
-        if(isset($_GET["province"]) && $_GET["province"]!="")$qr = $qr." and province = '".$_GET["province"]."'";
-        if(isset($_GET["city"]) && $_GET["city"]!="")$qr = $qr." and city = '".$_GET["city"]."'";
+		$province = mysql_real_escape_string($_GET["province"]);
+		if(!isset($province)) $province = $_GET["province"];
+		$city = mysql_real_escape_string($_GET["city"]);
+		if(!isset($city)) $city = $_GET["city"];
+        if(isset($province) && $province!="")$qr = $qr." and province = '".$province."'";
+        if(isset($city) && $city!="")$qr = $qr." and city = '".$city."'";
         $result = mysqli_query($conn,"SELECT id,name,rating,division,province,city,rank ".$qr." ORDER BY `rating`  DESC LIMIT ".strval($pg*10-10).",10");
         while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($curesult,$row);
         $result = mysqli_query($conn,"SELECT COUNT(*) ".$qr);
         while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($cnum,$row);
-        if(isset($_GET["province"]) && $_GET["province"]!=""){
-            $result = mysqli_query($conn,"SELECT  city FROM OI_school where province = '".$_GET["province"]."' GROUP BY city order by sum(rating) desc");
+        if(isset($province) && $province!=""){
+            $result = mysqli_query($conn,"SELECT  city FROM OI_school where province = '".$province."' GROUP BY city order by sum(rating) desc");
             while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($ccities,$row["city"]);
         }
     }
