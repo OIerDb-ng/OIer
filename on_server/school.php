@@ -16,4 +16,4 @@
     $result["result"] = $curesult;
     echo json_encode($result);
     mysqli_close($conn);
-    ?>
+?>
