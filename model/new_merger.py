@@ -31,7 +31,7 @@ def output():
 		for k in j:
 			del k["name"]
 			#del k["cal_y"]
-			if csex == 0:
+			if k["sex"] != 0:
 				csex = k["sex"]
 			del k["sex"]
 			cyear += k["cal_y"]
@@ -90,10 +90,11 @@ def diff_ana(a,b):
 		for j in b:
 			if i["identity"] == j["identity"]:
 				return 100000
-			if abs(i["sex"]-j["sex"]) == 2:
-				return 100000
 			if i["rule"] and j["rule"]:
 				return 10000*(i["rule"]!=j["rule"])
+			if abs(i["sex"]-j["sex"]) == 2:
+				return 100000
+
 	cdst = 0
 	ccst = 80
 	l = []
