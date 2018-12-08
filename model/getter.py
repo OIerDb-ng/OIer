@@ -18,3 +18,16 @@ def getpos(i):
 		pass
 	return ret
 
+f = open('a.txt')
+opt = open('b.txt','w')
+for i in f.readlines():
+	a = i.split()[0]
+	b = i.split()[1].strip()
+	c = getpos(b)
+	c[0] = c[0][:-1]
+	if a == c[0]:
+		opt.write(c[0]+','+c[1]+','+b+'\n')
+		print(c[0]+','+c[1]+','+b)
+	else:
+		print(b+" NOT FOUND")
+		opt.write(a+',未分区,'+b+'\n')

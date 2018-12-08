@@ -4,18 +4,16 @@
 	if(! $conn ) die('Could not connect: ' . mysqli_error());
 	$conn->set_charset("utf8");
 	header("Content-type: text/html; charset=utf8");
-	mysqli_query('set character_set_server=utf8;');
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		$curesult = Array();
 		if($_GET["method"] != "specific"){
 		    $q = $_GET["q"];
-			$orz = split(" ",$_GET["q"]);
+			$orz = explode(" ",$_GET["q"]);
 			$got = 0;
 			foreach($orz as $cui){
 				$cui = mysqli_real_escape_string($conn,$cui);
 				if(count($curesult)==0){
 					if(preg_match("/^[a-zA-Z\s]+$/",$cui)){
-						if(count($newresult)) continue;
 						$curi = strtolower($cui);
 						$result = mysqli_query($conn,"SELECT * FROM OIers Where pinyin = '$curi'");
 						while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
@@ -26,11 +24,9 @@
 						while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
 							array_push($curesult,$row);
 						}
-						if(!count($newresult)){
-							$result = mysqli_query($conn,"SELECT * FROM OIers Where awards like '%$cui%'");
-							while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
-								array_push($curesult,$row);
-							}
+						$result = mysqli_query($conn,"SELECT * FROM OIers Where awards like '%$cui%'");
+						while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
+							array_push($curesult,$row);
 						}
 					}
 				}else{

@@ -4,7 +4,6 @@
      if(! $conn ) die('Could not connect: ' . mysqli_error());
     $conn->set_charset("utf8");
     header("Content-type: text/html; charset=utf8");
-    mysqli_query($conn,'set character_set_server=utf8;');
     $curesult = Array();
     $ccities  = Array();
     $cnum  = Array();
