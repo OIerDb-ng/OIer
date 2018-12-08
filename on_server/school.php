@@ -4,7 +4,6 @@
     if(! $conn ) die('Could not connect: ' . mysqli_error());
     $conn->set_charset("utf8");
     header("Content-type: text/html; charset=utf8"); 
-    mysqli_query('set character_set_server=utf8;');
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $q = (int)$_GET["id"];
         $curesult = Array();
