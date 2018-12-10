@@ -31,7 +31,7 @@ def output():
 		for k in j:
 			del k["name"]
 			#del k["cal_y"]
-			if k["sex"] != 0:
+			if csex == 0:
 				csex = k["sex"]
 			del k["sex"]
 			cyear += k["cal_y"]

@@ -6,7 +6,7 @@ school_info = []
 tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"金牌":0,"银牌":1,"铜牌":2}
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,0,-5))]
-sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06}
+sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04}
 rk = {}
 recy = {}
 recd = {}
@@ -69,6 +69,7 @@ with open("data.txt") as source:
 		if 'D类' in cname:
 			cname = cname.split('D类')[0]
 		school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.8**(2018-year))
+#print(dp)
 f = open("school_data.txt","w")
 school_info = sorted(school_info,key = lambda t: t["rating"],reverse = True)
 rk = ["A+","A","A-","B+","B","B-","C","D","E","F","G","H"]
