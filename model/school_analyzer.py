@@ -70,7 +70,7 @@ with open("data.txt") as source:
 			cname = cname.split('D类')[0]
 		school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.8**(2018-year))
 #print(dp)
-f = open("school_data.txt","w")
+f = open("school_data.csv","w")
 school_info = sorted(school_info,key = lambda t: t["rating"],reverse = True)
 rk = ["A+","A","A-","B+","B","B-","C","D","E","F","G","H"]
 rkreq = [4000,1600,800,300,120,80,40,20,10,3,1.2,0]
