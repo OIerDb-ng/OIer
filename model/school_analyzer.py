@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-import sys,re,json,time
+import sys,re,json,time,datetime
 st = time.time()
 school_id = {}
 school_info = []
@@ -68,7 +68,7 @@ with open("data.txt") as source:
 		school_info[schid]["awards"] = caw
 		if 'D类' in cname:
 			cname = cname.split('D类')[0]
-		school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.8**(2018-year))
+		school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.8**(datetime.datetime.now().year-year))
 #print(dp)
 f = open("school_data.csv","w")
 school_info = sorted(school_info,key = lambda t: t["rating"],reverse = True)
@@ -82,4 +82,4 @@ for i in school_info:
 			cr = rk[kk]
 			break
 	f.write('"'+str(i["id"])+'","'+dmp(sorted(i["name"],key = lambda x:recy[x]*10000+recd[x],reverse = True))+'","'+dmp(i["awards"])+'","'+str(int(i["rating"]*10))+'","'+cr+'","'+i["prov"]+'","'+i["city"]+'","'+str(count)+'"\n')
-	count+=1;
+	count+=1
