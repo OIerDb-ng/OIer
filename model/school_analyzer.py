@@ -73,7 +73,7 @@ with open("data.txt") as source:
 f = open("school_data.csv","w")
 school_info = sorted(school_info,key = lambda t: t["rating"],reverse = True)
 rk = ["A+","A","A-","B+","B","B-","C","D","E","F","G","H"]
-rkreq = [4500,1800,900,300,120,90,45,20,10,3,1.2,0]
+rkreq = [4000,1500,700,250,100,70,35,15,8,2.4,0.96,0]
 count = 1
 for i in school_info:
 	cr = ""

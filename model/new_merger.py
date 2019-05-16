@@ -5,7 +5,7 @@ contests = {}
 awd_by_name = {}
 final_output_data = []
 grades = {"高二":5,"初三":3,"高三":6,"高一":4,"初二":2,"中六":6,
-	"中五":5,"初一":1,"初四":4,"中四":4,"高二年级":5,"中一":1,"中二":2,"中三":3,"六年级":0,"五年级":-1,"四年级":-2,"三年级":-3,"二年级":-4,"一年级":-5,"小六":0,"六":0,"小学":0,"初中":2.213472384803661,"预初":0}
+	"中五":5,"初一":1,"初四":4,"中四":4,"高二年级":5,"中一":1,"中二":2,"中三":3,"七年级":1,"六年级":0,"五年级":-1,"四年级":-2,"三年级":-3,"二年级":-4,"一年级":-5,"小六":0,"六":0,"小学":0,"初中":2.213472384803661,"预初":0}
 sex = {"男":1,"女":-1,"":0}
 contest_date = {"NOIP提高":11/12.0,"NOIP普及":11/12.0,"APIO":5.3/12.0,"CTSC":5.6/12.0,"NOI":7/12.0,"NOID类":7/12.0,"WC":1/12.0}
 st = time.time()
@@ -17,7 +17,7 @@ sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 
 sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.2,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06}
 cnts = {}
 def output():
-	result = open("result.txt","w")
+	result = open("result.csv","w")
 	id = 0
 	for j in final_output_data:
 		i = j[-1]
@@ -26,7 +26,6 @@ def output():
 		del j[-1]
 		csex = 0
 		cyear = 0
-		cycnt = 0
 		j = sorted(j,key = lambda i: i['year']+contest_date[i['ctype']],reverse = True)
 		for k in j:
 			del k["name"]
@@ -34,10 +33,9 @@ def output():
 			if csex == 0:
 				csex = k["sex"]
 			del k["sex"]
-			cyear += k["cal_y"]
-			cycnt+=1
+			if cyear == 0:
+				cyear = k["cal_y"]
 			del k["cal_y"],k["rule"],k["year"]
-		cyear = int(cyear/cycnt+0.5)
 		result.write(str(id)+","+i+",,,"+piny+',,"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+",,"+str(cyear)+"\n")
 		id+=1
 	result.close()
