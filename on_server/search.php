@@ -78,15 +78,24 @@
 			if($name!="")$qustr = $qustr." and name = '".$name."'";
 			$year=intval($_GET["year"]);
 			if(isset($_GET["year"]) && $_GET["year"]!="")$qustr = $qustr." and year = $year";
-			$result = mysqli_query($conn,$qustr."  LIMIT 0 , 100");
+			
+			$result = mysqli_query($conn,$qustr);
 			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 				array_push($curesult,$row);
 			}
 		}
 	}
+
 	$count = 0;
 	$result = Array();
-	if(count($curesult)>100)$curesult = array_slice($curesult,0,100);
+
+	if (empty($_GET["pages"])) {
+		$start = 0;
+	} else {
+		$start = ($_GET["pages"] - 1) * 20;
+	}
+	
+	$curesult = array_slice($curesult,$start,20);
 	$result["result"] = $curesult;
 	echo json_encode($result);
 	mysqli_close($conn);
