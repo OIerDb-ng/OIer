@@ -28,12 +28,12 @@
         if($province!="")$qr = $qr." and province = '".$province."'";
         if($city!="")$qr = $qr." and city = '".$city."'";
         $result = mysqli_query($conn,"SELECT id,name,rating,division,province,city,rank ".$qr." ORDER BY `rating`  DESC LIMIT ".strval($pg*10-10).",10");
-        while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($curesult,$row);
+        while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($curesult,$row);
         $result = mysqli_query($conn,"SELECT COUNT(*) ".$qr);
-        while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($cnum,$row);
+        while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($cnum,$row);
         if($province!=""){
             $result = mysqli_query($conn,"SELECT  city FROM OI_school where province = '".$province."' GROUP BY city order by sum(rating) desc");
-            while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($ccities,$row["city"]);
+            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($ccities,$row["city"]);
         }
     }
     $count = 0;
