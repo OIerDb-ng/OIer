@@ -76,7 +76,7 @@
 			
 			<br/><br/>
 			<div id = "dataArea" style = "display:">
-				<table class="table">
+				<table class="table" id="resultTable">
 					<thead>
 						<tr>
 							<th>姓名</th>
@@ -84,9 +84,8 @@
 							<th>年级</th>
 						</tr>
 					</thead>
-					<tr id = "load_svg" style = "display:none"><td colspan="4" style = "text-align:center"><img  src = "loading.svg" width = 45px/></td></tr>
 					<tbody id = "resultArea">
-						
+						<tr id = "load_svg" style = "display:none"><td colspan="4" style = "text-align:center"><img  src = "loading.svg" width = 45px/></td></tr>
 						<tr id = "noresult" style = "display:none">
 							<td colspan="3" style = "text-align:center">
 								已完成搜索：<b>无结果</b>
@@ -150,11 +149,19 @@
 			var awards;
 			var cacheSchoolData;
 			var cv = document.getElementById("resultArea").innerHTML;
+			var data_end_height;
+			var last_query;
+			var datas_cnt;
+			var pages;
+			var data_end;
+
 			function deepClone(obj){
 				let _obj = JSON.stringify(obj),
 				objClone = JSON.parse(_obj);
 				return objClone
 			}
+			
+			
 		function getGrade(s){
 			var yea = undefined;
 
@@ -242,16 +249,33 @@
 				}
 			}
 		}
-		
+
+		　　function getElementTop(element){
+		　　　　var actualTop = element.offsetTop;
+		　　　　var current = element.offsetParent;
+
+		　　　　while (current !== null){
+		　　　　　　actualTop += current.offsetTop;
+		　　　　　　current = current.offsetParent;
+		　　　　}
+
+		　　　　return actualTop;
+		　　}
+
 		function search(type){
+			datas_cnt = 0;
+			pages = 1;
+			data_end = false;
+
 			document.getElementById("noresult").style = "display:none";
 			document.getElementById("load_svg").style = "display:";
 			var XMLHttp=new XMLHttpRequest()
 			if(type == 0){
-				XMLHttp.open("GET","search.php?method=normal&q="+document.getElementById("infoinput").value,true);
+				last_query = "search.php?method=normal&q="+document.getElementById("infoinput").value;
 			}else{
-				XMLHttp.open("GET","search.php?method=specific&name="+$("#adv_name").val()+"&pinyin="+$("#adv_pinyin").val()+"&school="+$("#adv_school").val()+"&province="+$("#adv_prov").val()+"&year="+$("#year_select").val(),true);
+				last_query = "search.php?method=specific&name="+$("#adv_name").val()+"&pinyin="+$("#adv_pinyin").val()+"&school="+$("#adv_school").val()+"&province="+$("#adv_prov").val()+"&year="+$("#year_select").val();
 			}
+			XMLHttp.open("GET",last_query,true);	
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				document.getElementById("load_svg").style = "display:none";
@@ -280,21 +304,108 @@
 								var current_Award = awards[each_award];
 								award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
 							}
+							++datas_cnt;
+							
 							award_detail+='</table>'
-							ra.innerHTML+='<tr role="button" data-toggle="collapse" data-target="#'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td></tr>'
-							ra.innerHTML+='<tr><td colspan="3" style = "padding:3px"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
+							ra.innerHTML+='<tr role="button" id="row-'+datas_cnt+'" data-toggle="collapse" data-target="#'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td></tr>'
+							ra.innerHTML+='<tr id="hidden-'+datas_cnt+'"><td colspan="3" style = "padding:3px"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
 						}
 						ra.innerHTML+=cv;
 						if(datas.length == 0){
 							document.getElementById("noresult").style = "display:";
 						}
 					}
+					
+					var div = document.getElementById('row-'+datas_cnt);
+					data_end_height = getElementTop(div);
 				}
 			}
 		}
-		
-		
-			</script>
-	</body>
+
+	function debounce(func, wait, immediate) {
+		var timeout;
+		return function() {
+			clearTimeout(timeout);
+			timeout = setTimeout(func, wait);
+		};
+	};
 	
+	var load_flag = false;
+
+	function sleep(ms) {
+  		return new Promise(resolve => 
+      		setTimeout(resolve, ms)
+  		)
+	}
+
+	function realFunc(){
+		totalheight = parseFloat($(window).scrollTop());
+
+	    if(data_end == false && load_flag == false && totalheight > data_end_height - 100) {
+			load_flag = true;
+
+			document.getElementById("noresult").style = "display:none";
+			document.getElementById("load_svg").style = "display:";
+
+			sleep(500).then(()=>{
+				var XMLHttp=new XMLHttpRequest()
+				var newquery = last_query+"&pages="+(pages+1);
+
+				XMLHttp.open("GET",newquery,true);	
+				XMLHttp.send();
+				XMLHttp.onreadystatechange=function(){
+					document.getElementById("load_svg").style = "display:none";
+					var pos = document.getElementById('hidden-'+datas_cnt);
+
+					if (XMLHttp.readyState==4 && XMLHttp.status==200){
+						if(XMLHttp.responseText!=""){
+							pages = pages + 1;
+							var appendHTML= "";
+							var datas = eval("(" + XMLHttp.responseText + ")")["result"];
+							cacheData = datas;
+							for(var i in datas){
+								var sf = [],sfc = "";
+								awards = eval("(" + datas[i]["awards"] + ")");
+								for(var j in awards){
+									var cur_p = awards[j]["province"];
+									if(sf.indexOf(cur_p)>=0) continue;
+									sf.push(cur_p);
+									if(sf.length>1)sfc+="/";
+									sfc+=cur_p;
+								}
+								var yea = getGrade(2019-parseInt(datas[i]["year"]));
+								var sex  = ["女","--","男"];
+								var award_badges,award_detail;
+								award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+								for(var each_award in awards){
+									var current_Award = awards[each_award];
+									award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
+								}
+								++datas_cnt;
+								
+								award_detail+='</table>'
+								appendHTML+='<tr role="button" id="row-'+datas_cnt+'" data-toggle="collapse" data-target="#'+datas[i]["id"]+'" aria-expanded="false" aria-controls="'+datas[i]["id"]+'"><th scope="row">'+datas[i]["name"]+'</th><td>'+sfc+'</td><td>'+yea+'</td></tr>'
+								appendHTML+='<tr id="hidden-'+datas_cnt+'"><td colspan="3" style = "padding:3px"><div class="collapse" id = "'+datas[i]["id"]+'">'+award_detail+'</div></td></tr>'
+							}
+
+							if(datas.length == 0){
+								data_end = true;
+							}
+
+							pos.insertAdjacentHTML('afterend', appendHTML);
+
+							var div = document.getElementById('row-'+datas_cnt);
+							data_end_height = getElementTop(div);
+						}
+					}
+
+					load_flag = false;
+				}	
+			})
+	    }
+	}
+
+	window.addEventListener('scroll',debounce(realFunc,30));
+		</script>
+	</body>
 </html>
