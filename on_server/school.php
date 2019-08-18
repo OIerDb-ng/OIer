@@ -9,7 +9,7 @@
         $q = (int)$_GET["id"];
         $curesult = Array();
         $result = mysqli_query($conn,"SELECT * FROM OI_school Where id = '$q'");
-        while($row=mysqli_fetch_array($result,MYSQL_ASSOC))array_push($curesult,$row);
+        while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($curesult,$row);
     }
     $count = 0;
     $result = Array();
