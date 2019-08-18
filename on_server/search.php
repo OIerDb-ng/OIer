@@ -17,16 +17,16 @@
 					if(preg_match("/^[a-zA-Z\s]+$/",$cui)){
 						$curi = strtolower($cui);
 						$result = mysqli_query($conn,"SELECT * FROM OIers Where pinyin = '$curi'");
-						while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
+						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 							array_push($curesult,$row);
 						}
 					}else{
 						$result = mysqli_query($conn,"SELECT * FROM OIers Where name = '$cui'");
-						while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
+						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 							array_push($curesult,$row);
 						}
 						$result = mysqli_query($conn,"SELECT * FROM OIers Where awards like '%$cui%'");
-						while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
+						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 							array_push($curesult,$row);
 						}
 					}
@@ -61,7 +61,7 @@
 			if($school!=""){
 				$cresult = mysqli_query($conn,"SELECT * FROM OI_school where name like \"%'".$school."'%\"");
 				$ccresult = Array();
-				while($row=mysqli_fetch_array($cresult,MYSQL_ASSOC)){
+				while($row=mysqli_fetch_array($cresult,MYSQLI_ASSOC)){
 					array_push($ccresult,$row);
 				}
 				if(count($ccresult)==1){
@@ -78,15 +78,24 @@
 			if($name!="")$qustr = $qustr." and name = '".$name."'";
 			$year=intval($_GET["year"]);
 			if(isset($_GET["year"]) && $_GET["year"]!="")$qustr = $qustr." and year = $year";
-			$result = mysqli_query($conn,$qustr."  LIMIT 0 , 100");
-			while($row=mysqli_fetch_array($result,MYSQL_ASSOC)){
+			
+			$result = mysqli_query($conn,$qustr);
+			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 				array_push($curesult,$row);
 			}
 		}
 	}
+
 	$count = 0;
 	$result = Array();
-	if(count($curesult)>100)$curesult = array_slice($curesult,0,100);
+
+	if (empty($_GET["pages"])) {
+		$start = 0;
+	} else {
+		$start = ($_GET["pages"] - 1) * 20;
+	}
+	
+	$curesult = array_slice($curesult,$start,20);
 	$result["result"] = $curesult;
 	echo json_encode($result);
 	mysqli_close($conn);
