@@ -57,14 +57,14 @@
 							<input id = "adv_prov" type="text" placeholder="省份"/>
 							<select id = "year_select">
 								<option value ="">年级</option>
-								<option value ="2012">高三</option>
-								<option value ="2013">高二</option>
-								<option value ="2014">高一</option>
-								<option value ="2015">初三</option>
-								<option value ="2016">初二</option>
-								<option value ="2017">初一</option>
-								<option value ="2018">六年级</option>
-								<option value ="2019">五年级</option>
+								<option value ="2013">高三</option>
+								<option value ="2014">高二</option>
+								<option value ="2015">高一</option>
+								<option value ="2016">初三</option>
+								<option value ="2017">初二</option>
+								<option value ="2018">初一</option>
+								<option value ="2019">六年级</option>
+								<option value ="2020">五年级</option>
 							</select>
 							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
 						</div>
@@ -145,6 +145,7 @@
 			var contest_years2 = {"NOIP普及":2018,"NOIP提高":2018,"APIO":2019,"CTSC":2019,"NOI":2019,"NOID类":2019,"WC":2019};
 			var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三"];
 			var year2 = ["四年级","三年级","二年级","一年级"];
+			var chnNumChar = ["零","一","二","三","四","五","六","七","八","九","十"];
 			var cacheData;
 			var awards;
 			var cacheSchoolData;
@@ -296,10 +297,11 @@
 								if(sf.length>1)sfc+="/";
 								sfc+=cur_p;
 							}
-							var yea = getGrade(2019-parseInt(datas[i]["year"]));
-							var sex  = ["女","--","男"];
+							var yea = getGrade(2020-parseInt(datas[i]["year"]));
+							var sex = ["女","--","男"];
+							var level = datas[i]["info"];
 							var award_badges,award_detail;
-							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+',评级'+chnNumChar[level]+'级</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
 							for(var each_award in awards){
 								var current_Award = awards[each_award];
 								award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
@@ -373,10 +375,14 @@
 									if(sf.length>1)sfc+="/";
 									sfc+=cur_p;
 								}
+								
 								var yea = getGrade(2019-parseInt(datas[i]["year"]));
 								var sex  = ["女","--","男"];
+								var level = datas[i]["info"];
 								var award_badges,award_detail;
-								award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+
+								award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+',评级'+chnNumChar[level]+'级</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+								
 								for(var each_award in awards){
 									var current_Award = awards[each_award];
 									award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
