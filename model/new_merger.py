@@ -15,12 +15,19 @@ general = {'APIO': 4.5790, 'NOI': 4.7086, 'WC': 4.6628, 'CTSC': 4.6140, 'NOID类
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,150,-3))]
 sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.2,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06}
+
+award_score = {"APIO":500, "CTSC":800, "WC":600}
+level_score = {8:250, 9:500, 10:1000}
+noip_award_cnt = {}
+
 cnts = {}
 def output():
-	result = open("result.csv","w")
+	result = open("result.csv","w",encoding='utf-8')
 	id = 0
 	for j in final_output_data:
 		i = j[-1]
+		del j[-1]
+		level = j[-1]
 		del j[-1]
 		piny = j[-1]
 		del j[-1]
@@ -36,17 +43,17 @@ def output():
 			if cyear == 0:
 				cyear = k["cal_y"]
 			del k["cal_y"],k["rule"],k["year"]
-		result.write(str(id)+","+i+",,,"+piny+',,"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+",,"+str(cyear)+"\n")
+		result.write(str(id)+","+i+",,,"+piny+","+str(level)+',"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+",,"+str(cyear)+"\n")
 		id+=1
 	result.close()
-with open("school_oped.txt") as src:
+with open("school_oped.txt",encoding='utf-8') as src:
 	cnt = -1
 	for i in src:
 		cnt+=1
 		for j in i.split(',')[2:]:
 			school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
 			school_id[j.strip()] = cnt
-with open("data.txt") as source:
+with open("data.txt",encoding='utf-8') as source:
 	for i in source:
 		cur = i.strip().split(',')
 		cname = cur[0]
@@ -70,6 +77,14 @@ with open("data.txt") as source:
 		cur["cal_y"] = cur["year"]-grade-("NOIP" not in cur["ctype"])
 		if grade == 10000:
 			cur["cal_y"] = cur["year"]-general[cur["ctype"]]-("NOIP" not in cur["ctype"])
+
+		if contests[cname]["ctype"] == "NOIP提高" or contests[cname]["ctype"] == "NOIP普及":
+			if cur["award_type"] == "一等奖":
+				try:
+					noip_award_cnt[cname] = max(0, noip_award_cnt[cname]) + 1
+				except:
+					noip_award_cnt[cname] = 1
+
 		if contests[cname]["participants"]!=[]:
 			lp = contests[cname]["participants"][-1]
 			if lp["score"]!=cur["score"] or cur["score"] == "":
@@ -159,11 +174,63 @@ for i in awd_by_name:
 		piny = py_sp[i[0]]+"".join( [ io[0] for io in lapi(i[1:]) ])
 	else:
 		piny = "".join( [ io[0] for io in lapi(i) ])
+	
+	level = 3
+	score = 0
+	score_arr = {}
+
+	for j in awd_by_name[i]:
+		for k in j:
+			if k["ctype"] == "NOI":
+				if k["award_type"] == "金牌":
+					level = max(level, 10)
+				if k["award_type"] == "银牌":
+					level = max(level, 9)
+				if k["award_type"] == "铜牌":
+					level = max(level, 8)
+
+			if k["ctype"] == "NOIP提高":
+				if k["rank"] <= noip_award_cnt[k["identity"]]:
+					level = max(level, 6)
+				if k["rank"] <= noip_award_cnt[k["identity"]] * 0.5:
+					level = max(level, 7)				
+
+			if k["ctype"] == "NOIP普及" and k["award_type"] == "一等奖":
+				level = max(level, 5)
+
+			if k["ctype"] == "NOIP普及" and k["award_type"] == "二等奖":
+				level = max(level, 4)
+
+			if k["ctype"] == "NOIP提高" and k["award_type"] == "二等奖":
+				level = max(level, 4)
+
+			try:
+				cname = k["identity"]
+				ctype = k["ctype"]
+				total = len(contests[cname]["participants"])
+				score_delta = (award_score[ctype] - 50) / (total - 1)
+
+				if ctype not in score_arr:
+					score_arr[ctype] = max(0, award_score[ctype] - score_delta * (k["rank"] - 1))
+				else:
+					score_arr[ctype] = max(score_arr[ctype], max(0, award_score[ctype] - score_delta * (k["rank"] - 1)))
+			except:
+				score = score
+	
+	for j in score_arr:
+		score = score + score_arr[j]
+	
+	for j in level_score:
+		if score >= level_score[j]:
+			level = max(level, j)
+
 	for j in awd_by_name[i]:
 		j.append(piny)
+		j.append(level)
 		j.append(i)
+		
 		final_output_data.append(j)
-final_output_data = sorted(final_output_data,key = lambda i:sum([sc[int(j['rank']*400/cnts[j['identity']])]*sc_rt[j['ctype']]*(0.8**(2018-j['year'])) for j in i[:-2]]),reverse = True)
+final_output_data = sorted(final_output_data,key = lambda i:sum([sc[int(j['rank']*400/cnts[j['identity']])]*sc_rt[j['ctype']]*(0.8**(2018-j['year'])) for j in i[:-3]]),reverse = True)
 output()
 
 
