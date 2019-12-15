@@ -130,7 +130,7 @@
 			config["data"]["datasets"] = [];
 			window.myLine.update();
 			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","https://bytew.net/OIer/school.php?id="+s.toString());
+			XMLHttp.open("GET","//bytew.net/OIer/school.php?id="+s.toString());
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -168,8 +168,8 @@
 				document.getElementById('load_svg').style = 'display:';
 				document.getElementById('lr-con-group').innerHTML = '';
 				var XMLHttp=new XMLHttpRequest()
-				if(!chc)XMLHttp.open("GET","https://bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
-				else XMLHttp.open("GET","https://bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
+				if(!chc)XMLHttp.open("GET","//bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
+				else XMLHttp.open("GET","//bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
 				XMLHttp.send();
 				XMLHttp.onreadystatechange=function(){
 					if (XMLHttp.readyState==4 && XMLHttp.status==200){
