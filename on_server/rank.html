@@ -48,7 +48,7 @@
 			<br/>
 			<div  style = "text-align:center;">
 				<a href = "index.html"><img src="logo.jpg" style = "width:40%;"/></a>
-				<h3>全国信息学竞赛学校排名2019</h3>
+				<h3>全国信息学竞赛学校排名2020</h3>
 				<hr/>
 				<p>
 				省份:
@@ -139,7 +139,7 @@
 			config["data"]["datasets"] = [];
 			window.myLine.update();
 			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","http://bytew.net/OIer/school.php?id="+s.toString());
+			XMLHttp.open("GET","school.php?id="+s.toString());
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -177,8 +177,8 @@
 				document.getElementById('load_svg').style = 'display:';
 				document.getElementById('lr-con-group').innerHTML = '';
 				var XMLHttp=new XMLHttpRequest()
-				if(!chc)XMLHttp.open("GET","http://bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
-				else XMLHttp.open("GET","http://bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
+				if(!chc)XMLHttp.open("GET","rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
+				else XMLHttp.open("GET","rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
 				XMLHttp.send();
 				XMLHttp.onreadystatechange=function(){
 					if (XMLHttp.readyState==4 && XMLHttp.status==200){
