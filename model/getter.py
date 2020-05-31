@@ -6,6 +6,7 @@ def getpos(i):
 	ret = ["",""]
 	try:
 		cur = ""
+		print(e.text.split('","address_norm":"')[1].split('","admin_info"')[0])
 		try:
 			cur = e.text.split('","address_norm":"')[1].split('"')[0]
 		except:
@@ -24,6 +25,7 @@ for i in f.readlines():
 	a = i.split()[0]
 	b = i.split()[1].strip()
 	c = getpos(b)
+	print(c)
 	c[0] = c[0][:-1]
 	if a == c[0]:
 		opt.write(c[0]+','+c[1]+','+b+'\n')
