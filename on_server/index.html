@@ -24,9 +24,9 @@
 		<script src="chart.js"></script><script src="mychart.js"></script>
 		<script>
 			function onload(){
-				var pos = window.location.href.find("?search=");
+				var pos = window.location.href.indexOf("?search=");
 				if (pos != -1) {
-					document.getElementById("infoinput").value = window.location.href.substr(pos + 7);
+					document.getElementById("infoinput").value = decodeURI(window.location.href.substr(pos + 8));
 					search(0);
 				}
 			}
