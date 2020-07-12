@@ -5,3 +5,4 @@ model/nnn.txt
 model/nnn.py
 model/result.txt
 on_server/.DS_Store
+.vscode/settings.json
