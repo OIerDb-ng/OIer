@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
 import re,json,time
-from xpinyin import Pinyin
-p = Pinyin()
+from pypinyin import pinyin
+p = pinyin
 contests = {}
 awd_by_name = {}
 final_output_data = []
 grades = {"高二":5,"初三":3,"高三":6,"高一":4,"初二":2,"中六":6,
-    "中五":5,"初一":1,"初四":3,"中四":4,"高二年级":5,"中一":1,"中二":2,"中三":3,"七年级":1,"九年级":3,"8":2,"六年级":0,"五年级":-1,"四年级":-2,"三年级":-3,"二年级":-4,"一年级":-5,"小六":0,"六":0,"小学":0,"小学/无":0,"初中":2.213472384803661,"预初":0}
+    "中五":5,"初一":1,"初四":3,"中四":4,"高二年级":5,"中一":1,"中二":2,"中三":3,"七年级":1,"九年级":3,"8":2,"六年级":0,"五年级":-1,"四年级":-2,"三年级":-3,"二年级":-4,"一年级":-5,"小六":0,"六":0,"八":2,"八年级":2,"新高一":3,"小学":0,"小学/无":0,"初中":2.213472384803661,"预初":0}
 sex = {"男":1,"女":-1,"":0}
 contest_date = {"CSP提高":11/12.0,"CSP入门":11/12.0,"NOIP提高":11/12.0,"NOIP普及":11/12.0,"APIO":5.3/12.0,"CTSC":5.6/12.0,"NOI":7/12.0,"NOID类":7/12.0,"WC":1/12.0}
 st = time.time()
@@ -59,6 +59,16 @@ with open("school_oped.txt",encoding='utf-8') as src:
         for j in i.split(',')[2:]:
             school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
             school_id[j.strip()] = cnt
+def getgrade(x,year):
+    if x in grades.keys():
+        return grades[x]
+    elif x!='':
+        try:
+            return year-int(re.findall(r"[0-9]{4}", x, re.MULTILINE)[0])+1+3*("高" in x)
+        except:
+            print(x)
+            return 10000
+    return 10000
 with open("data.txt",encoding='utf-8') as source:
     for i in source:
         cur = i.strip().split(',')
@@ -74,13 +84,7 @@ with open("data.txt",encoding='utf-8') as source:
             cur[3]
         except:
             print(cur)
-        if cur[3] in grades.keys():
-            grade = grades[cur[3]]
-        elif cur[3]!='':
-            try:
-                grade = contests[cname]["year"]-int(re.findall(r"[0-9]{4}", cur[3], re.MULTILINE)[0])+1+3*("高" in cur[3])
-            except:
-                print(cur)
+        grade = getgrade(cur[3],contests[cname]["year"])
         
         try:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
@@ -116,7 +120,7 @@ def oi_year(i):
 def diff_ana(a,b):
     for i in a:
         for j in b:
-            if i["year"]-("NOIP" not in i["ctype"]  and "CSP" not in i["ctype"]) == j["year"]-("NOIP" not in j["ctype"]  and "CSP" not in j["ctype"]) and i["grade"]!=j["grade"] and i["grade"]!="" and j["grade"]!="":
+            if i["year"]-("NOIP" not in i["ctype"]  and "CSP" not in i["ctype"]) == j["year"]-("NOIP" not in j["ctype"]  and "CSP" not in j["ctype"]) and i["grade"]!="" and j["grade"]!="" and getgrade(i["grade"],i["year"])!=getgrade(j["grade"],j["year"]):
                 return 100000
             if i["identity"] == j["identity"]:
                 return 100000
@@ -124,6 +128,7 @@ def diff_ana(a,b):
                 return 10000*(i["rule"]!=j["rule"])
             if abs(i["sex"]-j["sex"]) == 2:
                 return 100000
+    
     cdst = 0
     ccst = 80
     l = []
@@ -187,17 +192,19 @@ for each_n in awd_by_name:
         else:
             break
 py_sp = {'逢': 'p', '区': 'o', '蕃': 'p', '折': 's', '句': 'g', '仇': 'q', '种': 'c', '查': 'z', '繁': 'p', '祭': 'z', '曾': 'z', '佴': 'n', '单': 's', '郇': 'x', '翟': 'z', '覃': 'q', '郗': 'c', '乐': 'y', '召': 's', '阚': 'k', '乜': 'n', '秘': 'b', '解': 'x'}
+known = {"张湫阳":"zqy"}
 def getinitials(x):
-    #x= unicode(x,'utf-8')
-    return p.get_initials(x, u'').lower()
+    if x in known:
+        return known[x]
+    b = pinyin(x)
+    if x[0] in py_sp:
+        b[0][0] = py_sp[x[0]]
+    return ("".join([i[0][0] for i in b])).lower()
 for i in awd_by_name:
     piny = ""
     if i== "":
         continue
-    if i[0] in py_sp:
-        piny = py_sp[i[0]]+getinitials(i[1:])
-    else:
-        piny = getinitials(i)
+    piny = getinitials(i)
     
     level = 3
     score = 0
