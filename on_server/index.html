@@ -67,14 +67,14 @@
 							<input id = "adv_prov" type="text" placeholder="省份"/>
 							<select id = "year_select">
 								<option value ="">年级</option>
-								<option value ="2013">高三</option>
-								<option value ="2014">高二</option>
-								<option value ="2015">高一</option>
-								<option value ="2016">初三</option>
-								<option value ="2017">初二</option>
-								<option value ="2018">初一</option>
-								<option value ="2019">六年级</option>
-								<option value ="2020">五年级</option>
+								<option value ="2014">高三</option>
+								<option value ="2015">高二</option>
+								<option value ="2016">高一</option>
+								<option value ="2017">初三</option>
+								<option value ="2018">初二</option>
+								<option value ="2019">初一</option>
+								<option value ="2020">六年级</option>
+								<option value ="2021">五年级</option>
 							</select>
 							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
 						</div>
@@ -302,7 +302,7 @@
 								if(sf.length>1)sfc+="/";
 								sfc+=cur_p;
 							}
-							var yea = getGrade(2020-parseInt(datas[i]["year"]));
+							var yea = getGrade(2021-parseInt(datas[i]["year"]));
 							var sex  = ["女","--","男"];
 							var award_badges,award_detail;
 							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
@@ -413,4 +413,3 @@
 		</script>
 	</body>
 </html>
-

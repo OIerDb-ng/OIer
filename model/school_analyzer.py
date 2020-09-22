@@ -3,7 +3,7 @@ import sys,re,json,time,datetime
 st = time.time()
 school_id = {}
 school_info = []
-tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"金牌":0,"银牌":1,"铜牌":2}
+tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"金牌":0,"国际金牌":0,"银牌":1,"铜牌":2}
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,0,-5))]
 sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04}
