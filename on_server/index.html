@@ -79,7 +79,7 @@
 							<button style = "border: 1px solid #ffffff;" onclick = "search(1)">搜索</button>
 						</div>
 					</div>
-					<p style = "font-size:12px;color:#888">最新更新：9月8日 更新数据</p>
+					<p style = "font-size:12px;color:#888">最新更新：12月1日 更新数据</p>
 				</div>
 				
 			</div>
@@ -135,6 +135,9 @@
 									<p>
 									另，这里有我编写的一个<a href = "https://bytew.net/pdftool/">使beamer更易于打印的工具</a>(自动去除\pause页面)
 									</p>
+                                    <p>
+                                    现在在学校统计中，CSP被显示为NOIP，这个问题将会在NOIP2020成绩发布前被修复。
+                                    </p>
 								</div>
 							</td>
 						</tr>
@@ -148,7 +151,7 @@
 			var contest_names = ["NOIP普及","NOIP提高","APIO","CTSC","NOI","NOID类","WC"];
 			var award_desc = {"NOIP普及":["一等奖","二等奖","三等奖"],"NOIP提高":["一等奖","二等奖","三等奖"],"APIO":["金牌","银牌","铜牌"],"CTSC":["金牌","银牌","铜牌"],"NOI":["金牌","银牌","铜牌"],"NOID类":["金牌","银牌","铜牌"],"WC":["金牌","银牌","铜牌"]};
 			var contest_years = {"NOIP普及":2013,"NOIP提高":2010,"APIO":2010,"CTSC":2010,"NOI":2009,"NOID类":2010,"WC":2015};
-			var contest_years2 = {"NOIP普及":2019,"NOIP提高":2019,"APIO":2020,"CTSC":2019,"NOI":2020,"NOID类":2020,"WC":2020};
+			var contest_years2 = {"NOIP普及":2020,"NOIP提高":2020,"APIO":2020,"CTSC":2019,"NOI":2020,"NOID类":2020,"WC":2020};
 			var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三"];
 			var year2 = ["四年级","三年级","二年级","一年级"];
 			var cacheData;
@@ -303,9 +306,8 @@
 								sfc+=cur_p;
 							}
 							var yea = getGrade(2021-parseInt(datas[i]["year"]));
-							var sex  = ["女","--","男"];
 							var award_badges,award_detail;
-							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
 							for(var each_award in awards){
 								var current_Award = awards[each_award];
 								award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
@@ -413,3 +415,4 @@
 		</script>
 	</body>
 </html>
+

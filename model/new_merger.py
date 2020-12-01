@@ -85,7 +85,7 @@ with open("data.txt",encoding='utf-8') as source:
         except:
             print(cur)
         grade = getgrade(cur[3],contests[cname]["year"])
-        
+        #cn =  {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         try:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         except:
@@ -263,5 +263,3 @@ for i in awd_by_name:
         final_output_data.append(j)
 final_output_data = sorted(final_output_data,key = lambda i:sum([sc[int(j['rank']*400/cnts[j['identity']])]*sc_rt[j['ctype']]*(0.8**(2018-j['year'])) for j in i[:-4]]),reverse = True)
 output()
-
-

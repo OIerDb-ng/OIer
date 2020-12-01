@@ -59,7 +59,7 @@ for i in open("b.txt").readlines():
 				mid = j
 
 	print("MERGE ",cc[2]," INTO ",cs[mid],"?")
-	if mlen<10:
+	if mlen<100:
 		cop = ""
 	else:
 		cop = input()

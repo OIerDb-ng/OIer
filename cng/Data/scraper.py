@@ -1,6 +1,6 @@
 import requests
-links = [["http://www.noi.cn/RequireFile.do?fid=tTEH4Etf&attach=n","CSP2019提高","一等奖"],["http://www.noi.cn/RequireFile.do?fid=FYq6T8g5&attach=n","CSP2019提高","二等奖"],["http://www.noi.cn/RequireFile.do?fid=HjTeYfLd&attach=n","CSP2019提高","三等奖"],["http://www.noi.cn/RequireFile.do?fid=3DaqgQGR&attach=n","CSP2019入门","一等奖"],["http://www.noi.cn/RequireFile.do?fid=d5R35mMG&attach=n","CSP2019入门","二等奖"],["http://www.noi.cn/RequireFile.do?fid=GafMyBr2&attach=n","CSP2019入门","三等奖"]]
-opt = open("cdata.txt","w")
+links = [["http://www.noi.cn/RequireFile.do?fid=gLFf5QNG&attach=n","CSP2020入门","一等奖"],["http://www.noi.cn/RequireFile.do?fid=qDryJLnJ&attach=n","CSP2020入门","二等奖"],["http://www.noi.cn/RequireFile.do?fid=YqFtyLmb&attach=n","CSP2020入门","三等奖"]]
+opt = open("ccdata2.txt","w")
 result = []
 def handle(x):
 	s = requests.get(x[0]).content.decode("gb18030")
