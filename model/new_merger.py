@@ -24,6 +24,7 @@ noip_award_cnt = {}
 cnts = {}
 def output():
     result = open("result.csv","w",encoding='utf-8')
+    result.write("id,name,re1,re2,pinyin,level,score,awards,sex,smth,year\n")
     id = 0
     for j in final_output_data:
         cscore = sum([sc[int(i['rank']*400/cnts[i['identity']])]*sc_rt[i['ctype']]*(0.8**(2019-i['year'])) for i in j[:-4]])
