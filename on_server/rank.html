@@ -14,9 +14,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+		<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 		<link rel="stylesheet" href="style.css"/>
 		<script src="chart.js"></script><script src="mychart.js"></script>
 		
@@ -48,7 +48,7 @@
 			<br/>
 			<div  style = "text-align:center;">
 				<a href = "index.html"><img src="logo.jpg" style = "width:40%;"/></a>
-				<h3>全国信息学竞赛学校排名2019</h3>
+				<h3>全国信息学竞赛学校排名2020</h3>
 				<hr/>
 				<p>
 				省份:
@@ -91,7 +91,7 @@
 			var contest_names = ["NOIP普及","NOIP提高","APIO","CTSC","NOI","NOID类","WC"];
 			var award_desc = {"NOIP普及":["一等奖","二等奖","三等奖"],"NOIP提高":["一等奖","二等奖","三等奖"],"APIO":["金牌","银牌","铜牌"],"CTSC":["金牌","银牌","铜牌"],"NOI":["金牌","银牌","铜牌"],"NOID类":["金牌","银牌","铜牌"],"WC":["金牌","银牌","铜牌"]};
 			var contest_years = {"NOIP普及":2013,"NOIP提高":2010,"APIO":2010,"CTSC":2010,"NOI":2009,"NOID类":2010,"WC":2015};
-			var contest_years2 = {"NOIP普及":2019,"NOIP提高":2019,"APIO":2019,"CTSC":2019,"NOI":2019,"NOID类":2019,"WC":2019};
+			var contest_years2 = {"NOIP普及":2020,"NOIP提高":2020,"APIO":2020,"CTSC":2019,"NOI":2020,"NOID类":2020,"WC":2020};
 			var province = ["浙江", "湖南", "广东", "江苏", "福建", "四川", "山东", "安徽", "北京", "河北", "上海", "重庆", "吉林", "河南", "湖北", "陕西", "辽宁", "黑龙江", "天津", "广西", "山西", "江西", "新疆", "香港", "甘肃", "贵州", "海南", "内蒙古", "澳门", "云南", "宁夏"];
 			for(var i in province){
 				document.getElementById("prov_select").innerHTML+='<option value ="'+province[i]+'">'+province[i]+'</option>';
@@ -139,7 +139,7 @@
 			config["data"]["datasets"] = [];
 			window.myLine.update();
 			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","http://bytew.net/OIer/school.php?id="+s.toString());
+			XMLHttp.open("GET","//bytew.net/OIer/school.php?id="+s.toString());
 			XMLHttp.send();
 			XMLHttp.onreadystatechange=function(){
 				if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -177,8 +177,8 @@
 				document.getElementById('load_svg').style = 'display:';
 				document.getElementById('lr-con-group').innerHTML = '';
 				var XMLHttp=new XMLHttpRequest()
-				if(!chc)XMLHttp.open("GET","http://bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
-				else XMLHttp.open("GET","http://bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
+				if(!chc)XMLHttp.open("GET","//bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
+				else XMLHttp.open("GET","//bytew.net/OIer/rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
 				XMLHttp.send();
 				XMLHttp.onreadystatechange=function(){
 					if (XMLHttp.readyState==4 && XMLHttp.status==200){
@@ -221,3 +221,4 @@
 	</body>
 	
 </html>
+

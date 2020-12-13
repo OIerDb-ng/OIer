@@ -56,7 +56,7 @@ for i in contests:
 		for uid in range(len(all_oiers[cname])):
 			if abs(all_oiers[cname][uid]["sex"]-j["sex"]) != 2:
 				curr = 41
-				if all_oiers[cname][uid]["year"]>0 and cyear>0:
+				if all_oiers[cname][uid]["year"]>0 and cyear>0 and j["grade"]!="小学/无":
 					a = abs(all_oiers[cname][uid]["year"]-(cyear))
 					if a == 1:
 						curr-=100
@@ -69,6 +69,8 @@ for i in contests:
 						curr+=120
 					if each_record["province"] != j["province"] and (each_record["grade"]-3.5)*(j["grade"]-3.5)>0:
 						curr-=2400
+					if each_record["province"] != j["province"]:
+						curr-=100000
 					if each_record["identity"] == i:
 						curr -= 100000
 				if curr>bestr:
