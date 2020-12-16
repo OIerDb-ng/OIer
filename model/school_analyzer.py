@@ -6,8 +6,8 @@ school_info = []
 tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"金牌":0,"国际金牌":0,"银牌":1,"铜牌":2}
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,0,-5))]
-sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04}
-name_map = {"CSP提高":"NOIP提高","CSP入门":"NOIP普及"}
+sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04,"CSP提高":0.1,"CSP入门":0.04,"NOIP":0.15}
+name_map = {}
 rk = {}
 recy = {}
 recd = {}
@@ -74,13 +74,13 @@ with open("data.txt") as source:
         school_info[schid]["awards"] = caw
         if 'D类' in cname:
             cname = cname.split('D类')[0]
-        school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.8**(datetime.datetime.now().year-year))
+        school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.75**(datetime.datetime.now().year-year))
 #print(dp)
 f = open("school_data.csv","w")
 f.write("id,name,awards,rating,division,province,city,rank\n")
 school_info = sorted(school_info,key = lambda t: t["rating"],reverse = True)
 rk = ["A+","A","A-","B+","B","B-","C","D","E","F","G","H"]
-rkreq = [4500, 1650, 800, 280, 110, 80, 40, 16, 9.0, 1.7, 1.08, 0.0]
+rkreq = [5000, 1800, 1000, 300, 120, 90, 45, 16, 9.0, 1.7, 1.08, 0.0]
 count = 1
 for i in school_info:
     cr = ""
@@ -88,5 +88,5 @@ for i in school_info:
         if i["rating"]>rkreq[kk]:
             cr = rk[kk]
             break
-    f.write('"'+str(i["id"])+'","'+dmp(sorted(i["name"],key = lambda x:recy[x]*10000+recd[x],reverse = True))+'","'+dmp(i["awards"])+'","'+str(int(i["rating"]*10))+'","'+cr+'","'+i["prov"]+'","'+i["city"]+'","'+str(count)+'"\n')
+    f.write('"'+str(i["id"])+'","'+dmp(sorted(i["name"],key = lambda x:recy[x]*10000+recd[x],reverse = True))+'","'+dmp(i["awards"])+'","'+str(int(i["rating"]*100+1))+'","'+cr+'","'+i["prov"]+'","'+i["city"]+'","'+str(count)+'"\n')
     count+=1
