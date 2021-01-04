@@ -13,6 +13,11 @@ class DbInfo
         $dsn = self::DBMS . ":host=" . self::HOST . "; dbname=" . self::DBNAME;
         return ($dsn);
     }
+    static function GetMysqlConn()
+    {
+        $conn=mysqli_connect(self::HOST, self::USER, self::PASSWD, self::DBNAME);
+        return $conn;
+    }
     function GetDbUser()
     {
         return (self::USER);

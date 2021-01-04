@@ -121,12 +121,12 @@ def oi_year(i):
 def diff_ana(a,b):
     for i in a:
         for j in b:
+            if i["rule"] and j["rule"]:
+                return 10000*(i["rule"]!=j["rule"])
             if i["year"]-("NOIP" not in i["ctype"]  and "CSP" not in i["ctype"]) == j["year"]-("NOIP" not in j["ctype"]  and "CSP" not in j["ctype"]) and i["grade"]!="" and j["grade"]!="" and getgrade(i["grade"],i["year"])!=getgrade(j["grade"],j["year"]):
                 return 100000
             if i["identity"] == j["identity"]:
                 return 100000
-            if i["rule"] and j["rule"]:
-                return 10000*(i["rule"]!=j["rule"])
             if abs(i["sex"]-j["sex"]) == 2:
                 return 100000
     
