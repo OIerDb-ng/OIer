@@ -43,14 +43,14 @@ def output():
             if cyear == 0:
                 cyear = k["cal_y"]
         j = sorted(j,key = lambda i: i['year']+contest_date[i['ctype']],reverse = True)
-        
+        hsh = j[0]["id"]
         for k in j:
-            del k["name"]
+            del k["name"],k["id"]
             if csex == 0:
                 csex = k["sex"]
             del k["sex"]
             del k["cal_y"],k["rule"],k["year"]
-        result.write(str(id)+","+i+",,,"+piny+","+str(level)+","+str(int(score))+',"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+","+"%.2f"%cscore+","+str(cyear)+"\n")
+        result.write(str(id)+","+i+",UID"+str(hsh)+",,"+piny+","+str(level)+","+str(int(score))+',"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+","+"%.2f"%cscore+","+str(cyear)+"\n")
         id+=1
     result.close()
 with open("school_oped.txt",encoding='utf-8') as src:
@@ -70,12 +70,16 @@ def getgrade(x,year):
             print(x)
             return 10000
     return 10000
+uid = 1
 with open("data.txt",encoding='utf-8') as source:
     for i in source:
         cur = i.strip().split(',')
         cname = cur[0]
         if not cname in contests.keys():
-            year = re.findall(r"[0-9]{4}", cname, re.MULTILINE)[0]
+            try:
+                year = re.findall(r"[0-9]{4}", cname, re.MULTILINE)[0]
+            except:
+                print(cname)
             contests[cname] = {"identity":cname,"participants":[],"year":int(year),"ctype":cname.replace(year,""),"sure":[]}
             
             cnts[cname] = 0
@@ -92,7 +96,8 @@ with open("data.txt",encoding='utf-8') as source:
         except:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip()}
             print(i,cur)
-        
+        cur["id"] = uid
+        uid+=1
         cur["cal_y"] = cur["year"]-grade-("NOIP" not in cur["ctype"]  and "CSP" not in cur["ctype"])
 
         if grade == 10000:
