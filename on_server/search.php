@@ -27,6 +27,10 @@
 						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 							array_push($curesult,$row);
 						}
+                        $result = mysqli_query($conn,"SELECT * FROM OIers Where re1 = '$cui'");
+						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+							array_push($curesult,$row);
+						}
 						$result = mysqli_query($conn,"SELECT * FROM OIers Where awards like '%$cui%'");
 						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 							array_push($curesult,$row);

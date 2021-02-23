@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 		<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 		<link rel="stylesheet" href="style.css"/>
 		<script src="chart.js"></script><script src="mychart.js"></script>
@@ -138,7 +139,7 @@
 										OIerDb每年要花费维护者(老年退役选手)的大量精力和一定的服务器和域名费用，且基本处于用爱发电的状态。您如果可以捐款，可以帮助OIerDb开发、维护得更好。请您留下备注，捐助记录将会记录在GitHub上。
 										<p role="button" data-toggle="collapse" data-target="#qrcode" aria-expanded="false" aria-controls="qrcode" align = "center">展开二维码</p>
 										<div class="collapse" id="qrcode" aria-expanded="false" style="padding:20px;" align = "center">
-											<img src = "qrcode.jpg" width = "60%"/>
+										<img src = "qrcode.jpg" width = "60%"/>
 										</div>
 									</p>
 								</div>
@@ -151,10 +152,19 @@
 		</div>
 		
 		<script>
-			var contest_names = ["NOIP普及","NOIP提高","CSP入门","CSP提高","NOIP","APIO","CTSC","NOI","NOID类","WC"];
+            function GetQueryString(name)
+            {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return r[2];
+                }
+                return null;
+            };
+            var contest_names = ["NOIP普及","NOIP提高","CSP入门","CSP提高","NOIP","APIO","CTSC","NOI","NOID类","WC"];
 			var award_desc = {"NOIP普及":["一等奖","二等奖","三等奖"],"CSP入门":["一等","二等","三等"],"CSP提高":["一等","二等","三等"],"NOIP提高":["一等奖","二等奖","三等奖"],"NOIP":["一等奖","二等奖","三等奖"],"APIO":["金牌","银牌","铜牌"],"CTSC":["金牌","银牌","铜牌"],"NOI":["金牌","银牌","铜牌"],"NOID类":["金牌","银牌","铜牌"],"WC":["金牌","银牌","铜牌"]};
 			var contest_years = {"NOIP普及":2013,"NOIP提高":2010,"CSP入门":2019,"CSP提高":2019,"NOIP":2020,"APIO":2010,"CTSC":2010,"NOI":2009,"NOID类":2010,"WC":2015};
-			var contest_years2 = {"NOIP普及":2018,"NOIP提高":2018,"CSP入门":2020,"CSP提高":2020,"NOIP":2020,"APIO":2020,"CTSC":2019,"NOI":2020,"NOID类":2020,"WC":2020};
+			var contest_years2 = {"NOIP普及":2018,"NOIP提高":2018,"CSP入门":2020,"CSP提高":2020,"NOIP":2020,"APIO":2020,"CTSC":2019,"NOI":2020,"NOID类":2020,"WC":2021};
 			var year = ["五年级","六年级","初一","初二","初三","高一","高二","高三"];
 			var year2 = ["四年级","三年级","二年级","一年级"];
 			var cacheData;
@@ -310,7 +320,8 @@
 							}
 							var yea = getGrade(2021-parseInt(datas[i]["year"]));
 							var award_badges,award_detail;
-							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+                                 var query_detail = datas[i]["re1"];
+							award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,现在'+yea+'</font>'+'<font style="font-size:x-large"><a href="https://bytew.net/OIer/?query='+encodeURIComponent(query_detail)+'"><i class="bi bi-link-45deg"></i></a></font>'+'<table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
 							for(var each_award in awards){
 								var current_Award = awards[each_award];
 								award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
@@ -385,8 +396,9 @@
 								}
 								var yea = getGrade(2021-parseInt(datas[i]["year"]));
 								var sex  = ["女","--","男"];
-								var award_badges,award_detail;
-								award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,'+sex[parseInt(datas[i]["sex"])+1]+',现在'+yea+'</font><table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
+                                var award_badges,award_detail;
+								var query_detail = datas[i]["re1"];
+                                award_detail = '<font style = "font-size:xx-large">'+datas[i]["name"]+'</font><font style = "font-size:large">,现在'+yea+'</font>'+'<font style="font-size:x-large"><a href="https://bytew.net/OIer/?query='+encodeURIComponent(query_detail)+'"><i class="bi bi-link-45deg"></i></a></font>'+'<table class="table table-bordered" ><thead><tr><th>获奖</th><th>分数</th><th>全国排名</th><th>就读学校</th><th>年级</th></tr></thead>'
 								for(var each_award in awards){
 									var current_Award = awards[each_award];
 									award_detail+='<tr><th scope = "row">'+current_Award["identity"]+current_Award["award_type"]+'</th><td>'+current_Award["score"]+'</td><td>'+current_Award["rank"]+'</td><td onclick = "showSchoolInfo('+current_Award["school_id"]+',\''+current_Award["school"]+'\')" style = "cursor:pointer">'+current_Award["school"]+'</td><td>'+current_Award["grade"]+'</td></tr>';
@@ -414,7 +426,18 @@
 	    }
 	}
 
-	window.addEventListener('scroll',debounce(realFunc,30));
+        window.addEventListener('scroll',debounce(realFunc,30));
+        var nameVal=GetQueryString("query");
+        if(nameVal!=null){
+            try {
+                document.getElementById("infoinput").value = decodeURIComponent(nameVal);
+                search(0);
+            }
+            catch(err) {
+                
+            }
+        }
 		</script>
 	</body>
 </html>
+
