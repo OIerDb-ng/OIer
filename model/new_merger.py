@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-import re,json,time
+import re,json,time,hashlib
 from pypinyin import pinyin
 p = pinyin
 contests = {}
@@ -54,11 +54,10 @@ def output():
         id+=1
     result.close()
 with open("school_oped.txt",encoding='utf-8') as src:
-    cnt = -1
     for i in src:
-        cnt+=1
+        cnt = eval("0x"+hashlib.md5(i.split(',')[2].encode("utf8")).hexdigest())%998244353
+        school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
         for j in i.split(',')[2:]:
-            school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
             school_id[j.strip()] = cnt
 def getgrade(x,year):
     if x in grades.keys():

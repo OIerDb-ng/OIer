@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-import sys,re,json,time,datetime
+import sys,re,json,time,datetime,hashlib
 st = time.time()
 school_id = {}
 school_info = []
@@ -16,7 +16,7 @@ with open("school_oped.txt") as src:
     for i in src:
         cnt+=1
         try:
-            school_info.append({"id":cnt,"name":[],"awards":{},"rating":0,"prov":i.split(',')[0],"city":i.split(',')[1]})
+            school_info.append({"id":eval("0x"+hashlib.md5(i.split(',')[2].encode("utf8")).hexdigest())%998244353,"name":[],"awards":{},"rating":0,"prov":i.split(',')[0],"city":i.split(',')[1]})
         except:
             print(i)
         for j in i.split(',')[2:]:
@@ -56,8 +56,6 @@ with open("data.txt") as source:
         ctype = cname.replace(str(year),"")
         if ctype in name_map:
             ctype = name_map[ctype]
-        #print(cur[1])
-        #print(cur[0])
         award_type = tp_to_int[cur[1]]
         csn = cur[4].strip()
         if csn not in recy or year>recy[csn]:
