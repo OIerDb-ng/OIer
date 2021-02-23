@@ -43,7 +43,7 @@ def output():
             if cyear == 0:
                 cyear = k["cal_y"]
         j = sorted(j,key = lambda i: i['year']+contest_date[i['ctype']],reverse = True)
-        hsh = j[0]["id"]
+        hsh = j[-1]["id"]
         for k in j:
             del k["name"],k["id"]
             if csex == 0:
