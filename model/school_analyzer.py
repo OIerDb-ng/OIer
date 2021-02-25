@@ -33,7 +33,7 @@ with open("data.txt",encoding='utf-8') as source:
             dp[i.split(',')[0]] = 1
         else:
             dp[i.split(',')[0]] += 1
-with open("data.txt") as source:
+with open("data.txt",encoding='utf-8') as source:
     for i in source:
         cur = i.strip().split(',')
         cname = cur[0].strip()
