@@ -11,7 +11,7 @@ name_map = {}
 rk = {}
 recy = {}
 recd = {}
-with open("school_oped.txt") as src:
+with open("school_oped.txt",encoding='utf-8') as src:
     cnt = -1
     for i in src:
         cnt+=1
@@ -25,7 +25,7 @@ with open("school_oped.txt") as src:
 def dmp(a):
     return json.dumps(a, ensure_ascii=False).replace('"',"'")
 dp = {}
-with open("data.txt") as source:
+with open("data.txt",encoding='utf-8') as source:
     for i in source:
         if 'D类' in i:
             i = i.split('D类')[0]
@@ -74,7 +74,7 @@ with open("data.txt") as source:
             cname = cname.split('D类')[0]
         school_info[schid]["rating"] += sc[max(int(crk*390/dp[cname]),0)]*sc_rt[ctype]*(0.75**(datetime.datetime.now().year-year))
 #print(dp)
-f = open("school_data.csv","w")
+f = open("school_data.csv","w",encoding='utf-8')
 f.write("id,name,awards,rating,division,province,city,rank\n")
 school_info = sorted(school_info,key = lambda t: t["rating"],reverse = True)
 rk = ["A+","A","A-","B+","B","B-","C","D","E","F","G","H"]
