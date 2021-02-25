@@ -89,7 +89,6 @@ with open("data.txt",encoding='utf-8') as source:
         except:
             print(cur)
         grade = getgrade(cur[3],contests[cname]["year"])
-        #cn =  {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         try:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         except:
@@ -102,7 +101,7 @@ with open("data.txt",encoding='utf-8') as source:
         if grade == 10000:
             cur["cal_y"] = cur["year"]-general[cur["ctype"]]-("NOIP" not in cur["ctype"] and "CSP" not in cur["ctype"])
 
-        if contests[cname]["ctype"] == "NOIP提高" or contests[cname]["ctype"] == "NOIP普及":
+        if "NOIP" in contests[cname]["ctype"]:
             if cur["award_type"] == "一等奖":
                 try:
                     noip_award_cnt[cname] = max(0, noip_award_cnt[cname]) + 1
@@ -211,11 +210,11 @@ for i in awd_by_name:
         continue
     piny = getinitials(i)
     
-    level = 3
-    score = 0
-    score_arr = {}
-
+    
     for j in awd_by_name[i]:
+        level = 3
+        score = 0
+        score_arr = {}
         for k in j:
             if k["ctype"] == "NOI":
                 if k["award_type"] == "金牌":
@@ -224,8 +223,7 @@ for i in awd_by_name:
                     level = max(level, 9)
                 if k["award_type"] == "铜牌":
                     level = max(level, 8)
-
-            if k["ctype"] == "NOIP提高":
+            if k["ctype"] == "NOIP提高" or k["ctype"] == "NOIP":
                 if k["rank"] <= noip_award_cnt[k["identity"]]:
                     level = max(level, 6)
                 if k["rank"] <= noip_award_cnt[k["identity"]] * 0.5:
@@ -253,14 +251,12 @@ for i in awd_by_name:
             except:
                 score = score
     
-    for j in score_arr:
-        score = score + score_arr[j]
-    
-    for j in level_score:
-        if score >= level_score[j]:
-            level = max(level, j)
-
-    for j in awd_by_name[i]:
+        for k in score_arr:
+            score = score + score_arr[k]
+        
+        for k in level_score:
+            if score >= level_score[k]:
+                level = max(level, k)
         j.append(piny)
         j.append(level)
         j.append(score)
