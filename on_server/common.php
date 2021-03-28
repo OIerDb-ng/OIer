@@ -24,3 +24,14 @@ function get_database_connection(): mysqli
     $conn->set_charset("utf8");
     return $conn;
 }
+
+function query_assoc_all($conn, $query, $types, $params = array()): array
+{
+    $stmt = $conn->prepare($query);
+    call_user_func_array(
+        array($stmt, 'bind_param'),
+        array_merge(array($types), $params));
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}

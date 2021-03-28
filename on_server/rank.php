@@ -12,7 +12,11 @@ $conn = get_database_connection();
 $result = array();
 
 $options = array('province', 'city');
-$page = ((int)$_GET["page"] ?? 1) * 10 - 10;
+
+$page = (int)$_GET["page"];
+$page = $page > 0 ? $page : 1;
+$page = $page * 10 - 10;
+
 $conditions = array();
 $params = array('');
 foreach ($options as $key) {
@@ -26,23 +30,17 @@ $query =
     "SELECT `id`,`name`,`rating`,`division`,`province`,`city`,`rank` FROM `OI_school` " .
     $where_query . " " .
     "ORDER BY `rating` DESC LIMIT $page,10";
-$stmt = $conn->prepare($query);
-call_user_func_array(array($stmt, 'bind_param'), $params);
-$stmt->execute();
-$res = $stmt->get_result();
-$result['result'] = $res->fetch_all(MYSQLI_ASSOC);
-$result['count'] = $res->num_rows;
+$res = query_assoc_all($conn, $query, $params[0], array_slice($params, 1));
+$result['result'] = $res;
+$result['count'] = count($res);
 $result['cities'] = array();
+
 if (!empty($_GET["province"])) {
     $query =
         "SELECT `city` FROM `OI_school` " .
         "WHERE `province` = ? " .
         "GROUP BY city ORDER BY SUM(`rating`) DESC";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('s', $_GET["province"]);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    while ($row = $res->fetch_assoc())
+    foreach (query_assoc_all($conn, $query, 's', array($_GET["province"])) as $row)
         array_push($result['cities'], $row["city"]);
 }
 
