@@ -100,6 +100,8 @@
 	<script src="school.js"></script>
 	<script>
 		var current_page = 1;
+		var province = ["浙江", "湖南", "广东", "江苏", "福建", "四川", "山东", "安徽", "北京", "河北", "上海", "重庆", "吉林", "河南", "湖北", "陕西", "辽宁", "黑龙江", "天津", "广西", "山西", "江西", "新疆", "香港", "甘肃", "贵州", "海南", "内蒙古", "澳门", "云南", "宁夏"];
+		$('#prov_select').html(province.reduce((i, j) => `${i}<option value="${j}">${j}</option>`));
 		async function fetch_new(e, chc) {
 			current_page = e;
 			$('#load_svg').show();
