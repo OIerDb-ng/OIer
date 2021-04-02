@@ -1,170 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-			<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149357628-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-149357628-1');
-</script>
-		<meta charset="UTF-8"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-		<link rel="stylesheet" href="assets/style.css"/>
-		<script src="assets/chart.js"></script><script src="assets/mychart.js"></script>
-		
-	</head>
-	<body>
-		<title>OIerDb全国信息学竞赛学校排行榜</title>
-		<div id = "school_view" class = "win" style = "flex-flow: column;display:none;">
-			<div>
-				<h2 id = "sch_name">
-				</h2>
-				<button onclick = "document.getElementById('school_view').style = 'display:none'" class = "sqrbtn extbtn fa fa-mail-reply"></button>
-				
-				<div id = "sch_desc">
-					
-				</div>
-				<hr/>
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149357628-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-149357628-1');
+	</script>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="assets/style.css" />
+	<script src="assets/chart.js"></script>
+	<script src="assets/mychart.js"></script>
+
+</head>
+
+<body>
+	<title>OIerDb全国信息学竞赛学校排行榜</title>
+	<div id="school_view" class="win" style="flex-flow: column;display:none;">
+		<div>
+			<h2 id="sch_name">
+			</h2>
+			<button onclick="document.getElementById('school_view').style = 'display:none'"
+				class="sqrbtn extbtn fa fa-mail-reply"></button>
+
+			<div id="sch_desc">
+
 			</div>
-			<div style = "text-align:center;" >
-				<div class="btn-group" role="group" aria-label="..." id = "con-group">
-				</div>
-			</div>
-			<br/>
-			<div style = "flex: 1;border:2px solid #ffffff">
-				<canvas id="canvas" style = "background:#ffffff"></canvas>
+			<hr />
+		</div>
+		<div style="text-align:center;">
+			<div class="btn-group" role="group" aria-label="..." id="con-group">
 			</div>
 		</div>
-		
-		<div id="container">
-			<br/>
-			<div  style = "text-align:center;">
-				<a href = "index.html"><img src="assets/logo.jpg" style = "width:40%;"/></a>
-				<h3>全国信息学竞赛学校排名2020</h3>
-				<hr/>
-				<p>
+		<br />
+		<div style="flex: 1;border:2px solid #ffffff">
+			<canvas id="canvas" style="background:#ffffff"></canvas>
+		</div>
+	</div>
+
+	<div id="container">
+		<br />
+		<div style="text-align:center;">
+			<a href="index.html"><img src="assets/logo.jpg" style="width:40%;" /></a>
+			<h3>全国信息学竞赛学校排名2020</h3>
+			<hr />
+			<p>
 				省份:
-				<select id = "prov_select" onchange = "fetch_new(1,1)">
-					<option value ="">任意</option>
+				<select id="prov_select" onchange="fetch_new(1,1)">
+					<option value="">任意</option>
 				</select>
 				地市:
-				<select id = "city_select"  onchange = "fetch_new(1,0)">
-					<option value ="">任意</option>
+				<select id="city_select" onchange="fetch_new(1,0)">
+					<option value="">任意</option>
 				</select>
-				</p>
-			</div>
-			<div id = "dataArea" style = "display:;height:80ph">
-				<table class="table">
-					<thead>
-						<tr>
-							<th width = "10%">#</th>
-							<th width = "60%">学校</th>
-							<th width = "15%">评级</th>
-							<th width = "15%">评分</th>
-						</tr>
-					</thead>
-					<tr id = "load_svg" style = "display:none"><td colspan="4" style = "text-align:center"><img  src = "assets/loading.svg" width = 45px/></td></tr>
-					<tbody id = "resultArea" >
-						
-					</tbody>
-				</table>
-			</div>
-			<div style = "text-align:center;" >
-				<button type="button" class="btn minebtn" id = "prev_btn" onclick = "fetch_new(cpg-1,0)"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-				<div class="btn-group" role="group" aria-label="..." id = "lr-con-group">
-					
-				</div>
-				<button type="button" class="btn minebtn"  id = "next_btn" onclick = "fetch_new(cpg+1,0)"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-			</div>
+			</p>
 		</div>
-		
-		<script>
-			var cpg = 1;
-			var contest_names = ["NOIP普及","NOIP提高","CSP入门","CSP提高","NOIP","APIO","CTSC","NOI","NOID类","WC"];
-			var award_desc = {"NOIP普及":["一等奖","二等奖","三等奖"],"CSP入门":["一等","二等","三等"],"CSP提高":["一等","二等","三等"],"NOIP提高":["一等奖","二等奖","三等奖"],"NOIP":["一等奖","二等奖","三等奖"],"APIO":["金牌","银牌","铜牌"],"CTSC":["金牌","银牌","铜牌"],"NOI":["金牌","银牌","铜牌"],"NOID类":["金牌","银牌","铜牌"],"WC":["金牌","银牌","铜牌"]};
-			var contest_years = {"NOIP普及":2013,"NOIP提高":2010,"CSP入门":2019,"CSP提高":2019,"NOIP":2020,"APIO":2010,"CTSC":2010,"NOI":2009,"NOID类":2010,"WC":2015};
-			var contest_years2 = {"NOIP普及":2018,"NOIP提高":2018,"CSP入门":2020,"CSP提高":2020,"NOIP":2020,"APIO":2020,"CTSC":2019,"NOI":2020,"NOID类":2020,"WC":2020};
-			var province = ["浙江", "湖南", "广东", "江苏", "福建", "四川", "山东", "安徽", "北京", "河北", "上海", "重庆", "吉林", "河南", "湖北", "陕西", "辽宁", "黑龙江", "天津", "广西", "山西", "江西", "新疆", "香港", "甘肃", "贵州", "海南", "内蒙古", "澳门", "云南", "宁夏"];
-			for(var i in province){
-				document.getElementById("prov_select").innerHTML+='<option value ="'+province[i]+'">'+province[i]+'</option>';
-			}
-		function deepClone(obj){
+		<div id="dataArea" style="display:;height:80ph">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="10%">#</th>
+						<th width="60%">学校</th>
+						<th width="15%">评级</th>
+						<th width="15%">评分</th>
+					</tr>
+				</thead>
+				<tr id="load_svg" style="display:none">
+					<td colspan="4" style="text-align:center"><img src="assets/loading.svg" width=45px /></td>
+				</tr>
+				<tbody id="resultArea">
+
+				</tbody>
+			</table>
+		</div>
+		<div style="text-align:center;">
+			<button type="button" class="btn minebtn" id="prev_btn" onclick="fetch_new(cpg-1,0)"><span
+					class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+			<div class="btn-group" role="group" aria-label="..." id="lr-con-group">
+
+			</div>
+			<button type="button" class="btn minebtn" id="next_btn" onclick="fetch_new(cpg+1,0)"><span
+					class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+		</div>
+	</div>
+
+	<script>
+		var cpg = 1;
+		var contest_names = ["NOIP普及", "NOIP提高", "CSP入门", "CSP提高", "NOIP", "APIO", "CTSC", "NOI", "NOID类", "WC"];
+		var award_desc = { "NOIP普及": ["一等奖", "二等奖", "三等奖"], "CSP入门": ["一等", "二等", "三等"], "CSP提高": ["一等", "二等", "三等"], "NOIP提高": ["一等奖", "二等奖", "三等奖"], "NOIP": ["一等奖", "二等奖", "三等奖"], "APIO": ["金牌", "银牌", "铜牌"], "CTSC": ["金牌", "银牌", "铜牌"], "NOI": ["金牌", "银牌", "铜牌"], "NOID类": ["金牌", "银牌", "铜牌"], "WC": ["金牌", "银牌", "铜牌"] };
+		var contest_years = { "NOIP普及": 2013, "NOIP提高": 2010, "CSP入门": 2019, "CSP提高": 2019, "NOIP": 2020, "APIO": 2010, "CTSC": 2010, "NOI": 2009, "NOID类": 2010, "WC": 2015 };
+		var contest_years2 = { "NOIP普及": 2018, "NOIP提高": 2018, "CSP入门": 2020, "CSP提高": 2020, "NOIP": 2020, "APIO": 2020, "CTSC": 2019, "NOI": 2020, "NOID类": 2020, "WC": 2020 };
+		var province = ["浙江", "湖南", "广东", "江苏", "福建", "四川", "山东", "安徽", "北京", "河北", "上海", "重庆", "吉林", "河南", "湖北", "陕西", "辽宁", "黑龙江", "天津", "广西", "山西", "江西", "新疆", "香港", "甘肃", "贵州", "海南", "内蒙古", "澳门", "云南", "宁夏"];
+		for (var i in province) {
+			document.getElementById("prov_select").innerHTML += '<option value ="' + province[i] + '">' + province[i] + '</option>';
+		}
+		function deepClone(obj) {
 			let _obj = JSON.stringify(obj),
-			objClone = JSON.parse(_obj);
+				objClone = JSON.parse(_obj);
 			return objClone
 		}
-		function showSchoolAwards(s){
+		function showSchoolAwards(s) {
 			config["data"]["datasets"] = [];
 			var cur_year = [];
-			for(var i=contest_years[s];i<=contest_years2[s];i++)cur_year.push(i.toString());
-			for(var i  = 0;i<document.getElementById("con-group").childElementCount;i++){
-				if(document.getElementById("con-group").children[i].className.includes("minebtn-ac"))
-				document.getElementById("con-group").children[i].className = "btn minebtn";
+			for (var i = contest_years[s]; i <= contest_years2[s]; i++)cur_year.push(i.toString());
+			for (var i = 0; i < document.getElementById("con-group").childElementCount; i++) {
+				if (document.getElementById("con-group").children[i].className.includes("minebtn-ac"))
+					document.getElementById("con-group").children[i].className = "btn minebtn";
 			}
-			if( document.getElementById(s).className.includes("minebtn-ac")){
-				
-			}else{
+			if (document.getElementById(s).className.includes("minebtn-ac")) {
+
+			} else {
 				config["data"]["labels"] = deepClone(cur_year);
 				document.getElementById(s).className = "btn minebtn-ac";
 				config["data"]["datasets"] = deepClone(model);
-				for(var i=0;i<=2;i++){
+				for (var i = 0; i <= 2; i++) {
 					config["data"]["datasets"][i]["data"] = []
-					config["data"]["datasets"][i]["label"]=s+award_desc[s][i];
-					for(var j in cur_year){
+					config["data"]["datasets"][i]["label"] = s + award_desc[s][i];
+					for (var j in cur_year) {
 						cy = cur_year[j];
-						if(cy in cacheSchoolData["awards"][s])
-						config["data"]["datasets"][i]["data"].push(cacheSchoolData["awards"][s][cy][i]);
+						if (cy in cacheSchoolData["awards"][s])
+							config["data"]["datasets"][i]["data"].push(cacheSchoolData["awards"][s][cy][i]);
 						else
-						config["data"]["datasets"][i]["data"].push(0);
+							config["data"]["datasets"][i]["data"].push(0);
 					}
 				}
-				
+
 			}
 			//var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine.update();
 		}
-		function showSchoolInfo(s,p){
+		function showSchoolInfo(s, p) {
 			document.getElementById('sch_desc').innerHTML = '<img src = "assets/loading.svg" width = 45px/>';
 			document.getElementById('con-group').innerHTML = '';
 			document.getElementById('school_view').style = 'flex-flow: column;display:flex';
 			document.getElementById('sch_name').innerHTML = p;
 			config["data"]["datasets"] = [];
 			window.myLine.update();
-			var XMLHttp=new XMLHttpRequest()
-			XMLHttp.open("GET","school.php?id="+s.toString());
+			var XMLHttp = new XMLHttpRequest()
+			XMLHttp.open("GET", "school.php?id=" + s.toString());
 			XMLHttp.send();
-			XMLHttp.onreadystatechange=function(){
-				if (XMLHttp.readyState==4 && XMLHttp.status==200){
-					if(XMLHttp.responseText!=""){
+			XMLHttp.onreadystatechange = function () {
+				if (XMLHttp.readyState == 4 && XMLHttp.status == 200) {
+					if (XMLHttp.responseText != "") {
 						var datas = eval("(" + XMLHttp.responseText + ")").result[0];
 						datas["name"] = eval(datas["name"]);
-						datas["awards"] = eval("(" + datas["awards"]+ ")");
+						datas["awards"] = eval("(" + datas["awards"] + ")");
 						var c_desc = "";
-						if(datas["name"].length>2){
+						if (datas["name"].length > 2) {
 							c_desc = "<p>又名";
-							for(var i in datas["name"]){
+							for (var i in datas["name"]) {
 								var cn = datas["name"][i];
-								if(cn!=p) c_desc+=cn+","
+								if (cn != p) c_desc += cn + ","
 							}
-							c_desc = c_desc.substr(0,c_desc.length-1)+"。</p>";
+							c_desc = c_desc.substr(0, c_desc.length - 1) + "。</p>";
 						}
-						c_desc+="<p>综合评分: <b>"+datas["rating"]+"</b>，综合评级<b>"+datas["division"]+"</b>。"
+						c_desc += "<p>综合评分: <b>" + datas["rating"] + "</b>，综合评级<b>" + datas["division"] + "</b>。"
 						document.getElementById('sch_desc').innerHTML = c_desc;
-						
-						for(var i in contest_names){
+
+						for (var i in contest_names) {
 							var cur_con = contest_names[i];
-							if(cur_con in datas["awards"]){
-								document.getElementById('con-group').innerHTML+='<button type="button" class="btn minebtn" id = "'+cur_con+'" onclick = "showSchoolAwards(\''+cur_con+'\')">'+cur_con+'</button>';
-							}else{
-								document.getElementById('con-group').innerHTML+='<button type="button" class="btn minebtn disabled">'+cur_con+'</button>';
+							if (cur_con in datas["awards"]) {
+								document.getElementById('con-group').innerHTML += '<button type="button" class="btn minebtn" id = "' + cur_con + '" onclick = "showSchoolAwards(\'' + cur_con + '\')">' + cur_con + '</button>';
+							} else {
+								document.getElementById('con-group').innerHTML += '<button type="button" class="btn minebtn disabled">' + cur_con + '</button>';
 							}
 						}
 						cacheSchoolData = datas;
@@ -172,53 +183,52 @@
 				}
 			}
 		}
-			function fetch_new(e,chc){
-				cpg = e;
-				document.getElementById('load_svg').style = 'display:';
-				document.getElementById('lr-con-group').innerHTML = '';
-				var XMLHttp=new XMLHttpRequest()
-				if(!chc)XMLHttp.open("GET","rank.php?page="+e.toString()+"&province="+$("#prov_select").val()+"&city="+$("#city_select").val());
-				else XMLHttp.open("GET","rank.php?page="+e.toString()+"&province="+$("#prov_select").val());
-				XMLHttp.send();
-				XMLHttp.onreadystatechange=function(){
-					if (XMLHttp.readyState==4 && XMLHttp.status==200){
-						if(XMLHttp.responseText!=""){
-							document.getElementById('load_svg').style = 'display:none';
-							document.getElementById('resultArea').innerHTML = '';
-							var cc = eval("(" + XMLHttp.responseText + ")");
-							for(var i in cc.result){
-								var datas = cc.result[i];
-								datas["name"] = eval(datas["name"]);
-								document.getElementById('resultArea').innerHTML+='<tr  role="button" onclick="showSchoolInfo('+datas['id']+',\''+datas['name'][0]+'\')" style="height:42px"><th>'+datas['rank']+'</th><td>'+datas['name'][0]+'</td><td>'+datas['division']+'</td><td>'+datas['rating']+'</td><tr>';
+		function fetch_new(e, chc) {
+			cpg = e;
+			document.getElementById('load_svg').style = 'display:';
+			document.getElementById('lr-con-group').innerHTML = '';
+			var XMLHttp = new XMLHttpRequest()
+			if (!chc) XMLHttp.open("GET", "rank.php?page=" + e.toString() + "&province=" + $("#prov_select").val() + "&city=" + $("#city_select").val());
+			else XMLHttp.open("GET", "rank.php?page=" + e.toString() + "&province=" + $("#prov_select").val());
+			XMLHttp.send();
+			XMLHttp.onreadystatechange = function () {
+				if (XMLHttp.readyState == 4 && XMLHttp.status == 200) {
+					if (XMLHttp.responseText != "") {
+						document.getElementById('load_svg').style = 'display:none';
+						document.getElementById('resultArea').innerHTML = '';
+						var cc = eval("(" + XMLHttp.responseText + ")");
+						for (var i in cc.result) {
+							var datas = cc.result[i];
+							datas["name"] = eval(datas["name"]);
+							document.getElementById('resultArea').innerHTML += '<tr  role="button" onclick="showSchoolInfo(' + datas['id'] + ',\'' + datas['name'][0] + '\')" style="height:42px"><th>' + datas['rank'] + '</th><td>' + datas['name'][0] + '</td><td>' + datas['division'] + '</td><td>' + datas['rating'] + '</td><tr>';
+						}
+						if (cc.result.length < 10) {
+							document.getElementById('resultArea').innerHTML += '<tr  style="height:42px"><tr>'.repeat(10 - cc.result.length);
+						}
+						if (chc) {
+							document.getElementById('city_select').innerHTML = '<option value ="">任意</option>';
+							for (var i in cc.cities) {
+								document.getElementById("city_select").innerHTML += '<option value ="' + cc.cities[i] + '">' + cc.cities[i] + '</option>';
 							}
-							if(cc.result.length<10){
-								document.getElementById('resultArea').innerHTML+='<tr  style="height:42px"><tr>'.repeat(10-cc.result.length);
-							}
-							if(chc){
-								document.getElementById('city_select').innerHTML = '<option value ="">任意</option>';
-								for(var i in cc.cities){
-									document.getElementById("city_select").innerHTML+='<option value ="'+cc.cities[i]+'">'+cc.cities[i]+'</option>';
-								}
-							}
-							var totpage = parseInt((parseInt(cc.count)+9)/10);
-							if(e == 1) document.getElementById("prev_btn").style = "btn minebtn disabled";
-							else document.getElementById("prev_btn").style = "btn minebtn";
-							if(e == totpage) document.getElementById("next_btn").style = "btn minebtn disabled";
-							else document.getElementById("next_btn").style = "btn minebtn";
-							for(var i=Math.max(e-5,1);i<e;i++){
-								document.getElementById("lr-con-group").innerHTML+='<button type="button" class="btn minebtn" onclick = "fetch_new('+i.toString()+',0)">'+i.toString()+'</button>'
-							}
-							document.getElementById("lr-con-group").innerHTML+='<button type="button" class="btn minebtn-ac" onclick = "fetch_new('+e.toString()+',0)">'+e.toString()+'</button>'
-							for(var i=e+1;i<=Math.min(e+5,totpage);i++){
-								document.getElementById("lr-con-group").innerHTML+='<button type="button" class="btn minebtn" onclick = "fetch_new('+i.toString()+',0)">'+i.toString()+'</button>'
-							}
+						}
+						var totpage = parseInt((parseInt(cc.count) + 9) / 10);
+						if (e == 1) document.getElementById("prev_btn").style = "btn minebtn disabled";
+						else document.getElementById("prev_btn").style = "btn minebtn";
+						if (e == totpage) document.getElementById("next_btn").style = "btn minebtn disabled";
+						else document.getElementById("next_btn").style = "btn minebtn";
+						for (var i = Math.max(e - 5, 1); i < e; i++) {
+							document.getElementById("lr-con-group").innerHTML += '<button type="button" class="btn minebtn" onclick = "fetch_new(' + i.toString() + ',0)">' + i.toString() + '</button>'
+						}
+						document.getElementById("lr-con-group").innerHTML += '<button type="button" class="btn minebtn-ac" onclick = "fetch_new(' + e.toString() + ',0)">' + e.toString() + '</button>'
+						for (var i = e + 1; i <= Math.min(e + 5, totpage); i++) {
+							document.getElementById("lr-con-group").innerHTML += '<button type="button" class="btn minebtn" onclick = "fetch_new(' + i.toString() + ',0)">' + i.toString() + '</button>'
 						}
 					}
 				}
 			}
-		fetch_new(1,1);
-			</script>
-	</body>
-	
-</html>
+		}
+		fetch_new(1, 1);
+	</script>
+</body>
 
+</html>
