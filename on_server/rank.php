@@ -33,6 +33,10 @@ $query =
 $res = query_assoc_all($conn, $query, $params[0], array_slice($params, 1));
 $result['result'] = $res;
 $result['count'] = count($res);
+$result['page'] = $page;
+$result['total'] = query_assoc_all(
+    $conn, "SELECT COUNT(`id`) AS total FROM `OI_school`" . $where_query,
+    $params[0], array_slice($params, 1))[0]['total'];
 $result['cities'] = array();
 
 if (!empty($_GET["province"])) {
