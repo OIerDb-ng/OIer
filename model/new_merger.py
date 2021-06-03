@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-import re,json,time
+import re,json,time,hashlib
 from pypinyin import pinyin
 p = pinyin
 contests = {}
@@ -43,22 +43,21 @@ def output():
             if cyear == 0:
                 cyear = k["cal_y"]
         j = sorted(j,key = lambda i: i['year']+contest_date[i['ctype']],reverse = True)
-        
+        hsh = j[-1]["id"]
         for k in j:
-            del k["name"]
+            del k["name"],k["id"]
             if csex == 0:
                 csex = k["sex"]
             del k["sex"]
             del k["cal_y"],k["rule"],k["year"]
-        result.write(str(id)+","+i+",,,"+piny+","+str(level)+","+str(int(score))+',"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+","+"%.2f"%cscore+","+str(cyear)+"\n")
+        result.write(str(id)+","+i+",UID"+str(hsh)+",,"+piny+","+str(level)+","+str(int(score))+',"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+","+"%.2f"%cscore+","+str(cyear)+"\n")
         id+=1
     result.close()
 with open("school_oped.txt",encoding='utf-8') as src:
-    cnt = -1
     for i in src:
-        cnt+=1
+        cnt = eval("0x"+hashlib.md5(i.split(',')[2].encode("utf8")).hexdigest())%998244353
+        school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
         for j in i.split(',')[2:]:
-            school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
             school_id[j.strip()] = cnt
 def getgrade(x,year):
     if x in grades.keys():
@@ -70,12 +69,16 @@ def getgrade(x,year):
             print(x)
             return 10000
     return 10000
+uid = 1
 with open("data.txt",encoding='utf-8') as source:
     for i in source:
         cur = i.strip().split(',')
         cname = cur[0]
         if not cname in contests.keys():
-            year = re.findall(r"[0-9]{4}", cname, re.MULTILINE)[0]
+            try:
+                year = re.findall(r"[0-9]{4}", cname, re.MULTILINE)[0]
+            except:
+                print(cname)
             contests[cname] = {"identity":cname,"participants":[],"year":int(year),"ctype":cname.replace(year,""),"sure":[]}
             
             cnts[cname] = 0
@@ -86,19 +89,19 @@ with open("data.txt",encoding='utf-8') as source:
         except:
             print(cur)
         grade = getgrade(cur[3],contests[cname]["year"])
-        #cn =  {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         try:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         except:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip()}
             print(i,cur)
-        
+        cur["id"] = uid
+        uid+=1
         cur["cal_y"] = cur["year"]-grade-("NOIP" not in cur["ctype"]  and "CSP" not in cur["ctype"])
 
         if grade == 10000:
             cur["cal_y"] = cur["year"]-general[cur["ctype"]]-("NOIP" not in cur["ctype"] and "CSP" not in cur["ctype"])
 
-        if contests[cname]["ctype"] == "NOIP提高" or contests[cname]["ctype"] == "NOIP普及":
+        if "NOIP" in contests[cname]["ctype"]:
             if cur["award_type"] == "一等奖":
                 try:
                     noip_award_cnt[cname] = max(0, noip_award_cnt[cname]) + 1
@@ -207,11 +210,11 @@ for i in awd_by_name:
         continue
     piny = getinitials(i)
     
-    level = 3
-    score = 0
-    score_arr = {}
-
+    
     for j in awd_by_name[i]:
+        level = 3
+        score = 0
+        score_arr = {}
         for k in j:
             if k["ctype"] == "NOI":
                 if k["award_type"] == "金牌":
@@ -220,8 +223,7 @@ for i in awd_by_name:
                     level = max(level, 9)
                 if k["award_type"] == "铜牌":
                     level = max(level, 8)
-
-            if k["ctype"] == "NOIP提高":
+            if k["ctype"] == "NOIP提高" or k["ctype"] == "NOIP":
                 if k["rank"] <= noip_award_cnt[k["identity"]]:
                     level = max(level, 6)
                 if k["rank"] <= noip_award_cnt[k["identity"]] * 0.5:
@@ -249,14 +251,12 @@ for i in awd_by_name:
             except:
                 score = score
     
-    for j in score_arr:
-        score = score + score_arr[j]
-    
-    for j in level_score:
-        if score >= level_score[j]:
-            level = max(level, j)
-
-    for j in awd_by_name[i]:
+        for k in score_arr:
+            score = score + score_arr[k]
+        
+        for k in level_score:
+            if score >= level_score[k]:
+                level = max(level, k)
         j.append(piny)
         j.append(level)
         j.append(score)

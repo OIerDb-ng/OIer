@@ -1,104 +1,98 @@
 <?php
-	require_once 'dbinfo.php';
-	error_reporting(0);
-	header("Access-Control-Allow-Origin: http://www.bytew.net, http://xn--vuqs4zq3d.com");
-	// $conn = mysqli_connect('localhost', 'THE_USERNAME', 'THE_PASSWORD',"THE_DATABASE");
-	$conn = mysqli_connect(DbInfo::HOST, DbInfo::USER, DbInfo::PASSWD, DbInfo::DBNAME);
-	if(!$conn) die('Could not connect: ' . mysqli_connect_error());
-	$conn->set_charset("utf8");
-	header("Content-type: text/html; charset=utf8");
-	if ($_SERVER["REQUEST_METHOD"] == "GET") {
-		$curesult = Array();
-		if($_GET["method"] != "specific"){
-		    $q = $_GET["q"];
-			$orz = explode(" ",$_GET["q"]);
-			$got = 0;
-			foreach($orz as $cui){
-				$cui = mysqli_real_escape_string($conn,$cui);
-				if(count($curesult)==0){
-					if(preg_match("/^[a-zA-Z\s]+$/",$cui)){
-						$curi = strtolower($cui);
-						$result = mysqli_query($conn,"SELECT * FROM OIers Where pinyin = '$curi'");
-						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-							array_push($curesult,$row);
-						}
-					}else{
-						$result = mysqli_query($conn,"SELECT * FROM OIers Where name = '$cui'");
-						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-							array_push($curesult,$row);
-						}
-						$result = mysqli_query($conn,"SELECT * FROM OIers Where awards like '%$cui%'");
-						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-							array_push($curesult,$row);
-						}
-					}
-				}else{
-					$newresult = Array();
-					foreach($curesult as $row){
-						if(strpos ( $row["awards"] ,  $cui )||$row["name"] == $cui ||$row["pinyin"] == $cui )
-							array_push($newresult,$row);
-					}
-					if(count($newresult)) $curesult = $newresult;
-				}
-			}
-		}else{
-		    $qustr = "SELECT * FROM OIers Where 1 = 1 ";
-			if(isset($_GET["province"])){
-				$province = mysqli_real_escape_string($conn,$_GET["province"]);
-			}else{
-				$province = "";
-			}
-			if(isset($_GET["pinyin"])){
-				$pinyin = mysqli_real_escape_string($conn,$_GET["pinyin"]);
-			}else{
-				$pinyin = "";
-			}
-			if(isset($_GET["school"])){
-				$school = mysqli_real_escape_string($conn,$_GET["school"]);
-			}else{
-				$school = "";
-			}
-			if($pinyin!="")$qustr = $qustr." and pinyin = '".$pinyin."'";
-			if($province!="")$qustr = $qustr." and awards like '%".$province."%'";
-			if($school!=""){
-				$cresult = mysqli_query($conn,"SELECT * FROM OI_school where name like \"%'".$school."'%\"");
-				$ccresult = Array();
-				while($row=mysqli_fetch_array($cresult,MYSQLI_ASSOC)){
-					array_push($ccresult,$row);
-				}
-				if(count($ccresult)==1){
-					$qustr = $qustr." and awards like \"%'school_id': ".$ccresult[0]["id"].",%\"";
-				}else{
-					$qustr = $qustr." and awards like '%".$school."%'";
-				}
-			}
-			if(isset($_GET["name"])){
-				$name = mysqli_real_escape_string($conn,$_GET["name"]);
-			}else{
-				$name = "";
-			}
-			if($name!="")$qustr = $qustr." and name = '".$name."'";
-			$year=intval($_GET["year"]);
-			if(isset($_GET["year"]) && $_GET["year"]!="")$qustr = $qustr." and year = $year";
-			
-			$result = mysqli_query($conn,$qustr);
-			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-				array_push($curesult,$row);
-			}
-		}
-	}
+require_once 'common.php';
+error_reporting(0);
+header("Access-Control-Allow-Origin: http://www.bytew.net, http://xn--vuqs4zq3d.com");
+header("Content-type: text/html; charset=utf8");
 
-	$count = 0;
-	$result = Array();
+if ($_SERVER["REQUEST_METHOD"] != "GET") {
+    die(json_encode(array('result' => array(), 'count' => 0, 'cities' => array())));
+}
 
-	if (empty($_GET["pages"])) {
-		$start = 0;
-	} else {
-		$start = ($_GET["pages"] - 1) * 20;
-	}
-	
-	$curesult = array_slice($curesult,$start,20);
-	$result["result"] = $curesult;
-	echo json_encode($result);
-	mysqli_close($conn);
-?>
+function search_specific($limit, $params): array
+{
+    $conn = get_database_connection();
+    $conditions = array();
+    $query_params = array();
+    $types = '';
+    foreach (array('pinyin' => 's', 'name' => 's', 'year' => 'i',) as $item => $key) {
+        # exact match
+        if (!empty($params[$item])) {
+            array_push($conditions, "`$item` = ?");
+            array_push($query_params, $params[$item]);
+            $types .= $key;
+        }
+    }
+    if (!empty($params['province'])) {
+        $province = $params['province'];
+        array_push($conditions, "`awards` LIKE ?");
+        array_push($query_params, "%$province%");
+        $types .= 's';
+    }
+    if (!empty($params['school'])) {
+        $school = $params['school'];
+        $school = query_assoc_all($conn,
+            "SELECT * FROM OI_school WHERE name LIKE ?",
+            's', array("%$school%"));
+        if (count($school) > 0) {
+            $sid = $school[0]['id'];
+            array_push($conditions, "`awards` LIKE ?");
+            array_push($query_params, "%'school_id': $sid,%");
+        } else {
+            array_push($conditions, "`awards` LIKE ?");
+            array_push($query_params, "%$school%");
+        }
+        $types .= 's';
+    }
+    $res = query_assoc_all(
+        $conn,
+        "SELECT * FROM `OIers` " .
+        "WHERE" . join(" AND ", $conditions) .
+        " LIMIT $limit, 20",
+        $types, $query_params
+    );
+    $conn->close();
+    return $res;
+}
+
+function search_normal($limit, $params): array
+{
+    $conn = get_database_connection();
+    $query_params = array();
+    foreach ($params as $keyword) {
+        array_push($query_params, $keyword);
+        array_push($query_params, $keyword);
+        array_push($query_params, $keyword);
+        array_push($query_params, "%$keyword%");
+    }
+    $cur = query_assoc_all(
+        $conn,
+        "SELECT * FROM `OIers` " .
+        "WHERE" . join(" AND ", array_fill(
+            0, count($params),
+            "(`pinyin` = ? OR `name` = ? OR `re1` = ? OR `awards` like ?)"
+        )) .
+        " LIMIT $limit, 20",
+        str_repeat('ssss', count($params)), $query_params
+    ); # SELECT statements are case insensitive
+    $conn->close();
+    return $cur;
+}
+
+$method = $_GET["method"];
+$page = (int)$_GET["pages"];
+$page = $page > 0 ? $page : 1;
+$page = $page * 20 - 20;
+
+$result = array();
+switch ($method) {
+    case "specific":
+        $result['result'] = search_specific($page, $_GET);
+        break;
+    case "normal":
+        $result['result'] = search_normal($page, explode(' ', $_GET['q']));
+        break;
+    default:
+        $result['success'] = false;
+        $result['message'] = 'invalid method';
+}
+echo json_encode($result);

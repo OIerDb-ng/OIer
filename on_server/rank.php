@@ -1,48 +1,52 @@
 <?php
-    require_once 'dbinfo.php';
-    error_reporting(0);
-    header("Access-Control-Allow-Origin: http://www.bytew.net, http://xn--vuqs4zq3d.com");
-    // $conn = mysqli_connect('localhost', 'THE_USERNAME', 'THE_PASSWORD',"THE_DATABASE");
-    $conn = mysqli_connect(DbInfo::HOST, DbInfo::USER, DbInfo::PASSWD, DbInfo::DBNAME);
-    if(!$conn) die('Could not connect: ' . mysqli_connect_error());
-    $conn->set_charset("utf8");
-    header("Content-type: text/html; charset=utf8");
-    $curesult = Array();
-    $ccities  = Array();
-    $cnum  = Array();
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        $qr = "FROM OI_school WHERE 1=1 ";
-        if(isset($_GET["page"])){
-            $pg = (int)$_GET["page"];
-        }else{
-            $pg = 1;
-        }
-        if(isset($_GET["province"])){
-			$province = mysqli_real_escape_string($conn,$_GET["province"]);
-		}else{
-			$province = "";
-		}
-		if(isset($_GET["city"])){
-			$city = mysqli_real_escape_string($conn,$_GET["city"]);
-		}else{
-			$city = "";
-		}
-        if($province!="")$qr = $qr." and province = '".$province."'";
-        if($city!="")$qr = $qr." and city = '".$city."'";
-        $result = mysqli_query($conn,"SELECT id,name,rating,division,province,city,rank ".$qr." ORDER BY `rating`  DESC LIMIT ".strval($pg*10-10).",10");
-        while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($curesult,$row);
-        $result = mysqli_query($conn,"SELECT COUNT(*) ".$qr);
-        while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($cnum,$row);
-        if($province!=""){
-            $result = mysqli_query($conn,"SELECT  city FROM OI_school where province = '".$province."' GROUP BY city order by sum(rating) desc");
-            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))array_push($ccities,$row["city"]);
-        }
-    }
-    $count = 0;
-    $result = Array();
-    $result["result"] = $curesult;
-    $result["cities"] = $ccities;
-    $result["count"] = $cnum[0]["COUNT(*)"];
-    echo json_encode($result);
-    mysqli_close($conn);
-?>
+require_once 'common.php';
+
+error_reporting(0);
+header("Access-Control-Allow-Origin: http://www.bytew.net, http://xn--vuqs4zq3d.com");
+header("Content-type: text/html; charset=utf8");
+
+if ($_SERVER["REQUEST_METHOD"] != "GET")
+    die(json_encode(array('result' => array(), 'count' => 0, 'cities' => array())));
+
+$conn = get_database_connection();
+$result = array();
+
+$options = array('province', 'city');
+
+$page = (int)$_GET["page"];
+$page = $page > 0 ? $page : 1;
+$page = $page * 10 - 10;
+
+$conditions = array();
+$params = array('');
+foreach ($options as $key) {
+    if (empty($_GET[$key])) continue;
+    array_push($conditions, "$key=?");
+    $params[0] .= 's';
+    array_push($params, $_GET[$key]);
+}
+$where_query = empty($conditions) ? "" : " WHERE " . join(' AND ', $conditions);
+$query =
+    "SELECT `id`,`name`,`rating`,`division`,`province`,`city`,`rank` FROM `OI_school` " .
+    $where_query . " " .
+    "ORDER BY `rating` DESC LIMIT $page,10";
+$res = query_assoc_all($conn, $query, $params[0], array_slice($params, 1));
+$result['result'] = $res;
+$result['count'] = count($res);
+$result['page'] = $page;
+$result['total'] = query_assoc_all(
+    $conn, "SELECT COUNT(`id`) AS total FROM `OI_school`" . $where_query,
+    $params[0], array_slice($params, 1))[0]['total'];
+$result['cities'] = array();
+
+if (!empty($_GET["province"])) {
+    $query =
+        "SELECT `city` FROM `OI_school` " .
+        "WHERE `province` = ? " .
+        "GROUP BY city ORDER BY SUM(`rating`) DESC";
+    foreach (query_assoc_all($conn, $query, 's', array($_GET["province"])) as $row)
+        array_push($result['cities'], $row["city"]);
+}
+
+echo json_encode($result);
+$conn->close();
