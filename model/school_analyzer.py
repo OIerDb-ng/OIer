@@ -86,5 +86,8 @@ for i in school_info:
         if i["rating"]>rkreq[kk]:
             cr = rk[kk]
             break
+    for j in i["name"]:
+        if j not in recy:
+            i["name"].remove(j)
     f.write('"'+str(i["id"])+'","'+dmp(sorted(i["name"],key = lambda x:recy[x]*10000+recd[x],reverse = True))+'","'+dmp(i["awards"])+'","'+str(int(i["rating"]*100+1))+'","'+cr+'","'+i["prov"]+'","'+i["city"]+'","'+str(count)+'"\n')
     count+=1
