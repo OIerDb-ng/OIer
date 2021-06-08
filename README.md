@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/WZKSDN/OIer/raw/master/on_server/logo-white.png" />
+<img src="https://github.com/WZKSDN/OIer/raw/master/on_server/assets/logo-white.png" />
 </p>
 
 <h1 align="center">OIerDb</h1>
@@ -122,6 +122,10 @@
 |2021-04-10 |10.00元 |无  |
 |2021-04-13 |9.99元 |希望OIerDb能够长久  |
 |2021-05-10 |50.00元 |长沙  |
+|2021-05-23 |100.00元 |无  |
+|2021-06-01 |10.00元 |无  |
+|2021-06-03 |200.00元 |杨博洋 计蒜客  |
+|2021-06-07 |15.00元 |祝oierdb更好！  |
 ## 搭建指南
 
 这个项目是"OIerDb",但其实可以方便地改装成为任何一个学科竞赛获奖的数据库。项目由如下几部分组成：
