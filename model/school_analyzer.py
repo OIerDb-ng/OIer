@@ -6,7 +6,7 @@ school_info = []
 tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"金牌":0,"国际金牌":0,"银牌":1,"铜牌":2}
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,0,-5))]
-sc_rt = {"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04,"CSP提高":0.1,"CSP入门":0.04,"NOIP":0.15}
+sc_rt = {"IOI":2,"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04,"CSP提高":0.1,"CSP入门":0.04,"NOIP":0.15}
 name_map = {}
 rk = {}
 recy = {}
@@ -41,8 +41,8 @@ with open("data.txt",encoding='utf-8') as source:
             if not cname in rk:
                 rk[cname] = []
             if cur[5]!="":
-                rk[cname].append(int(cur[5]))
-                crk = rk[cname].index(int(cur[5]))
+                rk[cname].append(float(cur[5].split("(")[0]))
+                crk = rk[cname].index(float(cur[5].split("(")[0]))
             else:
                 rk[cname].append(0)
                 crk = len(rk)
