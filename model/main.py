@@ -27,7 +27,7 @@ def __main__():
 
 	def parse_school():
 		'解析 school.txt 文件。'
-		with open('school.txt') as f:
+		with open('data/school.txt') as f:
 			raw_data = f.readlines()
 		for idx, line in enumerate(raw_data):
 			try:
@@ -64,7 +64,7 @@ def __main__():
 	def parse_raw():
 		'解析 raw.txt 文件。'
 
-		with open('raw.txt') as f:
+		with open('data/raw.txt') as f:
 			raw_data = f.readlines()
 		for idx, line in enumerate(raw_data):
 			try:
@@ -126,7 +126,7 @@ def __main__():
 		'输出压缩的结果，不压缩的结果先咕着。'
 
 		OIer.sort_by_score()
-		with open('result.dat', 'w') as f:
+		with open('data/result', 'w') as f:
 			for oier in OIer.get_all():
 				print(oier.to_compress_format(), file = f)
 
@@ -138,7 +138,7 @@ def __main__():
 	attempt_split()
 	print('================ 分析选手中 ================', file = stderr)
 	analyze_individual_oier()
-	print('================ 输出到 result.dat 中 ================', file = stderr)
+	print('================ 输出到 data/result 中 ================', file = stderr)
 	output_compressed()
 
 if __name__ == '__main__':
