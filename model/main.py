@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import util
+import hashlib, util
 from collections import Counter
 from contest import Contest
 from oier import OIer
@@ -27,6 +27,7 @@ def __main__():
 
 	def parse_school():
 		'解析 school.txt 文件。'
+
 		with open('data/school.txt') as f:
 			raw_data = f.readlines()
 		for idx, line in enumerate(raw_data):
@@ -77,6 +78,7 @@ def __main__():
 
 		threshold: 距离阈值。
 		'''
+
 		recordss = []
 		for oier in OIer.get_all():
 			# 手动合并的无需拆分
@@ -130,6 +132,14 @@ def __main__():
 			for oier in OIer.get_all():
 				print(oier.to_compress_format(), file = f)
 
+	def compute_sha512():
+		'计算 data/result 的 SHA512 值，保存在 sha512/result 中'
+
+		with open('data/result', 'rb') as f:
+			sha512 = hashlib.sha512(f.read()).hexdigest()
+		with open('sha512/result', 'w') as f:
+			print(sha512, file = f)
+
 	print('================ 读取学校信息中 ================', file = stderr)
 	parse_school()
 	print('================ 读取选手信息中 ================', file = stderr)
@@ -140,6 +150,8 @@ def __main__():
 	analyze_individual_oier()
 	print('================ 输出到 data/result 中 ================', file = stderr)
 	output_compressed()
+	print('================ 计算 SHA512 摘要中 ================', file = stderr)
+	compute_sha512()
 
 if __name__ == '__main__':
 	__main__()

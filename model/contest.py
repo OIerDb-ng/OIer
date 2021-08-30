@@ -103,6 +103,6 @@ class Contest:
 				rank = len(self.contestants) + 1
 		self.last_rank = rank
 		record = Record(oier, self, score, rank, level, grade, school, province, gender)
-		self.level_counts[level] += 1
 		self.contestants.append(record)
+		self.level_counts[level] += 1
 		return record

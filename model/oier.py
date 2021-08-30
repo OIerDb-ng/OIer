@@ -72,9 +72,14 @@ class OIer:
 		OIer.__all_oiers_list__.sort(key = lambda oier: (-oier.oierdb_score, oier.uid))
 
 	@staticmethod
+	def __float2p_format__(x):
+		return '{:.2f}'.format(x).rstrip('0').rstrip('.').lstrip('0') or '0'
+
+	@staticmethod
 	def __score_format__(score):
 		return '' if score is None else '{:.5g}'.format(score)
 
+	@staticmethod
 	def __province_format__(province):
 		try:
 			return util.provinces.index(province)
@@ -89,9 +94,9 @@ class OIer:
 	def to_compress_format(self):
 		'转化成压缩格式字符串。'
 
-		return '{},{},{},{},{},{:.2f},{:.2f},{},{}'.format(
-			self.uid, self.initials, self.name, self.gender, self.enroll_middle,
-			self.oierdb_score, float(self.ccf_score), self.ccf_level, self.__get_compressed_records__()
+		return '{},{},{},{},{},{},{},{},{}'.format(
+			self.uid, self.initials, self.name, self.gender, self.enroll_middle, OIer.__float2p_format__(self.oierdb_score),
+			OIer.__float2p_format__(float(self.ccf_score)), self.ccf_level, self.__get_compressed_records__()
 		)
 
 	def add_record(self, record):
