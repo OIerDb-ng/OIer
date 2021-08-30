@@ -2,6 +2,7 @@
 
 from collections import Counter
 from record import Record
+from sys import stderr
 import re
 __re_score_with_rank__ = re.compile(r'^(\d+\.?\d+)\(rk(\d+)\)$')
 
@@ -18,7 +19,6 @@ class Contest:
 		self.capacity = settings.get('capacity')
 		self.contestants = []
 		self.level_counts = Counter()
-		self.last_rank = 0
 
 	@staticmethod
 	def create(settings):
@@ -97,11 +97,17 @@ class Contest:
 			rank = len(self.contestants) + 1
 		else:
 			score = float(score)
-			if len(self.contestants) and self.contestants[-1].score == score:
-				rank = self.last_rank
+			if len(self.contestants) == 0:
+				rank = 1
+			elif score == self.contestants[-1].score:
+				rank = self.contestants[-1].rank
 			else:
+				if (score is None) or (self.contestants[-1].score is None):
+					print('\x1b[01;33mwarning: \x1b[0m不兼容的分数：\x1b[32m{}\x1b[0m > \x1b[32m{}\x1b[0m，于比赛 \x1b[32m\'{}\'\x1b[0m'.format(score, self.contestants[-1].score, self.name))
+				elif score > self.contestants[-1].score:
+					print('\x1b[01;33mwarning: \x1b[0m不单调的分数：\x1b[32m{}\x1b[0m > \x1b[32m{}\x1b[0m，于比赛 \x1b[32m\'{}\'\x1b[0m'.format(score, self.contestants[-1].score, self.name))
 				rank = len(self.contestants) + 1
-		self.last_rank = rank
+
 		record = Record(oier, self, score, rank, level, grade, school, province, gender)
 		self.contestants.append(record)
 		self.level_counts[level] += 1

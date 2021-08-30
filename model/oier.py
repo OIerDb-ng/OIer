@@ -87,16 +87,29 @@ class OIer:
 			print('\x1b[01;33mwarning: \x1b[0m未知的省级行政区：\x1b[0;32m\'{}\'\x1b[0m'.format(province), file = stderr)
 			return province
 
+	@staticmethod
+	def __award_level_format__(level):
+		try:
+			return util.award_levels.index(level)
+		except:
+			print('\x1b[01;33mwarning: \x1b[0m未知的奖项名称：\x1b[0;32m\'{}\'\x1b[0m'.format(level), file = stderr)
+			return level
+
 	def __get_compressed_records__(self):
-		data = ['{}:{}:{}:{}:{}'.format(record.contest.id, record.school.id, OIer.__score_format__(record.score), record.rank, OIer.__province_format__(record.province)) for record in self.records]
+		data = ['{}:{}:{}:{}:{}:{}'.format(
+			record.contest.id, record.school.id, OIer.__score_format__(record.score),
+			record.rank, OIer.__province_format__(record.province), OIer.__award_level_format__(record.level)
+		) for record in self.records]
 		return '/'.join(data)
 
 	def to_compress_format(self):
 		'转化成压缩格式字符串。'
 
 		return '{},{},{},{},{},{},{},{},{}'.format(
-			self.uid, self.initials, self.name, self.gender, self.enroll_middle, OIer.__float2p_format__(self.oierdb_score),
-			OIer.__float2p_format__(float(self.ccf_score)), self.ccf_level, self.__get_compressed_records__()
+			self.uid, self.initials, self.name, self.gender, self.enroll_middle,
+			OIer.__float2p_format__(self.oierdb_score),
+			OIer.__float2p_format__(float(self.ccf_score)),
+			self.ccf_level, self.__get_compressed_records__()
 		)
 
 	def add_record(self, record):

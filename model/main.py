@@ -6,7 +6,7 @@ from contest import Contest
 from oier import OIer
 from record import Record
 from school import School
-from sys import stderr
+from sys import argv, stderr
 
 def __main__():
 	gender_map = {'男': 1, '女': -1}
@@ -54,10 +54,9 @@ def __main__():
 		school = School.by_name(school_name)
 		grade = util.get_grade(grade_name)
 		gender = gender_map.get(gender_name, 0)
-
 		if not Contest.is_score_valid(score):
 			raise ValueError('无法识别的分数：\x1b[032m\'{}\'\x1b[0m'.format(score))
-
+		# 开始创建数据
 		oier = OIer.of(name, identifier)
 		record = contest.add_contestant(oier, score, level, grade, school, province, gender)
 		oier.add_record(record)
@@ -73,8 +72,8 @@ def __main__():
 			except ValueError as e:
 				print('\x1b[01mraw.txt:{}: \x1b[31merror: \x1b[0;37m\'{}\'\x1b[0m，{}'.format(idx + 1, line.strip(), e), file = stderr)
 
-	def attempt_split(threshold = 240):
-		''' 尝试拆分信息。
+	def attempt_merge(threshold = 240):
+		''' 尝试合并信息。
 
 		threshold: 距离阈值。
 		'''
@@ -98,7 +97,7 @@ def __main__():
 					del a[bj]
 				else:
 					break
-			if len(a) != 1:
+			if '--show-incomplete-merge' in argv and len(a) != 1:
 				print('\x1b[01;33mwarning: \x1b[0;32m\'{}\'\x1b[0m 未完全合并，合并进度为 \x1b[32m{}\x1b[0m → \x1b[32m{}\x1b[0m'.format(oier.name, original_length, len(a)), file = stderr)
 			recordss.extend(a)
 		OIer.clear()
@@ -144,8 +143,8 @@ def __main__():
 	parse_school()
 	print('================ 读取选手信息中 ================', file = stderr)
 	parse_raw()
-	print('================ 拆分信息中 ================', file = stderr)
-	attempt_split()
+	print('================ 合并信息中 ================', file = stderr)
+	attempt_merge()
 	print('================ 分析选手中 ================', file = stderr)
 	analyze_individual_oier()
 	print('================ 输出到 data/result 中 ================', file = stderr)
