@@ -86,6 +86,8 @@ with open("data.txt",encoding='utf-8') as source:
             
             cnts[cname] = 0
         cnts[cname]+=1
+        if "IOI" in cname:
+            cnts[cname] = 300
         grade = 10000
         try:
             cur[3]
@@ -117,6 +119,9 @@ with open("data.txt",encoding='utf-8') as source:
                 cur["rank"] = len(contests[cname]["participants"])+1
             else:
                 cur["rank"] = lp["rank"]
+        if '(' in cur["score"]:
+            cur["rank"] = int(cur["score"].split("k")[1].split(")")[0])
+            cur["score"] = cur["score"].split('(')[0]
         contests[cname]["participants"].append(cur)
         if cur["name"] not in awd_by_name:
             awd_by_name[cur["name"]] = []

@@ -33,6 +33,8 @@ with open("data.txt",encoding='utf-8') as source:
             dp[i.split(',')[0]] = 1
         else:
             dp[i.split(',')[0]] += 1
+        if "IOI" in i.split(',')[0]:
+            dp[i.split(',')[0]] = 300
 with open("data.txt",encoding='utf-8') as source:
     for i in source:
         cur = i.strip().split(',')
@@ -43,6 +45,8 @@ with open("data.txt",encoding='utf-8') as source:
             if cur[5]!="":
                 rk[cname].append(float(cur[5].split("(")[0]))
                 crk = rk[cname].index(float(cur[5].split("(")[0]))
+                if "(" in cur[5]:
+                    crk = int(cur[5].split("k")[1].split(")")[0])
             else:
                 rk[cname].append(0)
                 crk = len(rk)
