@@ -108,7 +108,7 @@ def __main__():
 			ems = Counter(sorted(util.enrollment_middle(record.contest, record.grade) for record in records))
 			em = ems.most_common(1)[0][0]
 			# 性别如果唯一则取之，空或不唯一置空（如跨性别）
-			gender = set( record.gender for record in records if record.gender)
+			gender = set(record.gender for record in records if record.gender)
 			gender = gender.pop() if len(gender) == 1 else 0
 			oier = OIer(original.name, original.identifier, gender, em, uid)
 			oier.records = records[:]

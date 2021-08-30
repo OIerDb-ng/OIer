@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import gc, util
+import gc, re, util
 from fractions import Fraction as R
 from sys import stderr
+__re_identifier_with_initials__ = re.compile(r'<(\w+)>')
 
 '下列硬编码常量为 CCF 等级计算规则。'
 __clnoi__ = {'金牌': 10, '银牌': 9, '铜牌': 8}
@@ -19,7 +20,10 @@ class OIer:
 		self.gender = gender
 		self.enroll_middle = em
 		self.uid = uid
-		self.initial = util.get_initials(name)
+		if result := re.search(__re_identifier_with_initials__, identifier):
+			self.initials = result.group(1)
+		else:
+			self.initials = util.get_initials(name)
 		self.records = []
 		OIer.__all_oiers_list__.append(self)
 
@@ -80,13 +84,13 @@ class OIer:
 
 	def __get_compressed_records__(self):
 		data = ['{}:{}:{}:{}:{}'.format(record.contest.id, record.school.id, OIer.__score_format__(record.score), record.rank, OIer.__province_format__(record.province)) for record in self.records]
-		return '({})'.format('/'.join(data))
+		return '/'.join(data)
 
 	def to_compress_format(self):
 		'转化成压缩格式字符串。'
 
 		return '{},{},{},{},{},{:.2f},{:.2f},{},{}'.format(
-			self.uid, self.initial, self.name, self.gender, self.enroll_middle,
+			self.uid, self.initials, self.name, self.gender, self.enroll_middle,
 			self.oierdb_score, float(self.ccf_score), self.ccf_level, self.__get_compressed_records__()
 		)
 
@@ -119,7 +123,7 @@ class OIer:
 			if record.contest.type == 'NOI':
 				l = max(l, __clnoi__.get(record.level, 0))
 			elif record.contest.type in ['NOIP', 'NOIP提高']:
-				n = record.contest.level_counts.get('一等奖', 0)
+				n = record.contest.level_counts['一等奖']
 				if record.rank * 2 <= n:
 					l = max(l, 7)
 				elif record.rank <= n:

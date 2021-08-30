@@ -74,10 +74,9 @@ def __main__():
 
 	def get_initial_list(name):
 		initial = py.lazy_pinyin(name, style=py.Style.FIRST_LETTER)
-		if len(name) > 1 and name[:2] in surnames:
-			initial[:2] = surnames[name[:2]]
-		elif len(name) > 0 and name[0] in surnames:
-			initial[0] = surnames[name[0]]
+		for i in range(len(name), 0, -1):
+			if name[:i] in surnames:
+				initial[:i] = surnames[name[:i]]
 		return initial
 
 	def enrollment_middle(contest, grade):
@@ -123,7 +122,7 @@ def __main__():
 		'''
 
 		if type not in scoring:
-			print('\1b[01;33mwarning: \x1b[0m未知的比赛类型：\x1b[32m\'{}\'\x1b[0m (from \x1b[32m{}\x1b[0m)，不计算贡献'.format(type, name), file = stderr)
+			print('\x1b[01;33mwarning: \x1b[0m未知的比赛类型：\x1b[32m\'{}\'\x1b[0m (from \x1b[32m{}\x1b[0m)，不计算贡献'.format(type, name), file = stderr)
 		return D(scoring.get(type, '0'))
 
 __main__()

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
+from collections import Counter
 from record import Record
 import re
-__re_score_with_rank__ = re.compile('^(\d+\.?\d+)\(rk(\d+)\)$')
+__re_score_with_rank__ = re.compile(r'^(\d+\.?\d+)\(rk(\d+)\)$')
 
 class Contest:
 	__all_contests_list__ = []
@@ -16,7 +17,7 @@ class Contest:
 		self.fall_semester = settings['fall_semester']
 		self.capacity = settings.get('capacity')
 		self.contestants = []
-		self.level_counts = {}
+		self.level_counts = Counter()
 		self.last_rank = 0
 
 	@staticmethod
@@ -102,7 +103,6 @@ class Contest:
 				rank = len(self.contestants) + 1
 		self.last_rank = rank
 		record = Record(oier, self, score, rank, level, grade, school, province, gender)
-		self.level_counts.setdefault(level, 0)
 		self.level_counts[level] += 1
 		self.contestants.append(record)
 		return record
