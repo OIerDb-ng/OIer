@@ -1,162 +1,165 @@
 <div class="ui main container" style="margin-top: 1.5em">
 	<h2 class="ui dividing header"><a href="https://github.com/yhx-12243/oierdb-ng" target="_blank">前端被🕊🕊🕊了</a></h2>
-	<h3 class="ui dividing header">Javascript 版使用方式</h3>
-	<p>打开 Javascript 控制台，执行 <code>await OIerDb.init()</code>，直到控制台返回 <code>true</code> 并看到“预处理时长”字样。</p>
-	<p style="color: red">（注1：如果预处理失败了，控制台会返回原因）</p>
-	<p style="color: red">（注2：第一次执行或数据更新时可能较慢（因为要下载数据），其余情况会利用缓存，大约在 300 ~ 500 ms）</p>
-	<p>预处理成功后，可以通过 <code>OIerDb.contests</code> 访问比赛信息，<code>OIerDb.oiers</code> 访问选手信息，<code>OIerDb.schools</code> 访问学校信息，学校的奖项统计还未完善，请稍等。</p>
-	<h3 class="ui dividing header">Javascript 接口概述</h3>
-	<p>共 4 种类型，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别存储比赛，一条记录，选手和学校，接口如下：</p>
-	<div class="ui ordered list">
-		<div class="item">
-			<code>Contest</code>：
-			<div class="list">
-				<div class="item">
-					<div class="header">contestants</div>
-					<div class="description">有记录的所有参赛选手列表，为 <code>Record</code> 类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">fall_semester</div>
-					<div class="description">是否在 9 ~ 12 月。</div>
-				</div>
-				<div class="item">
-					<div class="header">id</div>
-					<div class="description">比赛的 id，按时间顺序排列。</div>
-				</div>
-				<div class="item">
-					<div class="header">level_counts</div>
-					<div class="description">（所有记录中）各奖项获得人数。</div>
-				</div>
-				<div class="item">
-					<div class="header">n_contestants()</div>
-					<div class="description">参赛总人数（不一定等于 <code>contestants.length</code>）。</div>
-				</div>
-				<div class="item">
-					<div class="header">name</div>
-					<div class="description">比赛名称（用缩写表示）。</div>
-				</div>
-				<div class="item">
-					<div class="header">school_year()</div>
-					<div class="description">该比赛的<strong>学年</strong>（如 NOIP2020 和 NOI2021 均返回 2020）。</div>
-				</div>
-				<div class="item">
-					<div class="header">type</div>
-					<div class="description">比赛类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">year</div>
-					<div class="description">比赛举办年份。</div>
-				</div>
-			</div>
-		</div>
-		<div class="item">
-			<code>OIer</code>：
-			<div class="list">
-				<div class="item">
-					<div class="header">ccf_level</div>
-					<div class="description">选手的 CCF 评级。</div>
-				</div>
-				<div class="item">
-					<div class="header">ccf_score</div>
-					<div class="description">选手的 CCF 评分。</div>
-				</div>
-				<div class="item">
-					<div class="header">enroll_middle</div>
-					<div class="description">选手的初中入学年份。</div>
-				</div>
-				<div class="item">
-					<div class="header">gender</div>
-					<div class="description">选手的性别（男为 1，女为 -1，其它或可能跨性别为 0）。</div>
-				</div>
-				<div class="item">
-					<div class="header">initials</div>
-					<div class="description">选手姓名的拼音首字母。</div>
-				</div>
-				<div class="item">
-					<div class="header">name</div>
-					<div class="description">选手姓名。</div>
-				</div>
-				<div class="item">
-					<div class="header">oierdb_score</div>
-					<div class="description">选手的 OIerDb 评分，衰变起点取为 2000 年。</div>
-				</div>
-				<div class="item">
-					<div class="header">provinces</div>
-					<div class="description">选手参加的所有比赛的省份集合。</div>
-				</div>
-				<div class="item">
-					<div class="header">rank</div>
-					<div class="description">选手当前在 OIerDb 上的排名。</div>
-				</div>
-				<div class="item">
-					<div class="header">records</div>
-					<div class="description">选手参加的所有（获奖）比赛的记录列表，为 <code>Record</code> 类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">uid</div>
-					<div class="description">选手在 OIerDb 中的唯一 ID<strong style="color: red">（注意姓名可以重复，<code>uid</code> 不会重复）</strong>。</div>
+	<div id="content">
+		<h3 class="ui dividing header">Javascript 版使用方式</h3>
+		<p>打开 Javascript 控制台，执行 <code>await OIerDb.init()</code>，直到控制台返回 <code>true</code> 并看到“预处理时长”字样。</p>
+		<p style="color: red">（注1：如果预处理失败了，控制台会返回原因）</p>
+		<p style="color: red">（注2：第一次执行或数据更新时可能较慢（因为要下载数据），其余情况会利用缓存，大约在 300 ~ 500 ms）</p>
+		<p>预处理成功后，可以通过 <code>OIerDb.contests</code> 访问比赛信息，<code>OIerDb.oiers</code> 访问选手信息，<code>OIerDb.schools</code> 访问学校信息，学校的奖项统计还未完善，请稍等。</p>
+		<h3 class="ui dividing header">Javascript 接口概述</h3>
+		<p>共 4 种类型，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别存储比赛，一条记录，选手和学校，接口如下：</p>
+		<div class="ui ordered list">
+			<div class="item">
+				<code>Contest</code>：
+				<div class="list">
+					<div class="item">
+						<div class="header">contestants</div>
+						<div class="description">有记录的所有参赛选手列表，为 <code>Record</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">fall_semester</div>
+						<div class="description">是否在 9 ~ 12 月。</div>
+					</div>
+					<div class="item">
+						<div class="header">id</div>
+						<div class="description">比赛的 id，按时间顺序排列。</div>
+					</div>
+					<div class="item">
+						<div class="header">level_counts</div>
+						<div class="description">（所有记录中）各奖项获得人数。</div>
+					</div>
+					<div class="item">
+						<div class="header">n_contestants()</div>
+						<div class="description">参赛总人数（不一定等于 <code>contestants.length</code>）。</div>
+					</div>
+					<div class="item">
+						<div class="header">name</div>
+						<div class="description">比赛名称（用缩写表示）。</div>
+					</div>
+					<div class="item">
+						<div class="header">school_year()</div>
+						<div class="description">该比赛的<strong>学年</strong>（如 NOIP2020 和 NOI2021 均返回 2020）。</div>
+					</div>
+					<div class="item">
+						<div class="header">type</div>
+						<div class="description">比赛类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">year</div>
+						<div class="description">比赛举办年份。</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="item">
-			<code>Record</code>：
-			<div class="list">
-				<div class="item">
-					<div class="header">contest</div>
-					<div class="description">记录所在的比赛，为 <code>Contest</code> 类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">level</div>
-					<div class="description">记录对应的奖项名称，如“一等奖”、“金牌”。</div>
-				</div>
-				<div class="item">
-					<div class="header">oier</div>
-					<div class="description">记录对应的选手，为 <code>OIer</code> 类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">province</div>
-					<div class="description">记录时参赛者所在省份。</div>
-				</div>
-				<div class="item">
-					<div class="header">school</div>
-					<div class="description">记录时参赛者所在学校，为 <code>School</code> 类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">score</div>
-					<div class="description">该记录中选手获得的分数，<strong style="color: red">对于一些比赛，该字段可能不存在</strong>。</div>
-				</div>
-				<div class="item">
-					<div class="header">rank</div>
-					<div class="description">该记录中选手获得的排名。</div>
+			<div class="item">
+				<code>OIer</code>：
+				<div class="list">
+					<div class="item">
+						<div class="header">ccf_level</div>
+						<div class="description">选手的 CCF 评级。</div>
+					</div>
+					<div class="item">
+						<div class="header">ccf_score</div>
+						<div class="description">选手的 CCF 评分。</div>
+					</div>
+					<div class="item">
+						<div class="header">enroll_middle</div>
+						<div class="description">选手的初中入学年份。</div>
+					</div>
+					<div class="item">
+						<div class="header">gender</div>
+						<div class="description">选手的性别（男为 1，女为 -1，其它或可能跨性别为 0）。</div>
+					</div>
+					<div class="item">
+						<div class="header">initials</div>
+						<div class="description">选手姓名的拼音首字母。</div>
+					</div>
+					<div class="item">
+						<div class="header">name</div>
+						<div class="description">选手姓名。</div>
+					</div>
+					<div class="item">
+						<div class="header">oierdb_score</div>
+						<div class="description">选手的 OIerDb 评分，衰变起点取为 2000 年。</div>
+					</div>
+					<div class="item">
+						<div class="header">provinces</div>
+						<div class="description">选手参加的所有比赛的省份集合。</div>
+					</div>
+					<div class="item">
+						<div class="header">rank</div>
+						<div class="description">选手当前在 OIerDb 上的排名。</div>
+					</div>
+					<div class="item">
+						<div class="header">records</div>
+						<div class="description">选手参加的所有（获奖）比赛的记录列表，为 <code>Record</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">uid</div>
+						<div class="description">选手在 OIerDb 中的唯一 ID<strong style="color: red">（注意姓名可以重复，<code>uid</code>
+								不会重复）</strong>。</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="item">
-			<code>School</code>：
-			<div class="list">
-				<div class="item">
-					<div class="header">city</div>
-					<div class="description">学校所在城市（地级行政区）。</div>
+			<div class="item">
+				<code>Record</code>：
+				<div class="list">
+					<div class="item">
+						<div class="header">contest</div>
+						<div class="description">记录所在的比赛，为 <code>Contest</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">level</div>
+						<div class="description">记录对应的奖项名称，如“一等奖”、“金牌”。</div>
+					</div>
+					<div class="item">
+						<div class="header">oier</div>
+						<div class="description">记录对应的选手，为 <code>OIer</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">province</div>
+						<div class="description">记录时参赛者所在省份。</div>
+					</div>
+					<div class="item">
+						<div class="header">school</div>
+						<div class="description">记录时参赛者所在学校，为 <code>School</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">score</div>
+						<div class="description">该记录中选手获得的分数，<strong style="color: red">对于一些比赛，该字段可能不存在</strong>。</div>
+					</div>
+					<div class="item">
+						<div class="header">rank</div>
+						<div class="description">该记录中选手获得的排名。</div>
+					</div>
 				</div>
-				<div class="item">
-					<div class="header">id</div>
-					<div class="description">学校的 id，<strong style="color: red">按登记顺序排列</strong>。</div>
-				</div>
-				<div class="item">
-					<div class="header">members</div>
-					<div class="description">（有记录的）学校的所有成员，为 <code>OIer</code> 类型。</div>
-				</div>
-				<div class="item">
-					<div class="header">name</div>
-					<div class="description">（登记的）学校规范全称。</div>
-				</div>
-				<div class="item">
-					<div class="header">province</div>
-					<div class="description">学校所在省份（省级行政区）。</div>
-				</div>
-				<div class="item">
-					<div class="header">records</div>
-					<div class="description">学校的所有记录，为 <code>Record</code> 类型。</div>
+			</div>
+			<div class="item">
+				<code>School</code>：
+				<div class="list">
+					<div class="item">
+						<div class="header">city</div>
+						<div class="description">学校所在城市（地级行政区）。</div>
+					</div>
+					<div class="item">
+						<div class="header">id</div>
+						<div class="description">学校的 id，<strong style="color: red">按登记顺序排列</strong>。</div>
+					</div>
+					<div class="item">
+						<div class="header">members</div>
+						<div class="description">（有记录的）学校的所有成员，为 <code>OIer</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">name</div>
+						<div class="description">（登记的）学校规范全称。</div>
+					</div>
+					<div class="item">
+						<div class="header">province</div>
+						<div class="description">学校所在省份（省级行政区）。</div>
+					</div>
+					<div class="item">
+						<div class="header">records</div>
+						<div class="description">学校的所有记录，为 <code>Record</code> 类型。</div>
+					</div>
 				</div>
 			</div>
 		</div>
