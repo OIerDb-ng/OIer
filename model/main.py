@@ -127,14 +127,15 @@ def __main__():
 		'输出压缩的结果，不压缩的结果先咕着。'
 
 		OIer.sort_by_score()
-		with open('data/result', 'w') as f:
+		with open('data/result.txt', 'w') as f:
 			for oier in OIer.get_all():
 				print(oier.to_compress_format(), file = f)
 
 	def compute_sha512():
-		'计算 data/result 的 SHA512 值，保存在 sha512/result 中'
+		'计算 data/result.txt 的 SHA512 值，保存在 sha512/result 中'
+		# 使用 *.txt 后缀可以利用 gzip 压缩
 
-		with open('data/result', 'rb') as f:
+		with open('data/result.txt', 'rb') as f:
 			sha512 = hashlib.sha512(f.read()).hexdigest()
 		with open('sha512/result', 'w') as f:
 			print(sha512, file = f)
@@ -147,7 +148,7 @@ def __main__():
 	attempt_merge()
 	print('================ 分析选手中 ================', file = stderr)
 	analyze_individual_oier()
-	print('================ 输出到 data/result 中 ================', file = stderr)
+	print('================ 输出到 data/result.txt 中 ================', file = stderr)
 	output_compressed()
 	print('================ 计算 SHA512 摘要中 ================', file = stderr)
 	compute_sha512()

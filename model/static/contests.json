@@ -467,6 +467,12 @@
 	},
 	{
 		"fall_semester": false,
+		"name": "APIO2020",
+		"type": "APIO",
+		"year": 2020
+	},
+	{
+		"fall_semester": false,
 		"name": "NOI2020",
 		"type": "NOI",
 		"year": 2020
@@ -482,12 +488,6 @@
 		"fall_semester": false,
 		"name": "IOI2020",
 		"type": "IOI",
-		"year": 2020
-	},
-	{
-		"fall_semester": false,
-		"name": "APIO2020",
-		"type": "APIO",
 		"year": 2020
 	},
 	{

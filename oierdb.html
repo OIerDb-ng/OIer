@@ -1,3 +1,8 @@
+<script>
+// <![CDATA[
+	OIerDb.upstream_sha512 = '{{upstream_sha512}}';
+// ]]>
+</script>
 <div class="ui main container" style="margin-top: 1.5em">
 	<h2 class="ui dividing header"><a href="https://github.com/yhx-12243/oierdb-ng" target="_blank">前端被🕊🕊🕊了</a></h2>
 	<div id="content">
@@ -7,7 +12,7 @@
 		<p style="color: red">（注2：第一次执行或数据更新时可能较慢（因为要下载数据），其余情况会利用缓存，大约在 300 ~ 500 ms）</p>
 		<p>预处理成功后，可以通过 <code>OIerDb.contests</code> 访问比赛信息，<code>OIerDb.oiers</code> 访问选手信息，<code>OIerDb.schools</code> 访问学校信息，学校的奖项统计还未完善，请稍等。</p>
 		<h3 class="ui dividing header">Javascript 接口概述</h3>
-		<p>共 4 种类型，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别存储比赛，一条记录，选手和学校，接口如下：</p>
+		<p>共 4 种类型，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别存储比赛，选手，一条记录和学校，接口如下：</p>
 		<div class="ui ordered list">
 			<div class="item">
 				<code>Contest</code>：
@@ -95,8 +100,7 @@
 					</div>
 					<div class="item">
 						<div class="header">uid</div>
-						<div class="description">选手在 OIerDb 中的唯一 ID<strong style="color: red">（注意姓名可以重复，<code>uid</code>
-								不会重复）</strong>。</div>
+						<div class="description">选手在 OIerDb 中的唯一 ID<strong style="color: red">（注意姓名可以重复，<code>uid</code> 不会重复）</strong>。</div>
 					</div>
 				</div>
 			</div>

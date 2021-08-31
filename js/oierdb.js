@@ -39,67 +39,69 @@
 		return this.capacity ? this.capacity : this.contestants.length;
 	}
 
-	function __builtin_add_contestant(contest, record) {
-		contest.contestants.push(record);
-		if (!(record.level in contest.level_counts)) {
-			contest.level_counts[record.level] = 0;
-		}
-		++contest.level_counts[record.level];
-	}
-
 	async function fetch_raw_data() {
-		return (await fetch('/oierdb-ng/data/result')).text();
-	}
-
-	async function version_check() {
-		let digest = localStorage.data_sha512;
-		let upstream = await (await fetch('/oierdb-ng/data-sha512')).text();
-		if (digest === upstream) {
-			return true;
-		}
-		let response = await fetch_raw_data();
-		localStorage.data_sha512 = upstream;
-		return response;
+		return (await fetch('/oierdb-ng/data/result.txt')).text();
 	}
 
 	async function load_from_indexDB() {
-		return new Promise((fulfill, reject) => {
+		if (!(await indexedDB.databases()).find(database => database.name === 'OIerDb')) {
+			throw Error('未找到数据库');
+		}
+		let db = await new Promise((fulfill, reject) => {
 			let request = indexedDB.open('OIerDb');
 			request.onerror = reject;
 			request.onsuccess = () => fulfill(request.result);
-			request.onupgradeneeded = reject;
-		}).then(db => {
-			let os = db.transaction('main').objectStore('main'), data = {};
-			return new Promise((fulfill, reject) => {
-				let request = os.get('oiers');
-				request.onerror = reject;
-				request.onsuccess = () => {OIerDb.oiers = request.result; fulfill();}
-			});
+			request.onupgradeneeded = () => reject('数据库版本不符');
+		});
+		let os = db.transaction('main').objectStore('main'), data = {};
+		return new Promise((fulfill, reject) => {
+			let request = os.get('oiers');
+			request.onerror = reject;
+			request.onsuccess = () => fulfill(request.result);
 		});
 	}
 
-	async function save_to_indexDB() {
-		return new Promise((fulfill, reject) => {
-			let request = indexedDB.open('OIerDb');
-			request.onerror = reject;
-			request.onsuccess = () => fulfill(request.result);
-			request.onupgradeneeded = () => {
-				let db = request.result;
-				if (!db.objectStoreNames.contains('main')) {
-					db.createObjectStore('main');
+	async function save_to_indexDB(data) {
+		let db, penalty = 0;
+		for (; ; ) {
+			db = await new Promise((fulfill, reject) => {
+				let request = indexedDB.open('OIerDb');
+				request.onerror = reject;
+				request.onsuccess = () => fulfill(request.result);
+				request.onupgradeneeded = () => {
+					let db = request.result;
+					if (!db.objectStoreNames.contains('main')) {
+						db.createObjectStore('main');
+					}
 				}
-			}
-		}).then(db => {
-			let os = db.transaction('main', 'readwrite').objectStore('main');
-			return new Promise((fulfill, reject) => {
-				let request = os.put(OIerDb.oiers, 'oiers');
+			});
+			if (db.objectStoreNames.contains('main')) break;
+			if (++penalty > 10) throw Error('数据库结构无法修复');
+			console.log(`数据库结构损坏，正在修复中，请稍等直至修复完成的消息 (${penalty}/10) ...`);
+			await new Promise((fulfill, reject) => {
+				let request = indexedDB.deleteDatabase('OIerDb');
 				request.onerror = reject;
 				request.onsuccess = fulfill;
 			});
+		}
+		if (penalty) console.log('数据库修复完成，准备写入。')
+		let os = db.transaction('main', 'readwrite').objectStore('main');
+		return new Promise((fulfill, reject) => {
+			let request = os.put(data, 'oiers');
+			request.onerror = reject;
+			request.onsuccess = fulfill;
 		});
 	}
 
 	function link() {
+		const add_contestant = function (contest, record) {
+			contest.contestants.push(record);
+			if (!(record.level in contest.level_counts)) {
+				contest.level_counts[record.level] = 0;
+			}
+			++contest.level_counts[record.level];
+		}
+
 		OIerDb.contests.forEach(contest => {contest.contestants = []; contest.level_counts = {};});
 		OIerDb.schools.forEach(school => {school.members = []; school.records = [];});
 		OIerDb.oiers.forEach(oier => {
@@ -108,13 +110,14 @@
 				record.contest = OIerDb.contests[record.contest];
 				record.school = OIerDb.schools[record.school];
 				record.oier = oier;
-				__builtin_add_contestant(record.contest, record);
+				add_contestant(record.contest, record);
 				record.school.records.push(record);
 				record.school.members.push(oier);
 			});
 		});
 		OIerDb.contests.forEach(contest => contest.contestants.sort((x, y) => x.rank - y.rank));
 		OIerDb.schools.forEach(school => school.members = Array.from(new Set(school.members)));
+		return true;
 	}
 
 	function text_to_raw(response) {
@@ -148,7 +151,7 @@
 			};
 			data.push(oier);
 		}
-		OIerDb.oiers = data;
+		return data;
 	}
 
 	OIerDb.init = async function () {
@@ -160,19 +163,19 @@
 			first_init = false;
 		}
 		try {
-			let response = await version_check();
-			if (response === true) {
+			if (localStorage.data_sha512 === OIerDb.upstream_sha512) {
 				try {
-					await load_from_indexDB();
-					return link(), true;
+					OIerDb.oiers = await load_from_indexDB();
+					return link();
 				} catch (e1) {
 					console.log(`旧数据受损，原因：${e1.message}，重新读取中...`);
-					response = await fetch_raw_data();
 				}
 			}
-			text_to_raw(response);
-			await save_to_indexDB();
-			return link(), true;
+			let response = await fetch_raw_data();
+			OIerDb.oiers = text_to_raw(response);
+			await save_to_indexDB(OIerDb.oiers);
+			if (link()) localStorage.data_sha512 = OIerDb.upstream_sha512;
+			return true;
 		} catch (e) {
 			console.log(`预处理失败，原因：${e.message}`);
 		} finally {
