@@ -6,7 +6,7 @@
 
 	if (!globalThis || !globalThis.indexedDB) {
 		document.addEventListener('DOMContentLoaded', () => {
-			document.getElementById('content').innerHTML = '<h3 class="ui dividing header">请更新浏览器</h3><p>非常抱歉，您的浏览器不支持 <code>indexedDB</code>。请<a href="https://www.google.cn/chrome/" target="_blank">升级至最新版浏览器</a>查看😅</h3>';
+			document.getElementById('main').innerHTML = '<h3 class="ui dividing header">请更新浏览器</h3><p>非常抱歉，您的浏览器不支持 <code>indexedDB</code>。请<a href="https://www.google.cn/chrome/" target="_blank">升级至最新版浏览器</a>查看😅</h3>';
 		});
 		return;
 	}
@@ -121,10 +121,10 @@
 	}
 
 	function text_to_raw(response) {
-		let lines = response.split('\n'), data = [];
-		for (let line of lines) {
+		let data = [];
+		response.split('\n').forEach(line => {
 			let fields = line.split(',');
-			if (fields.length !== 9) continue;
+			if (fields.length !== 9) return;
 			let [uid, initials, name, gender, enroll_middle, oierdb_score, ccf_score, ccf_level, compressed_records] = fields;
 			let records = compressed_records.split('/').map(record => {
 				let [contest, school, score, rank, province_id, award_level_id] = record.split(':');
@@ -150,7 +150,7 @@
 				records,
 			};
 			data.push(oier);
-		}
+		});
 		return data;
 	}
 
@@ -194,6 +194,19 @@
 			pred = f;
 		}
 	});
+
+	jQuery(document).ready($ => {
+		$('#tabs>.item').tab();
+		sh_highlightDocument('/js/lang/', '.js');
+	});
+
+	// syntactic sugars
+	const find = Array.prototype.find,
+		  filter = Array.prototype.filter;
+
+	OIerDb.ofInitials = function (initials, all = false) {
+		return (all ? filter : find).call(OIerDb.oiers, oier => oier.initials === initials);
+	}
 
 	if (localStorage.oierdb_predicate) {
 		try {

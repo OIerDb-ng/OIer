@@ -1,17 +1,65 @@
+<style>
+	.angle.left.icon {color: #bababa;}
+	.angle.right.icon {color: #939393;}
+	.caret.icon {color: #727272;}
+</style>
 <script>
 // <![CDATA[
 	OIerDb.upstream_sha512 = '{{upstream_sha512}}';
 // ]]>
 </script>
-<div class="ui main container" style="margin-top: 1.5em">
-	<h2 class="ui dividing header"><a href="https://github.com/yhx-12243/oierdb-ng" target="_blank">前端被🕊🕊🕊了</a></h2>
-	<div id="content">
-		<h3 class="ui dividing header">Javascript 版使用方式</h3>
+<div class="ui main container" id="main" style="margin-top: 1.5em">
+	<div class="ui tabular menu" id="tabs">
+		<a class="item active" data-tab="tab-main">主 UI</a>
+		<a class="item" data-tab="tab-js-intro">JS 使用方式</a>
+		<a class="item" data-tab="tab-js-api">JS 详细接口概述</a>
+	</div>
+	<div class="ui tab segment active" data-tab="tab-main">
+		<a href="https://github.com/yhx-12243/oierdb-ng" style="font-size: 72px; line-height: 1" target="_blank">🕊</a>
+	</div>
+	<div class="ui tab segment" data-tab="tab-js-intro">
+		<h3 class="ui dividing header">Javascript 使用方式</h3>
 		<p>打开 Javascript 控制台，执行 <code>await OIerDb.init()</code>，直到控制台返回 <code>true</code> 并看到“预处理时长”字样。</p>
 		<p style="color: red">（注1：如果预处理失败了，控制台会返回原因）</p>
 		<p style="color: red">（注2：第一次执行或数据更新时可能较慢（因为要下载数据），其余情况会利用缓存，大约在 300 ~ 500 ms）</p>
 		<p>预处理成功后，可以通过 <code>OIerDb.contests</code> 访问比赛信息，<code>OIerDb.oiers</code> 访问选手信息，<code>OIerDb.schools</code> 访问学校信息，学校的奖项统计还未完善，请稍等。</p>
-		<h3 class="ui dividing header">Javascript 接口概述</h3>
+		<h3 class="ui dividing header">一些便捷的语法糖</h3>
+		<div class="ui ordered list">
+			<div class="item">
+				<div class="header"><code>OIerDb.ofInitials(<em>&lt;initials&gt;</em>, <em>[all]</em>)</code></div>
+				<div class="description">
+					根据首字母寻找 OIer。
+					<div class="list">
+						<div class="header">initials</div>
+						<div class="description">必须，姓名的首字母字符串。</div>
+					</div>
+					<div class="list">
+						<div class="header">all</div>
+						<div class="description">如果为 <code>true</code>（或其它真值），则表示返回所有首字母为 <code>initials</code> 的 OIer 列表，否则只返回排名最靠前的一个。</div>
+					</div>
+					示例：
+					<pre class="ui segment sh_javascript_dom" style="font-size: 12px; overflow: auto; padding-left: .4em"><i class="angle right icon"></i>await OIerDb.init();
+|<i class="icon"></i>预处理时长: 300 ms
+|<i class="angle left icon"></i>true
+|<i class="angle right icon"></i>OIerDb.ofInitials('wzy');
+|<i class="angle left icon"></i>{ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="angle right icon"></i>OIerDb.ofInitials('wzy', true);
+|<i class="angle left icon"></i><i class="caret down icon"></i>(199) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, …]
+|<i class="icon"></i><i class="icon"></i><i class="caret down icon"></i>[0 … 99]
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>0: {ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>1: {ccf_level: 9, ccf_score: 483.7, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>2: {ccf_level: 9, ccf_score: 742.93, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>3: {ccf_level: 8, ccf_score: 356.14, enroll_middle: 2016, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i>// 以下省略 96 行
+|<i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>[100 … 198]
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i>length: 199
+|</pre>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui tab segment" data-tab="tab-js-api">
+		<h3 class="ui dividing header">Javascript 详细接口概述</h3>
 		<p>共 4 种类型，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别存储比赛，选手，一条记录和学校，接口如下：</p>
 		<div class="ui ordered list">
 			<div class="item">

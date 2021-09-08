@@ -17,7 +17,7 @@ let schools = [];
 output.schools = {enumerable: true, value: schools, writable: true};
 fs.readFileSync('model/data/school.txt', {encoding: 'utf-8'}).split('\n').forEach(line => {
 	let fields = line.split(',');
-	if (fields.length > 2) {
+	if (!line.startsWith('#') && fields.length > 2) {
 		let [province, city, name] = fields;
 		schools.push([name, province, city]);
 	}
