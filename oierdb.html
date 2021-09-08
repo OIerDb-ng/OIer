@@ -1,14 +1,9 @@
-<style>
-	.angle.left.icon {color: #bababa;}
-	.angle.right.icon {color: #939393;}
-	.caret.icon {color: #727272;}
-</style>
 <script>
 // <![CDATA[
 	OIerDb.upstream_sha512 = '{{upstream_sha512}}';
 // ]]>
 </script>
-<div class="ui main container" id="main" style="margin-top: 1.5em">
+<div class="ui main container" id="main" style="padding-top: 1.5em">
 	<div class="ui tabular menu" id="tabs">
 		<a class="item active" data-tab="tab-main">主 UI</a>
 		<a class="item" data-tab="tab-js-intro">JS 使用方式</a>
@@ -30,29 +25,31 @@
 				<div class="description">
 					根据首字母寻找 OIer。
 					<div class="list">
-						<div class="header">initials</div>
-						<div class="description">必须，姓名的首字母字符串。</div>
-					</div>
-					<div class="list">
-						<div class="header">all</div>
-						<div class="description">如果为 <code>true</code>（或其它真值），则表示返回所有首字母为 <code>initials</code> 的 OIer 列表，否则只返回排名最靠前的一个。</div>
+						<div class="item">
+							<div class="header">initials</div>
+							<div class="description">必须，姓名的首字母字符串。</div>
+						</div>
+						<div class="item">
+							<div class="header">all</div>
+							<div class="description">可选，如果为 <code>true</code>（或其它真值），则表示返回所有首字母为 <code>initials</code> 的 OIer 列表，否则只返回排名最靠前的一个。</div>
+						</div>
 					</div>
 					示例：
-					<pre class="ui segment sh_javascript_dom" style="font-size: 12px; overflow: auto; padding-left: .4em"><i class="angle right icon"></i>await OIerDb.init();
+					<pre class="ui segment sh_js_repl" style="font-size: 12px; overflow: auto; padding-left: .4em"><span class="input"><i class="icon"></i>await OIerDb.init();</span>
 |<i class="icon"></i>预处理时长: 300 ms
-|<i class="angle left icon"></i>true
-|<i class="angle right icon"></i>OIerDb.ofInitials('wzy');
-|<i class="angle left icon"></i>{ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}
-|<i class="angle right icon"></i>OIerDb.ofInitials('wzy', true);
-|<i class="angle left icon"></i><i class="caret down icon"></i>(199) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, …]
+|<span class="output"><i class="icon"></i>true</span>
+|<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy');</span>
+|<span class="output"><i class="icon"></i><i class="caret right icon"></i>{ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}</span>
+|<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy', true);</span>
+|<span class="output"><i class="icon"></i><i class="caret down icon"></i>(199) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, …]
 |<i class="icon"></i><i class="icon"></i><i class="caret down icon"></i>[0 … 99]
-|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>0: {ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}
-|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>1: {ccf_level: 9, ccf_score: 483.7, enroll_middle: 2015, gender: 1, initials: "wzy", …}
-|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>2: {ccf_level: 9, ccf_score: 742.93, enroll_middle: 2015, gender: 1, initials: "wzy", …}
-|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>3: {ccf_level: 8, ccf_score: 356.14, enroll_middle: 2016, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i><span class="sh_property">0</span>: {ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i><span class="sh_property">1</span>: {ccf_level: 9, ccf_score: 483.7, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i><span class="sh_property">2</span>: {ccf_level: 9, ccf_score: 742.93, enroll_middle: 2015, gender: 1, initials: "wzy", …}
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i><span class="sh_property">3</span>: {ccf_level: 8, ccf_score: 356.14, enroll_middle: 2016, gender: 1, initials: "wzy", …}
 |<i class="icon"></i><i class="icon"></i><i class="icon"></i>// 以下省略 96 行
 |<i class="icon"></i><i class="icon"></i><i class="caret right icon"></i>[100 … 198]
-|<i class="icon"></i><i class="icon"></i><i class="icon"></i>length: 199
+|<i class="icon"></i><i class="icon"></i><i class="icon"></i><span class="sh_property">length</span>: 199</span>
 |</pre>
 				</div>
 			</div>
