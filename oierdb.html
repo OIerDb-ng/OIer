@@ -3,7 +3,7 @@
 	OIerDb.upstream_sha512 = '{{upstream_sha512}}';
 // ]]>
 </script>
-<div class="ui main container" id="main" style="padding-top: 1.5em">
+<div class="ui main container" id="main" style="padding-top: 1.5em; padding-bottom: 1.5em">
 	<div class="ui tabular menu" id="tabs">
 		<a class="item active" data-tab="tab-main">主 UI</a>
 		<a class="item" data-tab="tab-js-intro">JS 使用方式</a>
@@ -17,7 +17,7 @@
 		<p>打开 Javascript 控制台，执行 <code>await OIerDb.init()</code>，直到控制台返回 <code>true</code> 并看到“预处理时长”字样。</p>
 		<p style="color: red">（注1：如果预处理失败了，控制台会返回原因）</p>
 		<p style="color: red">（注2：第一次执行或数据更新时可能较慢（因为要下载数据），其余情况会利用缓存，大约在 300 ~ 500 ms）</p>
-		<p>预处理成功后，可以通过 <code>OIerDb.contests</code> 访问比赛信息，<code>OIerDb.oiers</code> 访问选手信息，<code>OIerDb.schools</code> 访问学校信息，学校的奖项统计还未完善，请稍等。</p>
+		<p>预处理成功后，可以通过 <code>OIerDb.contests</code> 访问比赛信息，<code>OIerDb.oiers</code> 访问选手信息，<code>OIerDb.schools</code> 访问学校信息。</p>
 		<h3 class="ui dividing header">一些便捷的语法糖</h3>
 		<div class="ui ordered list">
 			<div class="item">

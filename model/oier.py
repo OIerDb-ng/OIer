@@ -68,6 +68,7 @@ class OIer:
 	@staticmethod
 	def sort_by_score():
 		'根据 DB 评分对 OIer 排序。'
+
 		OIer.__all_oiers_list__.sort(key = lambda oier: (-oier.oierdb_score, oier.uid))
 
 	@staticmethod

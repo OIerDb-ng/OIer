@@ -192,7 +192,7 @@
 			});
 			oierdb_score = parseFloat(oierdb_score);
 			let oier = {
-				rank: (data.length && oierdb_score === data.at(-1).oierdb_score ? data.at(-1).rank : data.length),
+				rank: (data.length && oierdb_score === data[data.length - 1].oierdb_score ? data[data.length - 1].rank : data.length),
 				uid: parseInt(uid),
 				initials,
 				name,

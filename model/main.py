@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import hashlib, json, util
-from collections import Counter
+import hashlib, json, os, util
 from contest import Contest
 from oier import OIer
 from record import Record
@@ -52,13 +51,13 @@ def __main__():
 			raise ValueError('姓名不能为空')
 		contest = Contest.by_name(contest_name)
 		school = School.by_name(school_name)
-		grade = util.get_grade(grade_name)
+		grades = util.get_grades(grade_name)
 		gender = gender_map.get(gender_name, 0)
 		if not Contest.is_score_valid(score):
 			raise ValueError('无法识别的分数：\x1b[032m\'{}\'\x1b[0m'.format(score))
 		# 开始创建数据
 		oier = OIer.of(name, identifier)
-		record = contest.add_contestant(oier, score, level, grade, school, province, gender)
+		record = contest.add_contestant(oier, score, level, grades, school, province, gender)
 		oier.add_record(record)
 
 	def parse_raw():
@@ -78,11 +77,14 @@ def __main__():
 		threshold: 距离阈值。
 		'''
 
-		recordss = []
-		for oier in OIer.get_all():
+		recordseqs = []
+		length = OIer.count_all()
+		for idx, oier in enumerate(OIer.get_all()):
+			if idx % 1000 == 0:
+				print('\r\x1b[2K{}% ...'.format(idx * 100 // length), end = '')
 			# 手动合并的无需拆分
 			if oier.identifier:
-				recordss.append(oier.records)
+				recordseqs.append(oier.records)
 				continue
 			original_length = len(oier.records)
 			a = [[record] for record in oier.records]
@@ -99,22 +101,22 @@ def __main__():
 					break
 			if '--show-incomplete-merge' in argv and len(a) != 1:
 				print('\x1b[01;33mwarning: \x1b[0;32m\'{}\'\x1b[0m 未完全合并，合并进度为 \x1b[32m{}\x1b[0m → \x1b[32m{}\x1b[0m'.format(oier.name, original_length, len(a)), file = stderr)
-			recordss.extend(a)
+			recordseqs.extend(a)
 		OIer.clear()
-		for records in recordss:
-			original = records[0].oier
+		for recordseq in recordseqs:
+			original = recordseq[0].oier
 			# UID 定为该 OIer 首次出现的<b>有效</b>行号
-			uid = min(records, key = lambda record: record.id).id
+			uid = min(recordseq, key = lambda record: record.id).id
 			# 入学年份取众数，相同的话取最早的
-			ems = Counter(sorted(util.enrollment_middle(record.contest, record.grade) for record in records))
-			em = ems.most_common(1)[0][0]
+			em = util.get_mode([record.ems for record in recordseq])[0]
 			# 性别如果唯一则取之，空或不唯一置空（如跨性别）
-			gender = set(record.gender for record in records if record.gender)
+			gender = set(record.gender for record in recordseq if record.gender)
 			gender = gender.pop() if len(gender) == 1 else 0
 			oier = OIer(original.name, original.identifier, gender, em, uid)
-			oier.records = records[:]
+			oier.records = recordseq[:]
 			for record in oier.records:
 				record.oier = oier
+		print()
 
 	def analyze_individual_oier():
 		'分析各体信息。'
@@ -151,6 +153,10 @@ def __main__():
 		with open('sha512/result', 'w') as f:
 			print(sha512, file = f)
 
+	def update_static():
+		'调用 update_static.js 以产生静态 JSON 信息。'
+		os.system('./update_static.js')
+
 	def report_status(message):
 		'向终端报告当前进度。'
 
@@ -176,6 +182,9 @@ def __main__():
 
 	report_status('输出学校信息中')
 	output_schools()
+
+	report_status('输出静态 JSON 信息中')
+	update_static()
 
 if __name__ == '__main__':
 	__main__()

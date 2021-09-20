@@ -79,7 +79,7 @@ class Contest:
 
 		return self.capacity if self.capacity else len(self.contestants)
 
-	def add_contestant(self, oier, score, level, grade, school, province, gender):
+	def add_contestant(self, oier, score, level, grades, school, province, gender):
 		''' 添加一名选手到比赛。
 
 		oier: 选手。
@@ -108,7 +108,7 @@ class Contest:
 					print('\x1b[01;33mwarning: \x1b[0m不单调的分数：\x1b[32m{}\x1b[0m > \x1b[32m{}\x1b[0m，于比赛 \x1b[32m\'{}\'\x1b[0m'.format(score, self.contestants[-1].score, self.name))
 				rank = len(self.contestants) + 1
 
-		record = Record(oier, self, score, rank, level, grade, school, province, gender)
+		record = Record(oier, self, score, rank, level, grades, school, province, gender)
 		self.contestants.append(record)
 		self.level_counts[level] += 1
 		return record

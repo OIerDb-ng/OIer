@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+from collections import Counter
 from decimal import Decimal as D, getcontext
+from itertools import chain
 from sys import stderr
 getcontext().prec = 64
 
@@ -12,11 +14,11 @@ provinces = ['安徽', '北京', '福建', '甘肃', '广东', '广西', '贵州
 award_levels = ['金牌', '银牌', '铜牌', '一等奖', '二等奖', '三等奖', '国际金牌', '国际银牌', '国际铜牌']
 
 def __main__():
-	import json, pypinyin as py
+	import json, pypinyin
 	from contest import Contest
 	global	add_contestant, contests, contest_type_coefficient,		\
 			decay_coefficient, enrollment_middle, get_contest_id,	\
-			get_grade, get_initials, rank_coefficient
+			get_grades, get_initials, get_mode, rank_coefficient
 
 	with open('static/contests.json') as f:
 		for contest in json.load(f):
@@ -44,12 +46,26 @@ def __main__():
 	assert len(rc_list) == 401
 	assert sorted(rc_list, reverse = True) == rc_list
 
-	def get_grade(grade_name):
-		''' 获取年级。
+	def get_initials(name):
+		''' 获取拼音首字母。
+
+		name: 姓名。
+		'''
+		return ''.join(get_initial_list(name))
+
+	def get_initial_list(name):
+		initial = pypinyin.lazy_pinyin(name, style=pypinyin.Style.FIRST_LETTER)
+		for i in range(len(name), 0, -1):
+			if name[:i] in surnames:
+				initial[:i] = surnames[name[:i]]
+		return initial
+
+	def get_grades(grade_name):
+		''' 获取可能的年级列表。
 
 		grade_name: 年级名称。
 
-		返回值: 以初一为 1 的相对年级，默认为 g_initial。
+		返回值: 以初一为 16，(2^可能年级) 列表之和，需要保证年级在 0 ~ 31 之间。
 		'''
 
 		if grade_name in g_special:
@@ -57,6 +73,7 @@ def __main__():
 		ret, cur = g_initial, grade_name
 		while True:
 			if cur == '':
+				ret = 1 << ret
 				g_special.setdefault(grade_name, ret)
 				return ret
 			for element in g_element:
@@ -67,28 +84,35 @@ def __main__():
 			else:
 				raise ValueError('未知的年级：\x1b[032m\'{}\'\x1b[0m'.format(grade_name))
 
-	def get_initials(name):
-		''' 获取拼音首字母。
-
-		name: 姓名。
-		'''
-		return ''.join(get_initial_list(name))
-
-	def get_initial_list(name):
-		initial = py.lazy_pinyin(name, style=py.Style.FIRST_LETTER)
-		for i in range(len(name), 0, -1):
-			if name[:i] in surnames:
-				initial[:i] = surnames[name[:i]]
-		return initial
-
-	def enrollment_middle(contest, grade):
-		''' 获取初中入学年份。
+	def enrollment_middle(contest, grades):
+		''' 获取初中入学年份列表。
 
 		contest: 比赛对象。
-		grade: 参加该比赛时的年份。
+		grades: 所有可能的年级列表。
+
+		返回值: set，表示所有可能的入学年份列表。
 		'''
 
-		return contest.school_year() - grade + 1
+		year = contest.school_year()
+		mask = grades
+		ems = set()
+		while mask:
+			grade = (mask & -mask).bit_length() - 16
+			ems.add(year - grade + 1)
+			mask &= mask - 1
+		return ems
+
+	def get_mode(sets):
+		''' 获取最佳初中入学年份。
+
+		sets: 集合的列表，每个集合表示可能的入学年份集合。
+
+		返回值: 最佳入学年份的列表。
+		'''
+
+		counter = Counter(chain(*sets))
+		most = counter.most_common(1)[0][1]
+		return sorted(k for k, v in counter.items() if v == most)
 
 	def decay_coefficient(year):
 		''' 获取因年份造成的衰变系数，<b>该函数可以自行修改</b>。
