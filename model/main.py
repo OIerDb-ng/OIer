@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import hashlib, util
+import hashlib, json, util
 from collections import Counter
 from contest import Contest
 from oier import OIer
@@ -123,6 +123,15 @@ def __main__():
 			oier.compute_ccf_level()
 			oier.compute_oierdb_score()
 
+	def output_schools():
+		'输出学校信息。'
+
+		output = []
+		for school in School.get_all():
+			output.append([school.name, school.province, school.city, float(round(school.score, 2))])
+		with open('data/school.json', 'w') as f:
+			json.dump(output, f, ensure_ascii = False)
+
 	def output_compressed():
 		'输出压缩的结果，不压缩的结果先咕着。'
 
@@ -132,26 +141,41 @@ def __main__():
 				print(oier.to_compress_format(), file = f)
 
 	def compute_sha512():
-		'计算 data/result.txt 的 SHA512 值，保存在 sha512/result 中'
-		# 使用 *.txt 后缀可以利用 gzip 压缩
+		'''
+		计算 data/result.txt 的 SHA512 值，保存在 sha512/result 中。
+		（注：使用 *.txt 后缀可以利用 gzip 压缩）
+		'''
 
 		with open('data/result.txt', 'rb') as f:
 			sha512 = hashlib.sha512(f.read()).hexdigest()
 		with open('sha512/result', 'w') as f:
 			print(sha512, file = f)
 
-	print('================ 读取学校信息中 ================', file = stderr)
+	def report_status(message):
+		'向终端报告当前进度。'
+
+		print('================ {} ================'.format(message), file = stderr)
+
+	report_status('读取学校信息中')
 	parse_school()
-	print('================ 读取选手信息中 ================', file = stderr)
+
+	report_status('读取选手信息中')
 	parse_raw()
-	print('================ 合并信息中 ================', file = stderr)
+
+	report_status('合并信息中')
 	attempt_merge()
-	print('================ 分析选手中 ================', file = stderr)
+
+	report_status('分析选手中')
 	analyze_individual_oier()
-	print('================ 输出到 data/result.txt 中 ================', file = stderr)
+
+	report_status('输出到 data/result.txt 中')
 	output_compressed()
-	print('================ 计算 SHA512 摘要中 ================', file = stderr)
+
+	report_status('计算 SHA512 摘要中')
 	compute_sha512()
+
+	report_status('输出学校信息中')
+	output_schools()
 
 if __name__ == '__main__':
 	__main__()

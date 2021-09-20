@@ -68,7 +68,6 @@ class OIer:
 	@staticmethod
 	def sort_by_score():
 		'根据 DB 评分对 OIer 排序。'
-		oier = OIer.__all_oiers_list__[0]
 		OIer.__all_oiers_list__.sort(key = lambda oier: (-oier.oierdb_score, oier.uid))
 
 	@staticmethod
@@ -128,7 +127,9 @@ class OIer:
 			dc = util.decay_coefficient(record.contest.year)
 			rc = util.rank_coefficient(record.rank, record.contest.n_contestants(), self.name)
 			tc = util.contest_type_coefficient(record.contest.type, self.name)
-			s += dc * rc * tc
+			c = dc * rc * tc
+			record.school.score += c
+			s += c
 		self.oierdb_score = s
 
 	def compute_ccf_level(self):

@@ -13,14 +13,10 @@ fs.readdirSync('model/static').filter(fn => fn.endsWith('.json')).map(fn => {
 	}
 });
 
-let schools = [];
-output.schools = {enumerable: true, value: schools, writable: true};
-fs.readFileSync('model/data/school.txt', {encoding: 'utf-8'}).split('\n').forEach(line => {
-	let fields = line.split(',');
-	if (!line.startsWith('#') && fields.length > 2) {
-		let [province, city, name] = fields;
-		schools.push([name, province, city]);
-	}
-});
+output.schools = {
+	enumerable: true,
+	value: JSON.parse(fs.readFileSync('model/data/school.json', {encoding: 'utf-8'})),
+	writable: true
+};
 
 fs.writeFileSync('js/oierdb_static.js', `Object.defineProperties(OIerDb,${JSON.stringify(output)});\n`);

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import util
+
 class School:
 	__all_school_list__ = []
 	__school_name_map__ = {}
@@ -10,6 +12,7 @@ class School:
 		self.province = province
 		self.city = city
 		self.aliases = aliases
+		self.score = util.D(0)
 
 	@staticmethod
 	def create(name, province, city, aliases):
@@ -45,6 +48,12 @@ class School:
 		'获取当前学校总数。'
 
 		return len(School.__all_school_list__)
+
+	@staticmethod
+	def get_all():
+		'获取当前所有学校的列表。'
+
+		return School.__all_school_list__
 
 	def location(self):
 		'获取位置，格式为 province,city。'

@@ -21,7 +21,7 @@
 		<h3 class="ui dividing header">一些便捷的语法糖</h3>
 		<div class="ui ordered list">
 			<div class="item">
-				<div class="header"><code>OIerDb.ofInitials(<em>&lt;initials&gt;</em>, <em>[all]</em>)</code></div>
+				<div class="header"><code>OIerDb.ofInitials(&lt;<em>initials</em>&gt;, [<em>rank</em> = 0])</code></div>
 				<div class="description">
 					根据首字母寻找 OIer。
 					<div class="list">
@@ -30,8 +30,8 @@
 							<div class="description">必须，姓名的首字母字符串。</div>
 						</div>
 						<div class="item">
-							<div class="header">all</div>
-							<div class="description">可选，如果为 <code>true</code>（或其它真值），则表示返回所有首字母为 <code>initials</code> 的 OIer 列表，否则只返回排名最靠前的一个。</div>
+							<div class="header">rank</div>
+							<div class="description">可选，如果为自然数，则表示返回所有首字母为 <code>initials</code> 的 OIer 中排名为 <code>rank</code> 者（下标从 0 开始）。否则返回所有首字母为 <code>initials</code> 的 OIer 列表，<strong>默认为 0</strong>。</div>
 						</div>
 					</div>
 					示例：
@@ -40,7 +40,11 @@
 |<span class="output"><i class="icon"></i>true</span>
 |<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy');</span>
 |<span class="output"><i class="icon"></i><i class="caret right icon"></i>{ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}</span>
-|<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy', true);</span>
+|<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy', 1);</span>
+|<span class="output"><i class="icon"></i><i class="caret right icon"></i>{ccf_level: 9, ccf_score: 483.7, enroll_middle: 2015, gender: 1, initials: "wzy", …}</span>
+|<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy', -1);</span>
+|<span class="output"><i class="icon"></i><i class="caret right icon"></i>{ccf_level: 4, ccf_score: 0, enroll_middle: 2014, gender: 1, initials: "wzy", …}</span>
+|<span class="input"><i class="icon"></i>OIerDb.ofInitials('wzy', 'all');</span>
 |<span class="output"><i class="icon"></i><i class="caret down icon"></i>(199) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, …]
 |<i class="icon"></i><i class="icon"></i><i class="caret down icon"></i>[0 … 99]
 |<i class="icon"></i><i class="icon"></i><i class="icon"></i><i class="caret right icon"></i><span class="sh_property">0</span>: {ccf_level: 10, ccf_score: 679.43, enroll_middle: 2015, gender: 1, initials: "wzy", …}
@@ -57,8 +61,41 @@
 	</div>
 	<div class="ui tab segment" data-tab="tab-js-api">
 		<h3 class="ui dividing header">Javascript 详细接口概述</h3>
-		<p>共 4 种类型，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别存储比赛，选手，一条记录和学校，接口如下：</p>
+		<p>共 5 种类型，<code>Counter</code>，<code>Contest</code>，<code>OIer</code>，<code>Record</code> 和 <code>School</code>，分别为统计器，比赛，选手，一条记录和学校，接口如下：</p>
 		<div class="ui ordered list">
+			<div class="item">
+				<code>Counter</code>：
+				<div class="list">
+					<div class="item">
+						<div class="header">clear()</div>
+						<div class="description">清空统计器。</div>
+					</div>
+					<div class="item">
+						<div class="header">dict</div>
+						<div class="description">数据字典，为 <code>Object</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">get(key)</div>
+						<div class="description">获取 <code>key</code> 的数量。</div>
+					</div>
+					<div class="item">
+						<div class="header">least_common(n)</div>
+						<div class="description">获取前 n 少的数据。</div>
+					</div>
+					<div class="item">
+						<div class="header">length()</div>
+						<div class="description">获取不同的数据种数。</div>
+					</div>
+					<div class="item">
+						<div class="header">most_common(n)</div>
+						<div class="description">获取前 n 多的数据。</div>
+					</div>
+					<div class="item">
+						<div class="header">update(key, value = 1)</div>
+						<div class="description">将 <code>key</code> 的数量增加 <code>value</code>。</div>
+					</div>
+				</div>
+			</div>
 			<div class="item">
 				<code>Contest</code>：
 				<div class="list">
@@ -76,7 +113,7 @@
 					</div>
 					<div class="item">
 						<div class="header">level_counts</div>
-						<div class="description">（所有记录中）各奖项获得人数。</div>
+						<div class="description">（所有记录中）各奖项获得人数，为 <code>Counter</code> 类型。</div>
 					</div>
 					<div class="item">
 						<div class="header">n_contestants()</div>
@@ -137,7 +174,7 @@
 					</div>
 					<div class="item">
 						<div class="header">rank</div>
-						<div class="description">选手当前在 OIerDb 上的排名。</div>
+						<div class="description">选手在 OIerDb 上的当前排名<span style="color: fuchsia">（从 0 开始）</span>。</div>
 					</div>
 					<div class="item">
 						<div class="header">records</div>
@@ -178,13 +215,17 @@
 					</div>
 					<div class="item">
 						<div class="header">rank</div>
-						<div class="description">该记录中选手获得的排名。</div>
+						<div class="description">该记录中选手获得的排名<span style="color: fuchsia">（从 1 开始）</span>。</div>
 					</div>
 				</div>
 			</div>
 			<div class="item">
 				<code>School</code>：
 				<div class="list">
+					<div class="item">
+						<div class="header">award_counts</div>
+						<div class="description">记录该学校在各个比赛中各奖项获奖人数，访问方式如 <code>school.award_counts[contest.type][contest.year].get('一等奖')</code>。</div>
+					</div>
 					<div class="item">
 						<div class="header">city</div>
 						<div class="description">学校所在城市（地级行政区）。</div>
@@ -206,8 +247,16 @@
 						<div class="description">学校所在省份（省级行政区）。</div>
 					</div>
 					<div class="item">
+						<div class="header">rank</div>
+						<div class="description">学校在 OIerDb 上的当前排名<span style="color: fuchsia">（从 0 开始）</span>。</div>
+					</div>
+					<div class="item">
 						<div class="header">records</div>
 						<div class="description">学校的所有记录，为 <code>Record</code> 类型。</div>
+					</div>
+					<div class="item">
+						<div class="header">score</div>
+						<div class="description">学校的 OIerDb 评分，衰变起点取为 2000 年。</div>
 					</div>
 				</div>
 			</div>
