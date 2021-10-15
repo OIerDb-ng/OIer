@@ -5,7 +5,7 @@ const fs = require('fs');
 let output = {};
 
 fs.readdirSync('static').filter(fn => fn.endsWith('.json')).map(fn => {
-	let name = fn.substr(0, fn.length - 5), content = fs.readFileSync(`static/${fn}`, {encoding: 'utf-8'});
+	let name = fn.substr(0, fn.length - 5), content = fs.readFileSync(`static/${fn}`, 'utf8');
 	output[name] = {
 		enumerable: true,
 		value: JSON.parse(content),
@@ -15,7 +15,7 @@ fs.readdirSync('static').filter(fn => fn.endsWith('.json')).map(fn => {
 
 output.schools = {
 	enumerable: true,
-	value: JSON.parse(fs.readFileSync('data/school.json', {encoding: 'utf-8'})),
+	value: JSON.parse(fs.readFileSync('data/school.json', 'utf8')),
 	writable: true
 };
 
