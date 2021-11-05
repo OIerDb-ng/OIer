@@ -538,5 +538,17 @@
 		"name": "NOI2021D类",
 		"type": "NOID类",
 		"year": 2021
+	},
+	{
+		"fall_semester": true,
+		"name": "CSP2021提高",
+		"type": "CSP提高",
+		"year": 2021
+	},
+	{
+		"fall_semester": true,
+		"name": "CSP2021入门",
+		"type": "CSP入门",
+		"year": 2021
 	}
 ]
