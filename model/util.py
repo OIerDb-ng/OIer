@@ -18,7 +18,7 @@ def __main__():
 	from contest import Contest
 	global	add_contestant, contests, contest_type_coefficient,		\
 			decay_coefficient, enrollment_middle, get_contest_id,	\
-			get_grades, get_initials, get_mode, rank_coefficient
+			get_grades, get_initials, get_mode, lcs, rank_coefficient
 
 	with open('static/contests.json') as f:
 		for contest in json.load(f):
@@ -150,5 +150,16 @@ def __main__():
 		if type not in scoring:
 			print('\x1b[01;33mwarning: \x1b[0m未知的比赛类型：\x1b[32m\'{}\'\x1b[0m (from \x1b[32m{}\x1b[0m)，不计算贡献'.format(type, name), file = stderr)
 		return D(scoring.get(type, '0'))
+
+	def lcs(str1, str2):
+		''' 求字符串 str1 和 str2 的最长公共子序列。'''
+
+		n = len(str1)
+		m = len(str2)
+		f = [[0] * (m + 1) for i in range(n + 1)]
+		for i in range(n):
+			for j in range(m):
+				f[i + 1][j + 1] = (f[i][j] + 1 if str1[i] == str2[j] else max(f[i + 1][j], f[i][j + 1]))
+		return f[n][m]
 
 __main__()

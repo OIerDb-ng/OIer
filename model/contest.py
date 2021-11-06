@@ -2,7 +2,6 @@
 
 from collections import Counter
 from record import Record
-from sys import stderr
 import re
 __re_score_with_rank__ = re.compile(r'^(\d+\.?\d+)\(rk(\d+)\)$')
 

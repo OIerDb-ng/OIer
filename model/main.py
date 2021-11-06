@@ -9,6 +9,7 @@ from sys import argv, stderr
 
 def __main__():
 	gender_map = {'男': 1, '女': -1}
+	new_schools = []
 
 	def parse_school_line(line):
 		'''解析 school.txt 文件的一行。
@@ -50,7 +51,13 @@ def __main__():
 		if name == '':
 			raise ValueError('姓名不能为空')
 		contest = Contest.by_name(contest_name)
-		school = School.by_name(school_name)
+
+		try:
+			school = School.by_name(school_name)
+		except ValueError as e:
+			new_schools.append((province, school_name))
+			raise e
+
 		grades = util.get_grades(grade_name)
 		gender = gender_map.get(gender_name, 0)
 		if not Contest.is_score_valid(score):
@@ -125,6 +132,39 @@ def __main__():
 			oier.compute_ccf_level()
 			oier.compute_oierdb_score()
 
+	def merge_schools():
+		'合并新增学校信息，输出到 data/merge_preview.txt 中。'
+
+		nonlocal new_schools
+		new_schools = sorted(set(new_schools))
+		with open('data/merge_preview.txt', 'w') as f:
+			print('''# 用 '#' 号表示注释。
+# 这是由 main.py 自动生成的学校合并确认文件，本文件的格式有如下几种：
+#   b,<name>,<origin>，表示将新名称 <name> 合并到 <origin>，将名称作为别名。
+#   f,<name>,<origin>，表示将新名称 <name> 合并到 <origin>，并将新名称设为正式名称。
+#   c,<province>,<city>,<name>，表示插入学校 <province>,<city>,<name>。''', file = f)
+			for province, school_name in new_schools:
+				res = School.find_candidate(school_name, province)
+				method = res[0]
+				if method == 'b':
+					school = res[1]
+					print('\x1b[32m[direct redirect]\x1b[0m: \x1b[35m\'{}\'\x1b[0m → \x1b[37m\'{}\'\x1b[0m'.format(school_name, school.name))
+					print('b {} {}'.format(school_name, school.name), file = f)
+				elif method == 'f':
+					school = res[1]
+					print('\x1b[32m[name changed]\x1b[0m: \x1b[35m\'{}\'\x1b[0m ← \x1b[37m\'{}\'\x1b[0m'.format(school_name, school.name))
+					print('f {} {}'.format(school_name, school.name), file = f)
+				elif method == 'fs':
+					school = res[1]
+					standard = res[2]
+					print('\x1b[32m[towards standard name]\x1b[0m: (\x1b[35m\'{}\'\x1b[0m, \x1b[37m\'{}\'\x1b[0m) → \x1b[33m\'{}\'\x1b[0m'.format(school_name, school.name, standard))
+					print('f {} {}'.format(standard, school.name), file = f)
+					print('b {} {}'.format(school_name, school.name), file = f)
+				elif method == 'c':
+					city = res[1]
+					print('\x1b[32m[create]\x1b[0m: (\x1b[35m\'{}\'\x1b[0m, \x1b[35m\'{}\'\x1b[0m, \x1b[35m\'{}\'\x1b[0m)'.format(province, city, school_name))
+					print('c {} {} {}'.format(province, city, school_name), file = f)
+
 	def output_schools():
 		'输出学校信息。'
 
@@ -173,6 +213,10 @@ def __main__():
 
 	report_status('分析选手中')
 	analyze_individual_oier()
+
+	if '--merge-schools' in argv:
+		report_status('尝试合并学校中')
+		merge_schools()
 
 	report_status('输出到 data/result.txt 中')
 	output_compressed()

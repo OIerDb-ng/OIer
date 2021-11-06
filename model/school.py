@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-import util
+import api, math, util
 
 class School:
 	__all_school_list__ = []
 	__school_name_map__ = {}
+	__schools_by_pc__ = {}
 
 	def __init__(self, idx, name, province, city, aliases):
 		self.id = idx
@@ -30,11 +31,15 @@ class School:
 		School.__school_name_map__[name] = school
 		for alias in aliases:
 			School.__school_name_map__[alias] = school
+		pc_key = (province, city)
+		if pc_key not in School.__schools_by_pc__:
+			School.__schools_by_pc__[pc_key] = []
+		School.__schools_by_pc__[pc_key].append(school)
 		return school
 
 	@staticmethod
 	def by_name(name):
-		''' 根据名称返回学校
+		''' 根据名称返回学校。
 
 		name: 学校名称。
 		'''
@@ -42,6 +47,41 @@ class School:
 		if name in School.__school_name_map__:
 			return School.__school_name_map__[name]
 		raise ValueError('未知的学校名：\x1b[32m\'{}\'\x1b[0m'.format(name))
+
+	@staticmethod
+	def find_candidate(name, province):
+		''' 根据名称返回已有学校中最有可能者。
+
+		name: 学校名称。
+		province: 省份。
+		'''
+
+		if name in School.__school_name_map__:
+			return School.__school_name_map__[name]
+		redirect = api.get_redirect(name)
+		if redirect is not None and redirect in School.__school_name_map__:
+			return 'b', School.__school_name_map__[redirect]
+		ret = api.get_location(name, province)
+		x, y = api.get_longlat(name)
+		city = ('未分区' if ret is None else ret[1])
+		li = [(util.lcs(school.name, name), school) for school in School.__schools_by_pc__.get((province, city), [])]
+		li.sort(key = lambda pair: -pair[0])
+		li = li[:3]
+		for _, school in li:
+			if not hasattr(school, 'baike_cache'):
+				school.baike_cache = api.get_redirect(school.name)
+				school.x, school.y = api.get_longlat(school.name)
+			if redirect is not None:
+				if school.baike_cache == redirect:
+					if redirect == name:
+						return 'f', school
+					else:
+						return 'fs', school, redirect
+		for _, school in li:
+			dist = math.hypot(x - school.x, y - school.y)
+			if dist <= 0.00108: # 120 米
+				return 'b', school
+		return 'c', city
 
 	@staticmethod
 	def count_all():
