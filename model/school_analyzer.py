@@ -11,11 +11,9 @@ name_map = {}
 rk = {}
 recy = {}
 recd = {}
-with open("school.txt",encoding='utf-8') as src:
+with open("school_oped.txt",encoding='utf-8') as src:
     cnt = -1
     for i in src:
-        if i[0] == '#' or len(i.strip()) == 0:
-            continue
         cnt+=1
         try:
             school_info.append({"id":eval("0x"+hashlib.md5(i.split(',')[2].encode("utf8")).hexdigest())%998244353,"name":[],"awards":{},"rating":0,"prov":i.split(',')[0],"city":i.split(',')[1]})
@@ -27,13 +25,8 @@ with open("school.txt",encoding='utf-8') as src:
 def dmp(a):
     return json.dumps(a, ensure_ascii=False).replace('"',"'")
 dp = {}
-with open("raw.txt",encoding='utf-8') as source:
+with open("data.txt",encoding='utf-8') as source:
     for i in source:
-        if i[0] == '#' or len(i.strip()) == 0:
-            continue
-            
-        if i[:7] == "CTS2019":
-            i = "CTSC2019"+i[7:]
         if 'D类' in i:
             i = i.split('D类')[0]
         if not i.split(',')[0] in dp:
@@ -42,12 +35,8 @@ with open("raw.txt",encoding='utf-8') as source:
             dp[i.split(',')[0]] += 1
         if "IOI" in i.split(',')[0]:
             dp[i.split(',')[0]] = 300
-with open("raw.txt",encoding='utf-8') as source:
+with open("data.txt",encoding='utf-8') as source:
     for i in source:
-        if i[0] == '#' or len(i.strip()) == 0:
-            continue
-        if i[:7] == "CTS2019":
-            i = "CTSC2019"+i[7:]
         cur = i.strip().split(',')
         cname = cur[0].strip()
         if not "D" in cname:
