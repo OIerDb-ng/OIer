@@ -14,7 +14,7 @@ recd = {}
 with open("school.txt",encoding='utf-8') as src:
     cnt = -1
     for i in src:
-        if i[0] == '#' or len(i.strip()) == 0:
+        if i[0] == '#' or len(i.replace(',','').strip()) == 0:
             continue
         cnt+=1
         try:
@@ -29,7 +29,7 @@ def dmp(a):
 dp = {}
 with open("raw.txt",encoding='utf-8') as source:
     for i in source:
-        if i[0] == '#' or len(i.strip()) == 0:
+        if i[0] == '#' or len(i.replace(',','').strip()) == 0:
             continue
             
         if i[:7] == "CTS2019":
@@ -44,7 +44,7 @@ with open("raw.txt",encoding='utf-8') as source:
             dp[i.split(',')[0]] = 300
 with open("raw.txt",encoding='utf-8') as source:
     for i in source:
-        if i[0] == '#' or len(i.strip()) == 0:
+        if i[0] == '#' or len(i.replace(',','').strip()) == 0:
             continue
         if i[:7] == "CTS2019":
             i = "CTSC2019"+i[7:]

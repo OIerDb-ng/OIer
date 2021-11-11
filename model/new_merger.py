@@ -8,16 +8,16 @@ final_output_data = []
 grades = {"高中":5,"4":4,"5":5,"6":6,"高二":5,"初三":3,"高三":6,"高一":4,"初二":2,"中六":6,
     "中五":5,"初一":1,"初四":3,"中四":4,"高二年级":5,"中一":1,"中二":2,"中三":3,"七年级":1,"九年级":3,"8":2,"六年级":0,"五年级":-1,"四年级":-2,"三年级":-3,"二年级":-4,"一年级":-5,"小六":0,"六":0,"八":2,"八年级":2,"新高一":3,"小学":0,"小学/无":0,"初中":2.213472384803661,"预初":0}
 sex = {"男":1,"女":-1,"":0}
-contest_date = {"IOI":8/12.0,"CSP提高":11/12.0,"CSP入门":11/12.0,"NOIP":11.6/12.0,"NOIP提高":11.5/12.0,"NOIP普及":11.5/12.0,"APIO":5.3/12.0,"CTSC":5.6/12.0,"NOI":7/12.0,"NOID类":7/12.0,"WC":1/12.0}
+contest_date = {"IOI":8/12.0,"CSP提高":11/12.0,"CSP入门":11/12.0,"NOIP":11.6/12.0,"NOIP提高":11.5/12.0,"NOIP普及":11.5/12.0,"APIO":5.3/12.0,"CTSC":5.6/12.0,"CTS":5.6/12.0,"NOI":7/12.0,"NOID类":7/12.0,"WC":1/12.0}
 st = time.time()
 school_id = {}
 school_pos = {}
-general = {'IOI':5,'APIO': 4.5790, 'NOI': 4.7086, 'WC': 4.6628, 'CTSC': 4.6140, 'NOID类': 4.6678, 'NOIP提高': 4.6761, 'NOIP普及': 2.2134, 'CSP提高': 4.6761, 'CSP入门': 2.2134,'NOIP':4.6761}
+general = {'IOI':5,'APIO': 4.5790, 'NOI': 4.7086, 'WC': 4.6628, 'CTSC': 4.6140, 'CTS': 4.6140, 'NOID类': 4.6678, 'NOIP提高': 4.6761, 'NOIP普及': 2.2134, 'CSP提高': 4.6761, 'CSP入门': 2.2134,'NOIP':4.6761}
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,150,-3))]
-sc_rt = {"IOI":2,"NOI":1,"NOID类":0.75,"CTSC":0.2,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06,"CSP提高":0.1,"CSP入门":0.06,"NOIP":0.15}
+sc_rt = {"IOI":2,"NOI":1,"NOID类":0.75,"CTSC":0.2,"CTS":0.2,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.06,"CSP提高":0.1,"CSP入门":0.06,"NOIP":0.15}
 
-award_score = {"APIO":500, "CTSC":800, "WC":600}
+award_score = {"APIO":500, "CTSC":800, "CTS":800, "WC":600}
 level_score = {8:250, 9:500, 10:1000}
 noip_award_cnt = {}
 
@@ -53,8 +53,10 @@ def output():
         result.write(str(id)+","+i+",UID"+str(hsh)+",,"+piny+","+str(level)+","+str(int(score))+',"'+json.dumps(j,ensure_ascii=False).replace('"',"'")+'",'+str(csex)+","+"%.2f"%cscore+","+str(cyear)+"\n")
         id+=1
     result.close()
-with open("school_oped.txt",encoding='utf-8') as src:
+with open("school.txt",encoding='utf-8') as src:
     for i in src:
+        if i[0] == '#' or len(i.replace(',','').strip()) == 0:
+            continue
         cnt = eval("0x"+hashlib.md5(i.split(',')[2].encode("utf8")).hexdigest())%998244353
         school_pos[cnt] = i.split(',')[0]+i.split(',')[1]
         for j in i.split(',')[2:]:
@@ -73,8 +75,10 @@ def getgrade(x,year):
             return 10000
     return 10000
 uid = 1
-with open("data.txt",encoding='utf-8') as source:
+with open("raw.txt",encoding='utf-8') as source:
     for i in source:
+        if i[0] == '#' or len(i.replace(',','').strip()) == 0:
+            continue
         cur = i.strip().split(',')
         cname = cur[0]
         if not cname in contests.keys():
@@ -94,11 +98,14 @@ with open("data.txt",encoding='utf-8') as source:
         except:
             print(cur)
         grade = getgrade(cur[3],contests[cname]["year"])
+        cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
+        """
         try:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip(),"school_id":school_id[cur[4].strip()],"score":cur[5],"province":cur[6],"sex":sex[cur[7]],"rank": 1,"year" : contests[cname]["year"],"rule" : hash(cur[8])}
         except:
             cur = {"identity":cname,"ctype":contests[cname]["ctype"],"award_type":cur[1],"name":cur[2],"grade":cur[3],"school":cur[4].strip()}
             print(i,cur)
+        """
         cur["id"] = uid
         uid+=1
         cur["cal_y"] = cur["year"]-grade-("NOIP" not in cur["ctype"]  and "CSP" not in cur["ctype"])
