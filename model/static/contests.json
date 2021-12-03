@@ -550,5 +550,11 @@
 		"name": "CSP2021入门",
 		"type": "CSP入门",
 		"year": 2021
+	},
+	{
+		"fall_semester": true,
+		"name": "NOIP2021",
+		"type": "NOIP",
+		"year": 2021
 	}
 ]
