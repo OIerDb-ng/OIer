@@ -6,7 +6,7 @@ school_info = []
 tp_to_int = {"一等奖":0,"二等奖":1,"三等奖":2,"一等":0,"二等":1,"三等":2,"金牌":0,"国际金牌":0,"银牌":1,"铜牌":2}
 
 sc = list(range(100,39,-1))+[i*0.01 for i in list(range(3600,750,-15))]+[i*0.01 for i in list(range(750,0,-5))]
-sc_rt = {"IOI":2,"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"NOIP提高":0.1,"NOIP普及":0.04,"CSP提高":0.1,"CSP入门":0.04,"NOIP":0.15,"NGOI":0.2}
+sc_rt = {"IOI":2,"NOI":1,"NOID类":0.75,"CTSC":0.6,"WC":0.5,"APIO":0.4,"APIO线上":0.3,"NOIP提高":0.1,"NOIP普及":0.04,"CSP提高":0.1,"CSP入门":0.04,"NOIP":0.15,"NGOI":0.2}
 name_map = {}
 rk = {}
 recy = {}
