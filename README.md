@@ -7,7 +7,8 @@
 <p align="center">OIerDb is a database for Chinese OI participants.</p>
 <p align="center">OIerDb 是中国信息学竞赛选手的一个数据库.</p>
 
-> A next generation OIerDb is now available at [OIerDb-ng/OIerDb](https://github.com/OIerDb-ng/OIerDb). 
+> A next generation OIerDb is now available at [OIerDb-ng/OIerDb](https://github.com/OIerDb-ng/OIerDb).
+
 > 新版 OIerDb 现已推出，请前往 [OIerDb-ng/OIerDb](https://github.com/OIerDb-ng/OIerDb) 查看。
 
 ### 如何订正数据
